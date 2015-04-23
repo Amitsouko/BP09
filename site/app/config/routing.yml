@@ -1,5 +1,12 @@
+bp_profile:
+    resource: "@BpProfileBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 bp_core:
     resource: "@BpCoreBundle/Controller/"
     type:     annotation
     prefix:   /
 
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
