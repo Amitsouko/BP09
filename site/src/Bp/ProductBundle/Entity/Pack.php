@@ -57,6 +57,12 @@ class Pack implements ItemInterface
      */
     private $quantity;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
 
     /**
      * Get id
@@ -181,5 +187,28 @@ class Pack implements ItemInterface
     public function getQuantity()
     {
         return $this->quantity;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return Pack
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

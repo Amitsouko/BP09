@@ -4,6 +4,7 @@ namespace Bp\CartBundle\Services;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 use Doctrine\Common\Collections\ArrayCollection;
+use Bp\CartBundle\Interfaces\ItemInterface;
 
 class CartService
 {
@@ -18,52 +19,78 @@ class CartService
         $this->session = $session;
         $this->em = $em;
         $this->tva = $tva;
-        $this->cart = array();
-        $this->option = array();
+
+        if($session->get("cart.cart"))
+        {
+            $this->cart = $session->get("cart.cart");
+        }else{
+            $this->cart = array();
+        }
+
+        if($session->get("cart.option"))
+        {
+            $this->option = $session->get("cart.option");
+        }else{
+            $this->option = array();
+        }
+        $this->refreshSessionCart();
+        $this->refreshSessionOption();
     }
 
     public function addObject(ItemInterface $item, $quantity)
     {
-        if($this->cart[$item->getReference()] != null){
+        if(!is_numeric($quantity)) throw new \Exception("not a number");
+        if(isset($this->cart[$item->getReference()])){
             $this->cart[$item->getReference()]["quantity"] += $quantity;
         }else{
             $this->cart[$item->getReference()] = array(
                     "id" => $item->getId(),
                     "price" => $item->getPrice(),
                     "quantity" => $quantity,
-                    "entity" => $this->em->detach($item)
+                    "entity" => $item
                 );            
         }
+        $this->refreshSessionCart();
     }
 
     public function removeObject(ItemInterface $item)
     {
         unset($this->cart[$item->getReference()]);
+        $this->refreshSessionCart();
     }
 
     public function clearCart()
     {
         $this->cart = array();
         $this->option = array();
+        $this->refreshSessionCart();
     }
 
-    public function setQuantity(ItemInterface $item, $quantity)
+    public function setQuantity(ItemInterface $item, $quantity = 1)
     {
-        if($this->cart[$item->getReference()] != null)
+        if(!is_numeric($quantity)) throw new \Exception("not a number");
+        $quantity = intval($quantity);
+        if(isset($this->cart[$item->getReference()]))
         {
-            $this->cart[$item->getReference()]["quantity"] = $quantity;
+            if($quantity <= 0){
+                $this->removeObject($item);
+            }else{
+                $this->cart[$item->getReference()]["quantity"] = $quantity;
+                $this->refreshSessionCart();
+            }
         }
     }
 
     public function addtOption(ItemInterface $item)
     {
-        if($this->option[$item->getReference()] != NULL) return false;
+        if(isset($this->option[$item->getReference()])) return false;
         $this->option[$item->getReference()] = array(
                 "id" => $item->getId(),
                 "price" => $item->getPrice(),
                 "type" => $type,
-                "entity" => $this->em->detach($item)
+                "entity" => $item
             );
+        $this->refreshSessionOption();
         return true;
     }
 
@@ -92,7 +119,7 @@ class CartService
 
     public function getPriceTTC()
     {
-        $price = $this->getPriceHT;
+        $price = $this->getPriceHT();
         $priceTTC = $price + $price/100*20;
         return $priceTTC;
     }
@@ -104,27 +131,44 @@ class CartService
 
     public function getCart()
     {
+        $array["products"] = $this->getProducts();
+        $array["options"] = $this->getOptions();
+        $array["price"] = $this->getPriceHT();
+        $array["tva"] = $this->getTva();
+        $array["priceTtc"] = $this->getPriceTTC();
+        return $array;
+    }
+
+    public function getProducts()
+    {
         $array = new ArrayCollection;
         foreach($this->cart as $it)
         {
-            $obj = $this->em->detach($it["entity"]);
+            $obj = $it["entity"];
             $obj->userQuantity = $it["quantity"];
             $array->add($obj);
         }
         return $array;
     }
 
-    public function getOption()
+    public function getOptions()
     {
         $array = new ArrayCollection;
         foreach($this->option as $it)
         {
-            $obj = $this->em->detach($it["entity"]);
+            $obj = $it["entity"];
             $array->add($obj);
         }
         return $array;
     }
 
-
-    
+    private function refreshSessionCart()
+    {
+        $this->session->set("cart.cart", $this->cart);
+    }
+ 
+    private function refreshSessionOption()
+    {
+        $this->session->set("cart.option", $this->option);
+    }   
 }

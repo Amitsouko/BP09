@@ -3,14 +3,14 @@
 namespace Bp\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Bp\CartBundle\Interfaces\ItemInterface;
 /**
  * Product
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Bp\ProductBundle\Entity\ProductRepository")
  */
-class Product
+class Product implements ItemInterface
 {
     /**
      * @var integer
@@ -56,7 +56,18 @@ class Product
      */
     private $quantity;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
 
+    public function __construct()
+    {
+        $this->active = true;
+    }
+    
     /**
      * Get id
      *
@@ -180,5 +191,28 @@ class Product
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return Product
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

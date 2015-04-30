@@ -12,4 +12,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class PackRepository extends EntityRepository
 {
+    public function findOneActiveById($id)
+     {
+         return $this->getEntityManager()
+             ->createQuery('SELECT p FROM BpProductBundle:Pack p
+           
+                             WHERE p.id = :id 
+                             AND p.active = :active
+                        ')
+             ->setParameters(array(
+                 'id' => $id,
+                 'active' => true
+             ))
+             ->getSingleResult();
+     }
+    
 }

@@ -56,7 +56,13 @@ class Product
      */
     private $quantity;
 
-
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
+    
     /**
      * Get id
      *

@@ -10,7 +10,7 @@ use Bp\CartBundle\Interfaces\ItemInterface;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Bp\ProductBundle\Entity\CustomPackRepository")
  */
-class CustomPack //implements ItemInterface
+class CustomPack implements ItemInterface
 {
     /**
      * @var integer
@@ -90,5 +90,28 @@ class CustomPack //implements ItemInterface
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set reference
+     *
+     * @param string $reference
+     * @return CustomPack
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    /**
+     * Get reference
+     *
+     * @return string 
+     */
+    public function getReference()
+    {
+        return $this->reference;
     }
 }
