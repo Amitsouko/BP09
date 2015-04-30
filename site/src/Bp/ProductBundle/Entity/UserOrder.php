@@ -1,0 +1,124 @@
+<?php
+
+namespace Bp\ProductBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * UserOrder
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Bp\ProductBundle\Entity\UserOrderRepository")
+ */
+class UserOrder
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="reference", type="string", length=255)
+     */
+    private $reference;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     */
+    private $date;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tva", type="decimal")
+     */
+    private $tva;
+
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set reference
+     *
+     * @param string $reference
+     * @return UserOrder
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    /**
+     * Get reference
+     *
+     * @return string 
+     */
+    public function getReference()
+    {
+        return $this->reference;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     * @return UserOrder
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime 
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set tva
+     *
+     * @param string $tva
+     * @return UserOrder
+     */
+    public function setTva($tva)
+    {
+        $this->tva = $tva;
+
+        return $this;
+    }
+
+    /**
+     * Get tva
+     *
+     * @return string 
+     */
+    public function getTva()
+    {
+        return $this->tva;
+    }
+}

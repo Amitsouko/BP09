@@ -1,3 +1,8 @@
+bp_cart:
+    resource: "@BpCartBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 bp_payment:
     resource: "@BpPaymentBundle/Controller/"
     type:     annotation

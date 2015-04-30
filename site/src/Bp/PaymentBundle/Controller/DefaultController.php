@@ -1,23 +1,19 @@
 <?php
 
-namespace Bp\CoreBundle\Controller;
+namespace Bp\PaymentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Moltin\Cart\Cart;
-use Moltin\Cart\Storage\Session;
-use Moltin\Cart\Identifier\Cookie;
+
 class DefaultController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/hello/{name}")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction($name)
     {
-        $cart = $this->get("cart");
-
-        return array();
+        return array('name' => $name);
     }
 }
