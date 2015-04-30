@@ -3,6 +3,7 @@
 namespace Bp\CartBundle\Services;
 
 use Symfony\Component\HttpFoundation\Session\Session;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class CartService
 {
@@ -10,6 +11,7 @@ class CartService
     private $em;
     private $tva;
     private $cart;
+    private $option;
 
     public function __construct(Session $session, $em, $tva)
     {
@@ -29,7 +31,7 @@ class CartService
                     "id" => $item->getId(),
                     "price" => $item->getPrice(),
                     "quantity" => $quantity,
-                    "entity" => get_class($item)
+                    "entity" => $this->em->detach($item)
                 );            
         }
     }
@@ -37,6 +39,12 @@ class CartService
     public function removeObject(ItemInterface $item)
     {
         unset($this->cart[$item->getReference()]);
+    }
+
+    public function clearCart()
+    {
+        $this->cart = array();
+        $this->option = array();
     }
 
     public function setQuantity(ItemInterface $item, $quantity)
@@ -47,15 +55,14 @@ class CartService
         }
     }
 
-    public function addtOption(ItemInterface $item, $quantity)
+    public function addtOption(ItemInterface $item)
     {
         if($this->option[$item->getReference()] != NULL) return false;
         $this->option[$item->getReference()] = array(
                 "id" => $item->getId(),
                 "price" => $item->getPrice(),
-                "quantity" => $quantity,
                 "type" => $type,
-                "entity" => get_class($item)
+                "entity" => $this->em->detach($item)
             );
         return true;
     }
@@ -66,7 +73,7 @@ class CartService
         $price = 0;
         foreach($this->cart as $it)
         {
-            $price += $it["price"];
+            $price += $it["price"]*$it["quantity"];
         }
         $reduction = 0;
         foreach($this->option as $it)
@@ -94,6 +101,29 @@ class CartService
     {
         return $this->tva;
     }
+
+    public function getCart()
+    {
+        $array = new ArrayCollection;
+        foreach($this->cart as $it)
+        {
+            $obj = $this->em->detach($it["entity"]);
+            $array->add($obj);
+        }
+        return $array;
+    }
+
+    public function getOption()
+    {
+        $array = new ArrayCollection;
+        foreach($this->option as $it)
+        {
+            $obj = $this->em->detach($it["entity"]);
+            $array->add($obj);
+        }
+        return $array;
+    }
+
 
     
 }
