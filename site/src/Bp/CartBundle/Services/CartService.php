@@ -108,6 +108,7 @@ class CartService
         foreach($this->cart as $it)
         {
             $obj = $this->em->detach($it["entity"]);
+            $obj->userQuantity = $it["quantity"];
             $array->add($obj);
         }
         return $array;
