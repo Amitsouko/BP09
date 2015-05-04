@@ -42,6 +42,12 @@ class UserOrder
      */
     private $tva;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Bp\ProfileBundle\Entity\User", inversedBy="orders")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     **/
+    private $user;
+
 
     /**
      * Get id

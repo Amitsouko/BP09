@@ -4,6 +4,8 @@ namespace Bp\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Bp\CartBundle\Interfaces\ItemInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Product
  *
@@ -63,11 +65,35 @@ class Product implements ItemInterface
      */
     private $active;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Object", mappedBy="product")
+     **/
+    private $objects;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Pack", mappedBy="products")
+     **/
+    private $packs;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\CustomPack", mappedBy="products")
+     **/
+    private $customPacks;
+
     public function __construct()
     {
         $this->active = true;
+        $this->objects = new ArrayCollection();
+        $this->packs = new ArrayCollection();
+        $this->customPacks = new ArrayCollection();
     }
-    
+  
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+  
     /**
      * Get id
      *
@@ -214,5 +240,108 @@ class Product implements ItemInterface
     public function getActive()
     {
         return $this->active;
+    }
+
+
+
+    /**
+     * Add objects
+     *
+     * @param \Bp\ProductBundle\Entity\Object $objects
+     * @return Product
+     */
+    public function addObject(\Bp\ProductBundle\Entity\Object $objects)
+    {
+        $this->objects[] = $objects;
+
+        return $this;
+    }
+
+    /**
+     * Remove objects
+     *
+     * @param \Bp\ProductBundle\Entity\Object $objects
+     */
+    public function removeObject(\Bp\ProductBundle\Entity\Object $objects)
+    {
+        $this->objects->removeElement($objects);
+    }
+
+    /**
+     * Get objects
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getObjects()
+    {
+        return $this->objects;
+    }
+
+ 
+
+    /**
+     * Add packs
+     *
+     * @param \Bp\ProductBundle\Entity\Pack $packs
+     * @return Product
+     */
+    public function addPack(\Bp\ProductBundle\Entity\Pack $packs)
+    {
+        $this->packs[] = $packs;
+
+        return $this;
+    }
+
+    /**
+     * Remove packs
+     *
+     * @param \Bp\ProductBundle\Entity\Pack $packs
+     */
+    public function removePack(\Bp\ProductBundle\Entity\Pack $packs)
+    {
+        $this->packs->removeElement($packs);
+    }
+
+    /**
+     * Get packs
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPacks()
+    {
+        return $this->packs;
+    }
+
+    /**
+     * Add customPacks
+     *
+     * @param \Bp\ProductBundle\Entity\CustomPack $customPacks
+     * @return Product
+     */
+    public function addCustomPack(\Bp\ProductBundle\Entity\CustomPack $customPacks)
+    {
+        $this->customPacks[] = $customPacks;
+
+        return $this;
+    }
+
+    /**
+     * Remove customPacks
+     *
+     * @param \Bp\ProductBundle\Entity\CustomPack $customPacks
+     */
+    public function removeCustomPack(\Bp\ProductBundle\Entity\CustomPack $customPacks)
+    {
+        $this->customPacks->removeElement($customPacks);
+    }
+
+    /**
+     * Get customPacks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCustomPacks()
+    {
+        return $this->customPacks;
     }
 }

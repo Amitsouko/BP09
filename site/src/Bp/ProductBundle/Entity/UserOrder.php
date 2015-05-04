@@ -42,6 +42,12 @@ class UserOrder
      */
     private $tva;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Bp\ProfileBundle\Entity\User", inversedBy="orders")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     **/
+    private $user;
+
 
     /**
      * Get id
@@ -120,5 +126,28 @@ class UserOrder
     public function getTva()
     {
         return $this->tva;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Bp\ProfileBundle\Entity\User $user
+     * @return UserOrder
+     */
+    public function setUser(\Bp\ProfileBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Bp\ProfileBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

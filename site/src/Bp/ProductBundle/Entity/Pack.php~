@@ -4,7 +4,7 @@ namespace Bp\ProductBundle\Entity;
 
 use Bp\CartBundle\Interfaces\ItemInterface;
 use Doctrine\ORM\Mapping as ORM;
-
+use \Doctrine\Common\Collections\ArrayCollection;
 /**
  * Pack
  *
@@ -63,6 +63,22 @@ class Pack implements ItemInterface
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product", inversedBy="packs")
+     * @ORM\JoinTable(name="pack_product")
+     **/
+    private $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 
     /**
      * Get id
@@ -187,5 +203,63 @@ class Pack implements ItemInterface
     public function getQuantity()
     {
         return $this->quantity;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return Pack
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+  
+
+    /**
+     * Add products
+     *
+     * @param \Bp\ProductBundle\Entity\Product $products
+     * @return Pack
+     */
+    public function addProduct(\Bp\ProductBundle\Entity\Product $products)
+    {
+        $this->products[] = $products;
+
+        return $this;
+    }
+
+    /**
+     * Remove products
+     *
+     * @param \Bp\ProductBundle\Entity\Product $products
+     */
+    public function removeProduct(\Bp\ProductBundle\Entity\Product $products)
+    {
+        $this->products->removeElement($products);
+    }
+
+    /**
+     * Get products
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProducts()
+    {
+        return $this->products;
     }
 }

@@ -17,6 +17,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        $em = $this->getDoctrine()->getEntityManager();
         $cart = $this->container->get("cart");
         $cart = $cart->getCart();
         return array("cart" => $cart);

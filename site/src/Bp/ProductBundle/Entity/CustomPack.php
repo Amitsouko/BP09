@@ -4,6 +4,8 @@ namespace Bp\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Bp\CartBundle\Interfaces\ItemInterface;
+use \Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * CustomPack
  *
@@ -34,6 +36,18 @@ class CustomPack implements ItemInterface
      * @ORM\Column(name="price", type="decimal")
      */
     private $price;
+
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product", inversedBy="customPacks")
+     * @ORM\JoinTable(name="custompack_product")
+     **/
+    private $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
 
     /**
@@ -113,5 +127,38 @@ class CustomPack implements ItemInterface
     public function getReference()
     {
         return $this->reference;
+    }
+
+    /**
+     * Add products
+     *
+     * @param \Bp\ProductBundle\Entity\Product $products
+     * @return CustomPack
+     */
+    public function addProduct(\Bp\ProductBundle\Entity\Product $products)
+    {
+        $this->products[] = $products;
+
+        return $this;
+    }
+
+    /**
+     * Remove products
+     *
+     * @param \Bp\ProductBundle\Entity\Product $products
+     */
+    public function removeProduct(\Bp\ProductBundle\Entity\Product $products)
+    {
+        $this->products->removeElement($products);
+    }
+
+    /**
+     * Get products
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProducts()
+    {
+        return $this->products;
     }
 }

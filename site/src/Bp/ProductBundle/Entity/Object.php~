@@ -3,7 +3,7 @@
 namespace Bp\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Object
  *
@@ -42,6 +42,11 @@ class Object
      */
     private $quality;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Bp\ProductBundle\Entity\Product", inversedBy="objects")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     **/
+    private $product;
 
     /**
      * Get id
@@ -120,5 +125,30 @@ class Object
     public function getQuality()
     {
         return $this->quality;
+    }
+
+
+
+    /**
+     * Set product
+     *
+     * @param \Bp\ProductBundle\Entity\Product $product
+     * @return Object
+     */
+    public function setProduct(\Bp\ProductBundle\Entity\Product $product = null)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product
+     *
+     * @return \Bp\ProductBundle\Entity\Product 
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

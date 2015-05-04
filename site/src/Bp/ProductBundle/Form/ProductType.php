@@ -20,6 +20,9 @@ class ProductType extends AbstractType
             ->add('reference')
             ->add('price')
             ->add('quantity')
+            ->add('active')
+            ->add('objects')
+            ->add('packs')
         ;
     }
     
