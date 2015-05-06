@@ -19,4 +19,15 @@ class OrderService
         $this->cart = $cart;
     }
 
+    public function generateOrder()
+    {
+        $cart = 
+    }
+
+    public function formatDetail($detail)
+    {
+
+        return $detail;
+    }
+
 }

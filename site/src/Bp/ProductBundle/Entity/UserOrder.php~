@@ -50,6 +50,13 @@ class UserOrder
     private $price;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="detail", type="array",nullable=true)
+     */
+    private $detail;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Bp\ProfileBundle\Entity\User", inversedBy="orders")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
@@ -319,5 +326,51 @@ class UserOrder
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * Set price
+     *
+     * @param string $price
+     * @return UserOrder
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return string 
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Set detail
+     *
+     * @param array $detail
+     * @return UserOrder
+     */
+    public function setDetail($detail)
+    {
+        $this->detail = $detail;
+
+        return $this;
+    }
+
+    /**
+     * Get detail
+     *
+     * @return array 
+     */
+    public function getDetail()
+    {
+        return $this->detail;
     }
 }

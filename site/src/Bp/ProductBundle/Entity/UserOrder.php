@@ -350,4 +350,27 @@ class UserOrder
     {
         return $this->price;
     }
+
+    /**
+     * Set detail
+     *
+     * @param array $detail
+     * @return UserOrder
+     */
+    public function setDetail($detail)
+    {
+        $this->detail = $detail;
+
+        return $this;
+    }
+
+    /**
+     * Get detail
+     *
+     * @return array 
+     */
+    public function getDetail()
+    {
+        return $this->detail;
+    }
 }
