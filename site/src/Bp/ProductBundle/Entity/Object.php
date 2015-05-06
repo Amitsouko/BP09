@@ -49,6 +49,16 @@ class Object
     private $product;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\USerOrder", mappedBy="objects")
+     **/
+    private $orders;
+
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -150,5 +160,38 @@ class Object
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * Add orders
+     *
+     * @param \Bp\ProductBundle\Entity\USerOrder $orders
+     * @return Object
+     */
+    public function addOrder(\Bp\ProductBundle\Entity\USerOrder $orders)
+    {
+        $this->orders[] = $orders;
+
+        return $this;
+    }
+
+    /**
+     * Remove orders
+     *
+     * @param \Bp\ProductBundle\Entity\USerOrder $orders
+     */
+    public function removeOrder(\Bp\ProductBundle\Entity\USerOrder $orders)
+    {
+        $this->orders->removeElement($orders);
+    }
+
+    /**
+     * Get orders
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrders()
+    {
+        return $this->orders;
     }
 }

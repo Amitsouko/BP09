@@ -44,9 +44,15 @@ class CustomPack implements ItemInterface
      **/
     private $products;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\UserOrder", mappedBy="customPacks")
+     **/
+    private $orders;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->customPacks = new ArrayCollection();
     }
 
 
@@ -160,5 +166,38 @@ class CustomPack implements ItemInterface
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * Add orders
+     *
+     * @param \Bp\ProductBundle\Entity\UserOrder $orders
+     * @return CustomPack
+     */
+    public function addOrder(\Bp\ProductBundle\Entity\UserOrder $orders)
+    {
+        $this->orders[] = $orders;
+
+        return $this;
+    }
+
+    /**
+     * Remove orders
+     *
+     * @param \Bp\ProductBundle\Entity\UserOrder $orders
+     */
+    public function removeOrder(\Bp\ProductBundle\Entity\UserOrder $orders)
+    {
+        $this->orders->removeElement($orders);
+    }
+
+    /**
+     * Get orders
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrders()
+    {
+        return $this->orders;
     }
 }
