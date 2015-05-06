@@ -1,0 +1,5 @@
+services:
+    core.twig.custom_extension:
+        class: Bp\CoreBundle\Twig\customExtension
+        tags:
+            - { name: twig.extension }

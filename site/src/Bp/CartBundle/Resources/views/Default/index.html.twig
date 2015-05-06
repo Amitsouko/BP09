@@ -31,18 +31,18 @@
             <td>Sous-total</td>
             <td></td>
             <td></td>
-            <td>{{ cart.price }}</td>
+            <td>{{ cart.price|price }}</td>
         </tr><tr>
             <td>TVA</td>
             <td></td>
             <td></td>
-            <td>{{ cart.tva }}</td>
+            <td>{{ cart.tva|percent }}</td>
         </tr>
         <tr>
             <td>Prix total</td>
             <td></td>
             <td></td>
-            <td>{{ cart.priceTtc }}</td>
+            <td>{{ cart.priceTtc|price }}</td>
         </tr>
 
     </tbody>
