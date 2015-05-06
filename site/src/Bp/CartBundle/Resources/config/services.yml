@@ -2,3 +2,6 @@ services:
     cart:
         class:        Bp\CartBundle\Services\CartService
         arguments:    [@session,@doctrine,%cart.tva%]
+    order:
+        class:        Bp\CartBundle\Services\OrderService
+        arguments:    [@doctrine,@cart]

@@ -19,6 +19,7 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
         $cart = $this->container->get("cart");
+        $a = $this->container->get("order");
         $cart = $cart->getCart();
         return array("cart" => $cart);
     }
