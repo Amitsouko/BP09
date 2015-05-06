@@ -50,6 +50,13 @@ class UserOrder
     private $price;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="detail", type="array",nullable=true)
+     */
+    private $detail;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Bp\ProfileBundle\Entity\User", inversedBy="orders")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
