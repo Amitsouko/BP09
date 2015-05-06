@@ -1,1 +1,49 @@
-{{ dump(cart.products[0].products) }}
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Prix à l'unité</th>
+            <th>Quantité</th>
+            <th>Prix</th>
+            <th>actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart.products %}
+        <tr>
+            <td>{{ item.name }}
+            {% if item.products %}
+                <table>
+                {% for it in item.products %}
+                    <tr><td>{{ it.name }}</td></tr>
+                {% endfor %}
+                </table>
+            {% endif %}
+            </td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.userQuantity }}</td>
+            <td>{{ item.price *item.userQuantity }}</td>
+            <td><a href="{{ path("bp_cart_actioncart_remove",{type: item.type,id:item.id}) }}">Supprimer</a></td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td>Sous-total</td>
+            <td></td>
+            <td></td>
+            <td>{{ cart.price }}</td>
+        </tr><tr>
+            <td>TVA</td>
+            <td></td>
+            <td></td>
+            <td>{{ cart.tva }}</td>
+        </tr>
+        <tr>
+            <td>Prix total</td>
+            <td></td>
+            <td></td>
+            <td>{{ cart.priceTtc }}</td>
+        </tr>
+
+    </tbody>
+</table>

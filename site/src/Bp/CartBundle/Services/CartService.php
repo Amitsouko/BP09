@@ -43,6 +43,9 @@ class CartService
         if(isset($this->cart[$item->getReference()])){
             $this->cart[$item->getReference()]["quantity"] += $quantity;
         }else{
+            //need this to get children in cart
+            if(get_class($item) == "Bp\ProductBundle\Entity\Pack" || get_class($item) == "Bp\ProductBundle\Entity\CustomPack") $item->getProducts()->initialize();
+
             $this->cart[$item->getReference()] = array(
                     "id" => $item->getId(),
                     "price" => $item->getPrice(),
@@ -146,6 +149,19 @@ class CartService
         {
             $obj = $it["entity"];
             $obj->userQuantity = $it["quantity"];
+            switch (get_class($it["entity"])) {
+                case 'Bp\ProductBundle\Entity\Pack':
+                    $obj->type = "pack";
+                    break;
+                
+                case 'Bp\ProductBundle\Entity\CustomPack':
+                    $obj->type = "customPack";
+                    break;
+                
+                default:
+                    $obj->type = "product";
+                    break;
+            }
             $array->add($obj);
         }
         return $array;

@@ -98,7 +98,8 @@ class ActionCartController extends Controller
             case 'product':
                 $item = $em->getRepository("BpProductBundle:Product")->findOneActiveById($id);
                 break;
-            
+            case "customPack":
+                $item = $em->getRepository("BpProductBundle:CustomPack")->findOneActiveById($id);
             default:
                 throw new \Exception("Sorry, this pack doesn't exist.");
                 break;
