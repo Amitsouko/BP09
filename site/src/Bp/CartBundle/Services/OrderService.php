@@ -13,11 +13,13 @@ class OrderService
 
     private $em;
     private $cart;
+    private $refGen;
 
-    public function __construct($em,CartService $cart)
+    public function __construct($em,CartService $cart, $referenceGenerator)
     {
         $this->em = $em->getEntityManager();
         $this->cart = $cart;
+        $this->refGen = $referenceGenerator;
     }
 
     public function generateOrder(User $user, $cart = null)
@@ -61,7 +63,7 @@ class OrderService
         }
         $order->setDetail($detail);
         $order->setUser($user);
-        $order->setReference("bonjour-rezrze");
+        $order->setReference($this->refGen->generateReference("order"));
         $this->em->persist($order);
         $this->em->flush();
 

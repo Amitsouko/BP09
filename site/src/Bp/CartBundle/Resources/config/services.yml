@@ -4,7 +4,7 @@ services:
         arguments:    [@session,@doctrine,%cart.tva%]
     order:
         class:        Bp\CartBundle\Services\OrderService
-        arguments:    [@doctrine,@cart]
+        arguments:    [@doctrine,@cart,@reference.generator]
     reference.generator:
         class:        Bp\CartBundle\Services\ReferenceGenerator
         arguments:    [@doctrine]
