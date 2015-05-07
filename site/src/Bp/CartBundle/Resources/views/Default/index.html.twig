@@ -13,7 +13,7 @@
         {% for item in cart.products %}
         <tr>
             <td>{{ item.name }}
-            {% if item.products %}
+            {% if item.products is defined %}
                 <table>
                 {% for it in item.products %}
                     <tr><td>{{ it.name }}</td></tr>

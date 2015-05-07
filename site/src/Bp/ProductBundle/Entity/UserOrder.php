@@ -57,31 +57,31 @@ class UserOrder
     private $detail;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bp\ProfileBundle\Entity\User", inversedBy="orders")
+     * @ORM\ManyToOne(targetEntity="Bp\ProfileBundle\Entity\User", inversedBy="orders",cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     private $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Object", inversedBy="orders")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Object", inversedBy="orders",cascade={"persist"})
      * @ORM\JoinTable(name="order_object")
      **/
     private $objects;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Pack", inversedBy="orders")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Pack", inversedBy="orders",cascade={"persist"})
      * @ORM\JoinTable(name="order_pack")
      **/
     private $packs;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\CustomPack", inversedBy="orders")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\CustomPack", inversedBy="orders",cascade={"persist"})
      * @ORM\JoinTable(name="order_custompack")
      **/
     private $customPacks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product", inversedBy="orders")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product", inversedBy="orders",cascade={"persist"})
      * @ORM\JoinTable(name="order_products")
      **/
     private $products;
@@ -92,6 +92,7 @@ class UserOrder
         $this->packs = new ArrayCollection();
         $this->customPacks = new ArrayCollection();
         $this->products = new ArrayCollection();
+        $this->date = new \DateTime("now");
     }
 
     /**

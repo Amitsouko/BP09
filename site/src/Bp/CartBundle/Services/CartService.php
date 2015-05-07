@@ -17,7 +17,7 @@ class CartService
     public function __construct(Session $session, $em, $tva)
     {
         $this->session = $session;
-        $this->em = $em;
+        $this->em = $em->getEntityManager();
         $this->tva = $tva;
 
         if($session->get("cart.cart"))

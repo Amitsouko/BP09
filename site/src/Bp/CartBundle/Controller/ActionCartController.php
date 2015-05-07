@@ -85,6 +85,18 @@ class ActionCartController extends Controller
         return $this->redirect($this->generateUrl('bp_cart_default_index'));
     }
 
+    /**
+     * @Route("/order")
+     * @Template()
+     */
+    public function orderAction()
+    {
+        $user = $this->getUser();
+        $orderService = $this->container->get("order");
+        $orderService->generateOrder($user);
+        return $this->redirect($this->generateUrl('bp_cart_default_index'));
+    }
+
 
     private function getItem($type,$id)
     {

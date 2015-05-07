@@ -5,3 +5,6 @@ services:
     order:
         class:        Bp\CartBundle\Services\OrderService
         arguments:    [@doctrine,@cart]
+    reference.generator:
+        class:        Bp\CartBundle\Services\ReferenceGenerator
+        arguments:    [@doctrine]
