@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7a17e6170d664c22e100deca3fc95727",
+    "hash": "c59549b29453cb640decc4e6f4e57012",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -707,12 +707,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "192c53916942847aee687722af54f431aead0b70"
+                "reference": "92d5624f2a29e74d8fd9d2a94d7ed7998a8c2809"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/192c53916942847aee687722af54f431aead0b70",
-                "reference": "192c53916942847aee687722af54f431aead0b70",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/92d5624f2a29e74d8fd9d2a94d7ed7998a8c2809",
+                "reference": "92d5624f2a29e74d8fd9d2a94d7ed7998a8c2809",
                 "shasum": ""
             },
             "require": {
@@ -766,59 +766,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2015-04-16 23:14:14"
-        },
-        {
-            "name": "incenteev/composer-parameter-handler",
-            "version": "v2.1.0",
-            "target-dir": "Incenteev/ParameterHandler",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Incenteev/ParameterHandler.git",
-                "reference": "143272a0a09c62616a3c8011fc165a10c6b35241"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Incenteev/ParameterHandler/zipball/143272a0a09c62616a3c8011fc165a10c6b35241",
-                "reference": "143272a0a09c62616a3c8011fc165a10c6b35241",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "symfony/yaml": "~2.0"
-            },
-            "require-dev": {
-                "composer/composer": "1.0.*@dev",
-                "phpspec/prophecy-phpunit": "~1.0",
-                "symfony/filesystem": "~2.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Incenteev\\ParameterHandler": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christophe Coevoet",
-                    "email": "stof@notk.org"
-                }
-            ],
-            "description": "Composer script handling your ignored parameter file",
-            "homepage": "https://github.com/Incenteev/ParameterHandler",
-            "keywords": [
-                "parameters management"
-            ],
-            "time": "2013-12-07 10:10:39"
+            "time": "2015-05-05 15:08:24"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -1018,6 +966,120 @@
             "time": "2015-03-09 09:58:04"
         },
         {
+            "name": "paymentsuite/payment-core-bundle",
+            "version": "v1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PaymentSuite/PaymentCoreBundle.git",
+                "reference": "56d1fcd31a30cf81cbd7259bb1dd825c1aa0a17f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PaymentSuite/PaymentCoreBundle/zipball/56d1fcd31a30cf81cbd7259bb1dd825c1aa0a17f",
+                "reference": "56d1fcd31a30cf81cbd7259bb1dd825c1aa0a17f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "psr/log": "~1.0",
+                "symfony/config": ">=2.2",
+                "symfony/dependency-injection": ">=2.2",
+                "symfony/event-dispatcher": ">=2.2",
+                "symfony/http-kernel": ">=2.2"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PaymentSuite\\PaymentCoreBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marc Morera",
+                    "email": "yuhu@mmoreram.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/PaymentSuite/paymentsuite/contributors"
+                }
+            ],
+            "description": "PaymentCore PaymentSuite Component",
+            "keywords": [
+                "ecommerce",
+                "payment",
+                "paymentsuite"
+            ],
+            "time": "2015-02-10 02:08:17"
+        },
+        {
+            "name": "paymentsuite/stripe-bundle",
+            "version": "v1.1",
+            "target-dir": "PaymentSuite/StripeBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PaymentSuite/StripeBundle.git",
+                "reference": "c55913bfad59354d97f3d855ad4acbe94d1e3dce"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PaymentSuite/StripeBundle/zipball/c55913bfad59354d97f3d855ad4acbe94d1e3dce",
+                "reference": "c55913bfad59354d97f3d855ad4acbe94d1e3dce",
+                "shasum": ""
+            },
+            "require": {
+                "paymentsuite/payment-core-bundle": "~1.1",
+                "php": ">=5.3.3",
+                "stripe/stripe-php": "v1.10.1",
+                "symfony/config": ">=2.2.3",
+                "symfony/dependency-injection": ">=2.2.3",
+                "symfony/event-dispatcher": ">=2.2.3",
+                "symfony/form": ">=2.2.3",
+                "symfony/framework-bundle": ">=2.2.3",
+                "symfony/http-kernel": ">=2.2.3",
+                "twig/twig": "~1.11"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "PaymentSuite\\StripeBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Denys Pasishnyi",
+                    "email": "dpcat237@gmail.com"
+                }
+            ],
+            "description": "Stripe Bundle, part of Payment Suite for Symfony 2",
+            "keywords": [
+                "ecommerce",
+                "payment",
+                "stripe"
+            ],
+            "time": "2014-04-19 15:36:34"
+        },
+        {
             "name": "psr/log",
             "version": "1.0.0",
             "source": {
@@ -1057,17 +1119,17 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v3.0.21",
+            "version": "v3.0.22",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "da23c78093676a823a1ff43a214987ea3fbf83c8"
+                "reference": "0fe4ec86db57c232becb694e01cdabe3c4d9af7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/da23c78093676a823a1ff43a214987ea3fbf83c8",
-                "reference": "da23c78093676a823a1ff43a214987ea3fbf83c8",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/0fe4ec86db57c232becb694e01cdabe3c4d9af7c",
+                "reference": "0fe4ec86db57c232becb694e01cdabe3c4d9af7c",
                 "shasum": ""
             },
             "require": {
@@ -1113,7 +1175,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2015-04-10 06:20:46"
+            "time": "2015-05-02 16:23:08"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -1214,6 +1276,54 @@
             ],
             "description": "A security checker for your composer.lock",
             "time": "2015-04-21 07:52:05"
+        },
+        {
+            "name": "stripe/stripe-php",
+            "version": "v1.10.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "ca02fbe5cb15a8c22eba205751a17ceb293c59ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/ca02fbe5cb15a8c22eba205751a17ceb293c59ec",
+                "reference": "ca02fbe5cb15a8c22eba205751a17ceb293c59ec",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.2"
+            },
+            "require-dev": {
+                "vierbergenlars/simpletest": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib/Stripe/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "time": "2013-12-02 20:01:33"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1450,16 +1560,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.6.6",
+            "version": "v2.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "48c9e835a877adfb023b8b6d033d9dd14f342b4b"
+                "reference": "0449d0e1178bc8e934520b20432d1705c3b25e7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/48c9e835a877adfb023b8b6d033d9dd14f342b4b",
-                "reference": "48c9e835a877adfb023b8b6d033d9dd14f342b4b",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/0449d0e1178bc8e934520b20432d1705c3b25e7e",
+                "reference": "0449d0e1178bc8e934520b20432d1705c3b25e7e",
                 "shasum": ""
             },
             "require": {
@@ -1563,7 +1673,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2015-04-01 16:55:26"
+            "time": "2015-05-11 01:58:49"
         },
         {
             "name": "twig/extensions",

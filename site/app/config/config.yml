@@ -78,3 +78,34 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: Bp\ProfileBundle\Entity\User
+
+stripe:
+
+    # stripe keys
+    public_key: pk_test_Lhv2dAaOBrllKV4eiEl4m9C1
+    private_key: sk_test_EuAU77Ln2Epzc2VtwUUXT0oS
+
+    # By default, controller route is /payment/stripe/execute
+    #controller_route: /my/custom/route
+
+    # Configuration for payment success redirection
+    #
+    # Route defines which route will redirect if payment success
+    # If order_append is true, Bundle will append cart identifier into route
+    #    taking order_append_field value as parameter name and
+    #    PaymentOrderWrapper->getOrderId() value
+    payment_success:
+        route: cart_thanks
+        order_append: true
+        order_append_field: order_id
+
+    # Configuration for payment fail redirection
+    #
+    # Route defines which route will redirect if payment fails
+    # If cart_append is true, Bundle will append cart identifier into route
+    #    taking cart_append_field value as parameter name and
+    #    PaymentCartWrapper->getCartId() value
+    payment_fail:
+        route: cart_view
+        # cart_append: false
+        # cart_append_field: cart_id

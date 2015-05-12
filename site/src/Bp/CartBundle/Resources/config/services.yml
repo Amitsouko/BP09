@@ -8,3 +8,18 @@ services:
     reference.generator:
         class:        Bp\CartBundle\Services\ReferenceGenerator
         arguments:    [@doctrine]
+
+
+
+    payment.bridge:
+        class: Bp\CartBundle\Services\PaymentBridge
+
+    payment.event.listener:
+        class:     Bp\CartBundle\EventListener\Payment
+        arguments: [@doctrine.orm.entity_manager, @mailer]
+        tags:
+            - { name: kernel.event_listener, event: payment.order.done, method: onPaymentOrderDone }
+            - { name: kernel.event_listener, event: payment.order.created, method: onPaymentOrderCreated }
+            - { name: kernel.event_listener, event: payment.order.load, method: onPaymentLoad }
+            - { name: kernel.event_listener, event: payment.order.success, method: onPaymentSuccess }
+            - { name: kernel.event_listener, event: payment.order.fail, method: onPaymentFail }
