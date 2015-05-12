@@ -81,9 +81,9 @@ class Product implements ItemInterface
     private $customPacks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\UserOrder", mappedBy="products")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Contract", mappedBy="products")
      **/
-    private $orders;
+    private $contracts;
 
     public function __construct()
     {
@@ -91,7 +91,7 @@ class Product implements ItemInterface
         $this->objects = new ArrayCollection();
         $this->packs = new ArrayCollection();
         $this->customPacks = new ArrayCollection();
-        $this->orders = new ArrayCollection();
+        $this->contracts = new ArrayCollection();
     }
   
     public function __toString()

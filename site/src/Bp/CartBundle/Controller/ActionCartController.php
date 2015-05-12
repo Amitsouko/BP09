@@ -92,8 +92,8 @@ class ActionCartController extends Controller
     public function orderAction()
     {
         $user = $this->getUser();
-        $orderService = $this->container->get("order");
-        $orderService->generateOrder($user);
+        $contractservice = $this->container->get("contract");
+        $contractservice->generateContract($user);
         return $this->redirect($this->generateUrl('bp_cart_default_index'));
     }
 

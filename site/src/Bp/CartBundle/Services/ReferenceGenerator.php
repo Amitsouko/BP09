@@ -54,7 +54,12 @@ class ReferenceGenerator
                 $prefix = "OB";
                 $repo = "BpProductBundle:Object";
                 break;
-        
+            
+            case 'contract':
+                $prefix = "CO";
+                $repo = "BpProductBundle:Contract";
+                break;
+            
             default:
                 $prefix = "NA";
                 break;

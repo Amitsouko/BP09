@@ -71,14 +71,14 @@ class Pack implements ItemInterface
     private $products;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\UserOrder", mappedBy="packs")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Contract", mappedBy="packs")
      **/
-    private $orders;
+    private $contracts;
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
-        $this->orders = new ArrayCollection();
+        $this->contracts = new ArrayCollection();
     }
 
     public function __toString()

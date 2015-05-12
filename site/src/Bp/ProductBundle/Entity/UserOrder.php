@@ -57,41 +57,15 @@ class UserOrder
     private $detail;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bp\ProfileBundle\Entity\User", inversedBy="orders",cascade={"persist"})
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     **/
-    private $user;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Object", inversedBy="orders",cascade={"persist"})
-     * @ORM\JoinTable(name="order_object")
-     **/
-    private $objects;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Pack", inversedBy="orders",cascade={"persist"})
-     * @ORM\JoinTable(name="order_pack")
-     **/
-    private $packs;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\CustomPack", inversedBy="orders",cascade={"persist"})
-     * @ORM\JoinTable(name="order_custompack")
-     **/
-    private $customPacks;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product", inversedBy="orders",cascade={"persist"})
-     * @ORM\JoinTable(name="order_products")
-     **/
-    private $products;
+     * @var string
+     * @ORM\OneToOne(targetEntity="Bp\ProductBundle\Entity\Contract",inversedBy="order")
+     * @ORM\JoinColumn(name="contract_id", referencedColumnName="id")
+     */
+    private $contract;
 
     public function __construct()
     {
-        $this->objects = new ArrayCollection();
-        $this->packs = new ArrayCollection();
-        $this->customPacks = new ArrayCollection();
-        $this->products = new ArrayCollection();
+
         $this->date = new \DateTime("now");
     }
 
@@ -373,5 +347,28 @@ class UserOrder
     public function getDetail()
     {
         return $this->detail;
+    }
+
+    /**
+     * Set contract
+     *
+     * @param \Bp\ProductBundle\Entity\Contract $contract
+     * @return UserOrder
+     */
+    public function setContract(\Bp\ProductBundle\Entity\Contract $contract = null)
+    {
+        $this->contract = $contract;
+
+        return $this;
+    }
+
+    /**
+     * Get contract
+     *
+     * @return \Bp\ProductBundle\Entity\Contract 
+     */
+    public function getContract()
+    {
+        return $this->contract;
     }
 }

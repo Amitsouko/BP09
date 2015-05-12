@@ -49,13 +49,13 @@ class Object
     private $product;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\USerOrder", mappedBy="objects")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Contract", mappedBy="objects")
      **/
-    private $orders;
+    private $contracts;
 
     public function __construct()
     {
-        $this->orders = new ArrayCollection();
+        $this->contracts = new ArrayCollection();
     }
 
     /**

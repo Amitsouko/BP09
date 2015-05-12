@@ -20,14 +20,14 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\UserOrder", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Contract", mappedBy="user")
      **/
-    private $orders;
-
+    private $contracts;
+    
     public function __construct()
     {
         parent::__construct();
-        $this->orders = new ArrayCollection();
+        $this->contracts = new ArrayCollection();
     }
 
     /**

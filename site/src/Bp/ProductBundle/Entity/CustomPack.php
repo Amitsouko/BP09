@@ -45,14 +45,15 @@ class CustomPack implements ItemInterface
     private $products;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\UserOrder", mappedBy="customPacks")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Contract", mappedBy="customPacks")
      **/
-    private $orders;
+    private $contracts;
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
         $this->customPacks = new ArrayCollection();
+        $this->contracts = new ArrayCollection();
     }
 
 

@@ -2,8 +2,8 @@ services:
     cart:
         class:        Bp\CartBundle\Services\CartService
         arguments:    [@session,@doctrine,%cart.tva%]
-    order:
-        class:        Bp\CartBundle\Services\OrderService
+    contract:
+        class:        Bp\CartBundle\Services\ContractService
         arguments:    [@doctrine,@cart,@reference.generator]
     reference.generator:
         class:        Bp\CartBundle\Services\ReferenceGenerator

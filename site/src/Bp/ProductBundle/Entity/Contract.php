@@ -4,13 +4,14 @@ namespace Bp\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+
 /**
- * UserOrder
+ * Contract
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Bp\ProductBundle\Entity\UserOrderRepository")
+ * @ORM\Entity(repositoryClass="Bp\ProductBundle\Entity\ContractRepository")
  */
-class UserOrder
+class Contract
 {
     /**
      * @var integer
@@ -29,48 +30,62 @@ class UserOrder
     private $reference;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=255, columnDefinition="ENUM('location', 'achat')")
+     */
+    private $type;
+
+
+    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="date_start", type="datetime")
      */
-    private $date;
+    private $dateStart;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="tva", type="decimal")
+     * @ORM\Column(name="date_end", type="datetime")
      */
-    private $tva;
+    private $dateEnd;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="price", type="decimal")
-     */
-    private $price;
+     * @ORM\ManyToOne(targetEntity="Bp\ProfileBundle\Entity\User", inversedBy="contracts",cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     **/
+    private $user;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="detail", type="array",nullable=true)
-     */
-    private $detail;
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Object", inversedBy="contracts",cascade={"persist"})
+     * @ORM\JoinTable(name="contract_object")
+     **/
+    private $objects;
 
     /**
-     * @var string
-     * @ORM\OneToOne(targetEntity="Bp\ProductBundle\Entity\Contract",inversedBy="order")
-     * @ORM\JoinColumn(name="contract_id", referencedColumnName="id")
-     */
-    private $contract;
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Pack", inversedBy="contracts",cascade={"persist"})
+     * @ORM\JoinTable(name="contract_pack")
+     **/
+    private $packs;
 
-    public function __construct()
-    {
-        $this->objects = new ArrayCollection();
-        $this->packs = new ArrayCollection();
-        $this->customPacks = new ArrayCollection();
-        $this->products = new ArrayCollection();
-        $this->date = new \DateTime("now");
-    }
+    /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\CustomPack", inversedBy="contracts",cascade={"persist"})
+     * @ORM\JoinTable(name="contract_custompack")
+     **/
+    private $customPacks;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product", inversedBy="contracts",cascade={"persist"})
+     * @ORM\JoinTable(name="contract_products")
+     **/
+    private $products;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Bp\ProductBundle\Entity\UserOrder", mappedBy="contract")
+     **/
+    private $order;
+
 
     /**
      * Get id
@@ -86,7 +101,7 @@ class UserOrder
      * Set reference
      *
      * @param string $reference
-     * @return UserOrder
+     * @return Contract
      */
     public function setReference($reference)
     {
@@ -106,56 +121,112 @@ class UserOrder
     }
 
     /**
-     * Set date
+     * Set type
      *
-     * @param \DateTime $date
-     * @return UserOrder
+     * @param string $type
+     * @return Contract
      */
-    public function setDate($date)
+    public function setType($type)
     {
-        $this->date = $date;
+        $this->type = $type;
 
         return $this;
     }
 
     /**
-     * Get date
-     *
-     * @return \DateTime 
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    /**
-     * Set tva
-     *
-     * @param string $tva
-     * @return UserOrder
-     */
-    public function setTva($tva)
-    {
-        $this->tva = $tva;
-
-        return $this;
-    }
-
-    /**
-     * Get tva
+     * Get type
      *
      * @return string 
      */
-    public function getTva()
+    public function getType()
     {
-        return $this->tva;
+        return $this->type;
+    }
+
+    /**
+     * Set price
+     *
+     * @param string $price
+     * @return Contract
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return string 
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Set dateStart
+     *
+     * @param \DateTime $dateStart
+     * @return Contract
+     */
+    public function setDateStart($dateStart)
+    {
+        $this->dateStart = $dateStart;
+
+        return $this;
+    }
+
+    /**
+     * Get dateStart
+     *
+     * @return \DateTime 
+     */
+    public function getDateStart()
+    {
+        return $this->dateStart;
+    }
+
+    /**
+     * Set dateEnd
+     *
+     * @param \DateTime $dateEnd
+     * @return Contract
+     */
+    public function setDateEnd($dateEnd)
+    {
+        $this->dateEnd = $dateEnd;
+
+        return $this;
+    }
+
+    /**
+     * Get dateEnd
+     *
+     * @return \DateTime 
+     */
+    public function getDateEnd()
+    {
+        return $this->dateEnd;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->objects = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->packs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->customPacks = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Set user
      *
      * @param \Bp\ProfileBundle\Entity\User $user
-     * @return UserOrder
+     * @return Contract
      */
     public function setUser(\Bp\ProfileBundle\Entity\User $user = null)
     {
@@ -178,7 +249,7 @@ class UserOrder
      * Add objects
      *
      * @param \Bp\ProductBundle\Entity\Object $objects
-     * @return UserOrder
+     * @return Contract
      */
     public function addObject(\Bp\ProductBundle\Entity\Object $objects)
     {
@@ -211,7 +282,7 @@ class UserOrder
      * Add packs
      *
      * @param \Bp\ProductBundle\Entity\Pack $packs
-     * @return UserOrder
+     * @return Contract
      */
     public function addPack(\Bp\ProductBundle\Entity\Pack $packs)
     {
@@ -244,7 +315,7 @@ class UserOrder
      * Add customPacks
      *
      * @param \Bp\ProductBundle\Entity\CustomPack $customPacks
-     * @return UserOrder
+     * @return Contract
      */
     public function addCustomPack(\Bp\ProductBundle\Entity\CustomPack $customPacks)
     {
@@ -277,7 +348,7 @@ class UserOrder
      * Add products
      *
      * @param \Bp\ProductBundle\Entity\Product $products
-     * @return UserOrder
+     * @return Contract
      */
     public function addProduct(\Bp\ProductBundle\Entity\Product $products)
     {
@@ -307,48 +378,25 @@ class UserOrder
     }
 
     /**
-     * Set price
+     * Set order
      *
-     * @param string $price
-     * @return UserOrder
+     * @param \Bp\ProductBundle\Entity\UserOrder $order
+     * @return Contract
      */
-    public function setPrice($price)
+    public function setOrder(\Bp\ProductBundle\Entity\UserOrder $order = null)
     {
-        $this->price = $price;
+        $this->order = $order;
 
         return $this;
     }
 
     /**
-     * Get price
+     * Get order
      *
-     * @return string 
+     * @return \Bp\ProductBundle\Entity\UserOrder 
      */
-    public function getPrice()
+    public function getOrder()
     {
-        return $this->price;
-    }
-
-    /**
-     * Set detail
-     *
-     * @param array $detail
-     * @return UserOrder
-     */
-    public function setDetail($detail)
-    {
-        $this->detail = $detail;
-
-        return $this;
-    }
-
-    /**
-     * Get detail
-     *
-     * @return array 
-     */
-    public function getDetail()
-    {
-        return $this->detail;
+        return $this->order;
     }
 }
