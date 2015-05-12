@@ -5,7 +5,7 @@ namespace Bp\CartBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
+use Symfony\Component\HttpFoundation\Request;
 /**
 * @Route("/panier")
 */
@@ -15,12 +15,12 @@ class DefaultController extends Controller
      * @Route("/")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getEntityManager();
         $cart = $this->container->get("cart");
         $a = $this->container->get("contract");
         $cart = $cart->getCart();
-        return array("cart" => $cart);
+        return array("cart" => $cart, "request" => $request);
     }
 }

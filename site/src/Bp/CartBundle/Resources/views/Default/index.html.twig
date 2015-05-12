@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
 
 <table>
     <thead>
@@ -79,7 +85,31 @@
        </form>
     </div>
 
+{# <form action="" method="POST">
+  <script
+    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="pk_test_Lhv2dAaOBrllKV4eiEl4m9C1"
+    data-amount="2500"
+    data-name="Demo Site"
+    data-description="2 widgets ($20.00)"
+    data-image="/128x128.png">
+  </script>
+</form>
+ #}
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
     {{ stripe_scripts() }}
 
+<script type="text/javascript">
+    $("#payment-form").on("submit", function(e){
+        e.preventDefault();
+        $("#payment-submit").trigger("click");
+        return false;
+
+    });
+
+</script>
+
+{% include  "BpCoreBundle::tawkto.html.twig" %}
+</body>
+</html>
