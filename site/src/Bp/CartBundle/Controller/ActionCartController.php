@@ -80,7 +80,7 @@ class ActionCartController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $cart = $this->container->get("cart");
 
-        $cart->clearCart();
+        $cart->clear();
 
         return $this->redirect($this->generateUrl('bp_cart_default_index'));
     }
@@ -93,7 +93,9 @@ class ActionCartController extends Controller
     {
         $user = $this->getUser();
         $contractservice = $this->container->get("contract");
+        $cart = $this->container->get("cart");
         $contractservice->generateContract($user);
+        $cart->clear();
         return $this->redirect($this->generateUrl('bp_cart_default_index'));
     }
 

@@ -62,7 +62,7 @@ class CartService
         $this->refreshSessionCart();
     }
 
-    public function clearCart()
+    public function clear()
     {
         $this->cart = array();
         $this->option = array();
