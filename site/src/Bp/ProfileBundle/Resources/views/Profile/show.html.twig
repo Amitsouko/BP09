@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+    <h1>{{ user.username }}</h1>
+
+    <ul>
+        <li>{{ user.email }}</li>
+    </ul>
+
+
+
+    <h2>Contrats</h2>
+    {% for contract in user.contracts %}
+        <h3>{{ contract.reference }}</h3>
+        <ul>
+            <li>Date de départ : {{ contract.dateStart|date }}</li>
+        </ul>
+
+        <h4>packs</h4>
+        <ul>
+                {% for pack in contract.packs %}
+            <li>{{ pack.name }}
+
+                <ul>
+                    {% for product in pack.products%}
+                    <li>{{ product.name }}</li>
+                    {% endfor %}
+                </ul>
+
+            </li>
+            {% endfor %}
+        </ul>
+
+        <h4>Facture</h4>
+        <ul>
+            <li>{{ contract.order.reference }}</li>
+            <li>{{ contract.order.price|price }}</li>
+            <li>tva : {{ contract.order.tva|percent }}</li>
+        </ul>
+    {% endfor %}
+</body>
+</html>

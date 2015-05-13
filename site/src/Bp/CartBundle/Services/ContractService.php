@@ -74,6 +74,7 @@ class ContractService
         $order->setReference($this->refGen->generateReference("order"));
 
         $contract->setOrder($order);
+        $order->setContract($contract);
         $this->em->persist($order);
         $this->em->persist($contract);
         $this->em->flush();

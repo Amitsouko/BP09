@@ -47,7 +47,7 @@ class Contract
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_end", type="datetime")
+     * @ORM\Column(name="date_end", type="datetime", nullable=true)
      */
     private $dateEnd;
 
@@ -82,7 +82,7 @@ class Contract
     private $products;
 
     /**
-     * @ORM\OneToOne(targetEntity="Bp\ProductBundle\Entity\UserOrder", mappedBy="contract")
+     * @ORM\OneToOne(targetEntity="Bp\ProductBundle\Entity\UserOrder", mappedBy="contract",cascade={"persist"})
      **/
     private $order;
 
@@ -220,6 +220,7 @@ class Contract
         $this->packs = new \Doctrine\Common\Collections\ArrayCollection();
         $this->customPacks = new \Doctrine\Common\Collections\ArrayCollection();
         $this->products = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->dateStart = new \DateTime("now");
     }
 
     /**
