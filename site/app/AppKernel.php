@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Bp\CartBundle\BpCartBundle(),
             new PaymentSuite\PaymentCoreBundle\PaymentCoreBundle(),
             new PaymentSuite\StripeBundle\StripeBundle(),
+            new Bp\AdminBundle\BpAdminBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

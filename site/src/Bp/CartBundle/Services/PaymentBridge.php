@@ -12,6 +12,12 @@ class PaymentBridge implements PaymentBridgeInterface
      * Order object
      */
     private $order;
+    private $cart;
+
+    public function __construct(CartService $cart)
+    {
+        $this->cart = $cart;
+    }
 
     /**
      * Set order to PaymentBridge
@@ -81,8 +87,7 @@ class PaymentBridge implements PaymentBridgeInterface
         /*
         * Return payment amount (in cents)
         */
-
-        return $amount;
+        return $this->cart->getPriceTTC()*100;
     }
 
     /**

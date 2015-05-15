@@ -1,3 +1,8 @@
+bp_admin:
+    resource: "@BpAdminBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 bp_cart:
     resource: "@BpCartBundle/Controller/"
     type:     annotation
@@ -25,3 +30,7 @@ bp_core:
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+stripe_payment_routes:
+    resource: .
+    type: stripe

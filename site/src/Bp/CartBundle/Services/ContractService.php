@@ -78,7 +78,7 @@ class ContractService
         $this->em->persist($order);
         $this->em->persist($contract);
         $this->em->flush();
-
+        return $contract;
         //TODO: set individual objects
     }
 

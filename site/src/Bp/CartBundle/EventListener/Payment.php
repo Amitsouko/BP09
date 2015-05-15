@@ -1,6 +1,6 @@
 <?php
 
-namespace Bp\Cartbundle\EventListener;
+namespace Bp\CartBundle\EventListener;
 
 use PaymentSuite\PaymentCoreBundle\Event\PaymentOrderLoadEvent;
 use PaymentSuite\PaymentCoreBundle\Event\PaymentOrderCreatedEvent;
@@ -15,16 +15,38 @@ use PaymentSuite\PaymentCoreBundle\Event\PaymentOrderFailEvent;
  */
 class Payment
 {
+    private $contractService;
+    private $user;
+    private $paymentBridge;
+
+    public function setContractService($contractService)
+    {
+        $this->contractService = $contractService;
+    }
+
+   public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    public function setPaymentBridge($paymentBridge)
+    {
+        $this->paymentBridge = $paymentBridge;
+    }
+
+
     /**
      * On payment order load event
      *
      * @param PaymentOrderLoadEvent $paymentOrderLoadEvent Payment Order Load event
      */
-    public function onPaymentOrderLoad(PaymentOrderLoadEvent $paymentOrderLoadEvent)
+    public function onPaymentLoad(PaymentOrderLoadEvent $paymentOrderLoadEvent)
     {
         /*
          * Your code for this event
          */
+        $contract = $this->contractService->generateContract($this->user);
+        $this->paymentBridge ->setOrder($contract->getOrder());
     }
 
     /**
@@ -44,7 +66,7 @@ class Payment
      *
      * @param PaymentOrderDoneEvent $paymentOrderDoneEvent Payment Order Done event
      */
-    public function onPaymentDone(PaymentOrderDoneEvent $paymentOrderDoneEvent)
+    public function onPaymentOrderDone(PaymentOrderDoneEvent $paymentOrderDoneEvent)
     {
         /*
          * Your code for this event
