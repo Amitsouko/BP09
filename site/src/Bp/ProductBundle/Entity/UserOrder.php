@@ -58,7 +58,7 @@ class UserOrder
 
     /**
      * @var string
-     * @ORM\OneToOne(targetEntity="Bp\ProductBundle\Entity\Contract",inversedBy="order")
+     * @ORM\OneToOne(targetEntity="Bp\ProductBundle\Entity\Contract",inversedBy="order",cascade={"persist"}))
      * @ORM\JoinColumn(name="contract_id", referencedColumnName="id")
      */
     private $contract;

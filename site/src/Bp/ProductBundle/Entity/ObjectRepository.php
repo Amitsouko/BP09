@@ -3,7 +3,7 @@
 namespace Bp\ProductBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-
+use Bp\ProductBundle\Entity\Product;
 /**
  * ObjectRepository
  *
@@ -12,4 +12,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class ObjectRepository extends EntityRepository
 {
+    public function getStockedObjByProduct($number, Product $product)
+    {
+
+    return $this->getEntityManager()
+        ->createQuery('SELECT o FROM BpProductBundle:Object o
+                        WHERE o.product = :product 
+                        AND o.status = :status
+                   ')
+        ->setParameters(array(
+            'product' => $product->getId(),
+            'status' => 'en stock'
+        ))
+        ->setMaxResults($number)
+        ->getResult();
+    }
 }

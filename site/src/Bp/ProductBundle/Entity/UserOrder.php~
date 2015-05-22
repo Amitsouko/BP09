@@ -65,10 +65,7 @@ class UserOrder
 
     public function __construct()
     {
-        $this->objects = new ArrayCollection();
-        $this->packs = new ArrayCollection();
-        $this->customPacks = new ArrayCollection();
-        $this->products = new ArrayCollection();
+
         $this->date = new \DateTime("now");
     }
 
@@ -350,5 +347,28 @@ class UserOrder
     public function getDetail()
     {
         return $this->detail;
+    }
+
+    /**
+     * Set contract
+     *
+     * @param \Bp\ProductBundle\Entity\Contract $contract
+     * @return UserOrder
+     */
+    public function setContract(\Bp\ProductBundle\Entity\Contract $contract = null)
+    {
+        $this->contract = $contract;
+
+        return $this;
+    }
+
+    /**
+     * Get contract
+     *
+     * @return \Bp\ProductBundle\Entity\Contract 
+     */
+    public function getContract()
+    {
+        return $this->contract;
     }
 }

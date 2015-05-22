@@ -4,7 +4,7 @@ services:
         arguments:    [@session,@doctrine,%cart.tva%]
     contract:
         class:        Bp\CartBundle\Services\ContractService
-        arguments:    [@doctrine,@cart,@reference.generator]
+        arguments:    [@doctrine,@cart,@reference.generator, @object.service]
     reference.generator:
         class:        Bp\CartBundle\Services\ReferenceGenerator
         arguments:    [@doctrine]

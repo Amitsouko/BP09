@@ -48,6 +48,15 @@ class Object
      **/
     private $product;
 
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     */
+    private $date;
+
+
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Contract", mappedBy="objects")
      **/
@@ -56,6 +65,7 @@ class Object
     public function __construct()
     {
         $this->contracts = new ArrayCollection();
+        $this->date = new \DateTime("now");
     }
 
     /**
@@ -193,5 +203,61 @@ class Object
     public function getOrders()
     {
         return $this->orders;
+    }
+
+    /**
+     * Add contracts
+     *
+     * @param \Bp\ProductBundle\Entity\Contract $contracts
+     * @return Object
+     */
+    public function addContract(\Bp\ProductBundle\Entity\Contract $contracts)
+    {
+        $this->contracts[] = $contracts;
+
+        return $this;
+    }
+
+    /**
+     * Remove contracts
+     *
+     * @param \Bp\ProductBundle\Entity\Contract $contracts
+     */
+    public function removeContract(\Bp\ProductBundle\Entity\Contract $contracts)
+    {
+        $this->contracts->removeElement($contracts);
+    }
+
+    /**
+     * Get contracts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getContracts()
+    {
+        return $this->contracts;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     * @return Object
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime 
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }

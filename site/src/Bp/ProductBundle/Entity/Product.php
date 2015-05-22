@@ -383,4 +383,37 @@ class Product implements ItemInterface
     {
         return $this->orders;
     }
+
+    /**
+     * Add contracts
+     *
+     * @param \Bp\ProductBundle\Entity\Contract $contracts
+     * @return Product
+     */
+    public function addContract(\Bp\ProductBundle\Entity\Contract $contracts)
+    {
+        $this->contracts[] = $contracts;
+
+        return $this;
+    }
+
+    /**
+     * Remove contracts
+     *
+     * @param \Bp\ProductBundle\Entity\Contract $contracts
+     */
+    public function removeContract(\Bp\ProductBundle\Entity\Contract $contracts)
+    {
+        $this->contracts->removeElement($contracts);
+    }
+
+    /**
+     * Get contracts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getContracts()
+    {
+        return $this->contracts;
+    }
 }

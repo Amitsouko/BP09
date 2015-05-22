@@ -1,0 +1,4 @@
+services:
+    object.service:
+        class:        Bp\ProductBundle\Services\ObjectService
+        arguments:    [@doctrine, @reference.generator]

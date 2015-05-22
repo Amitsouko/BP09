@@ -71,14 +71,14 @@ class Pack implements ItemInterface
     private $products;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\UserOrder", mappedBy="packs")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Contract", mappedBy="packs")
      **/
-    private $orders;
+    private $contracts;
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
-        $this->orders = new ArrayCollection();
+        $this->contracts = new ArrayCollection();
     }
 
     public function __toString()
@@ -300,5 +300,38 @@ class Pack implements ItemInterface
     public function getOrders()
     {
         return $this->orders;
+    }
+
+    /**
+     * Add contracts
+     *
+     * @param \Bp\ProductBundle\Entity\Contract $contracts
+     * @return Pack
+     */
+    public function addContract(\Bp\ProductBundle\Entity\Contract $contracts)
+    {
+        $this->contracts[] = $contracts;
+
+        return $this;
+    }
+
+    /**
+     * Remove contracts
+     *
+     * @param \Bp\ProductBundle\Entity\Contract $contracts
+     */
+    public function removeContract(\Bp\ProductBundle\Entity\Contract $contracts)
+    {
+        $this->contracts->removeElement($contracts);
+    }
+
+    /**
+     * Get contracts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getContracts()
+    {
+        return $this->contracts;
     }
 }

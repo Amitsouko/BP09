@@ -81,9 +81,9 @@ class Product implements ItemInterface
     private $customPacks;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\UserOrder", mappedBy="products")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Contract", mappedBy="products")
      **/
-    private $orders;
+    private $contracts;
 
     public function __construct()
     {
@@ -91,7 +91,7 @@ class Product implements ItemInterface
         $this->objects = new ArrayCollection();
         $this->packs = new ArrayCollection();
         $this->customPacks = new ArrayCollection();
-        $this->orders = new ArrayCollection();
+        $this->contracts = new ArrayCollection();
     }
   
     public function __toString()
@@ -382,5 +382,38 @@ class Product implements ItemInterface
     public function getOrders()
     {
         return $this->orders;
+    }
+
+    /**
+     * Add contracts
+     *
+     * @param \Bp\ProductBundle\Entity\Contract $contracts
+     * @return Product
+     */
+    public function addContract(\Bp\ProductBundle\Entity\Contract $contracts)
+    {
+        $this->contracts[] = $contracts;
+
+        return $this;
+    }
+
+    /**
+     * Remove contracts
+     *
+     * @param \Bp\ProductBundle\Entity\Contract $contracts
+     */
+    public function removeContract(\Bp\ProductBundle\Entity\Contract $contracts)
+    {
+        $this->contracts->removeElement($contracts);
+    }
+
+    /**
+     * Get contracts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getContracts()
+    {
+        return $this->contracts;
     }
 }
