@@ -1,0 +1,91 @@
+product:
+    PR-CDF2188E5C:
+        name: Apple Watch
+        company: Apple
+        price: 400
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
+        specificite: <ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li><li> Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum.</li><li> Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus.</li></ul>
+        quantity: 10
+    PR-03D3F442C1: 
+        name: Asus Zen Watch
+        company: Asus
+        price: 230
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
+        specificite: <ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li><li> Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum.</li><li> Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus.</li></ul>
+        quantity: 10
+    PR-4FCBBEE145:
+        name: Samsung Gear fit
+        company: Samsung
+        price: 100
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
+        specificite: <ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li><li> Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum.</li><li> Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus.</li></ul>
+        quantity: 5
+    PR-C8EB2966C4:
+        name: Belkin Led Wemo
+        company: Belkin
+        price: 30
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
+        specificite: <ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li><li> Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum.</li><li> Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus.</li></ul>
+        quantity: 5
+    PR-6E171859C3:
+        name: Hue Lux 2 ampoules
+        company: Philips
+        price: 100
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
+        specificite: <ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li><li> Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum.</li><li> Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus.</li></ul>
+        quantity: 5
+    PR-5D1998EE7F:
+        name: Lifx Color 650
+        company: Lifx
+        price: 80
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
+        specificite: <ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li><li> Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum.</li><li> Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus.</li></ul>
+        quantity: 5
+    PR-5D1998EE7F:
+        name: Fitbit Charge
+        company: Fitbit
+        price: 130
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
+        specificite: <ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li><li> Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum.</li><li> Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus.</li></ul>
+        quantity: 10
+    PR-32654AAFE4:
+        name: Garmin Vivofit
+        company: Garmin
+        price: 130
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
+        specificite: <ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li><li> Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum.</li><li> Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus.</li></ul>
+        quantity: 10
+    PR-5B746E6940:
+        name: JAWBONE UP24
+        company: Jawbone
+        price: 130
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
+        specificite: <ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li><li> Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum.</li><li> Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus.</li></ul>
+        quantity: 10
+    PR-05DC33AF1A:
+        name: Moov
+        company: Moov
+        price: 120
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
+        specificite: <ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li><li> Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum.</li><li> Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus.</li></ul>
+        quantity: 10
+    PR-BE10675185:
+        name: Moto 360
+        company: Motorola
+        price: 250
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
+        specificite: <ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li><li> Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum.</li><li> Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus.</li></ul>
+        quantity: 10
+
+
+pack:
+    PA-BEF7DABF53:
+        name: Hipster kit
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
+        price: 25
+        products: ["PR-5D1998EE7F", "PR-32654AAFE4", "PR-5B746E6940"]
+    PA-1CB7765434:
+        name: Sleep Tracking Kit
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
+        price: 35
+        products: ["PR-03D3F442C1", "PR-5B746E6940","PR-05DC33AF1A", "PR-BE10675185"]
