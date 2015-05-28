@@ -45,8 +45,8 @@ class Payment
         /*
          * Your code for this event
          */
-        $contract = $this->contractService->generateContract($this->user);
-        $this->paymentBridge ->setOrder($contract->getOrder());
+        $contract = $this->contractService->generateContract($this->user, "location",new \DateTime("now + 1 week"));
+        $this->paymentBridge->setOrder($contract->getOrder());
     }
 
     /**

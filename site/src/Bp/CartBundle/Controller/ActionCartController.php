@@ -94,7 +94,7 @@ class ActionCartController extends Controller
         $user = $this->getUser();
         $contractservice = $this->container->get("contract");
         $cart = $this->container->get("cart");
-        $contractservice->generateContract($user);
+        $contractservice->generateContract($user, "location",new \DateTime("now + 1 week"));
         $cart->clear();
         return $this->redirect($this->generateUrl('bp_cart_default_index'));
     }

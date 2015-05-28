@@ -27,7 +27,7 @@ class ContractService
         $this->objectService = $objectService;
     }
 
-    public function generateContract(User $user, $cart = null)
+    public function generateContract(User $user, $type, $dateEnd = null, $cart = null)
     {
         $contract = new Contract();
         $order = new UserOrder();
@@ -50,7 +50,7 @@ class ContractService
                     $contract->addPack($p);
                     $j = 0;
                     foreach($p->getProducts() as $sp){
-                        $detail[$i]["products"][$j] = array("name" => $sp->getName(), "reference" => $sp->getReference());
+                        $detail[$i]["products"][$j] = array("name" => $sp->getName(), "reference" => $sp->getReference(), "quantity"=>$p->userQuantity);
                         $arrayObj = $this->addProductToArrayObj($sp, $arrayObj,$p->userQuantity);
                         $j++;
                     }
@@ -59,7 +59,7 @@ class ContractService
                     $contract->addCustomPack($p);
                     $j = 0;
                     foreach($p->getProducts() as $sp){
-                        $detail[$i]["products"][$j] = array("name" => $sp->getName(), "reference" => $sp->getReference());
+                        $detail[$i]["products"][$j] = array("name" => $sp->getName(), "reference" => $sp->getReference(), "quantity"=> $p->userQuantity);
                         $arrayObj = $this->addProductToArrayObj($sp, $arrayObj, $p->userQuantity);
                         $j++;
                     }
@@ -68,14 +68,16 @@ class ContractService
             $detail[$i]["name"] = $p->getName();
             $detail[$i]["price"] = $p->getPrice();
             $detail[$i]["reference"] = $p->getReference();
+            $detail[$i]["quantity"] = $p->userQuantity;
             $i++;
         }
+        $order->setDetail($detail);
 
 
         $contract->setUser($user);
         $contract->setReference($this->refGen->generateReference("contract"));
-
-        $order->setDetail($detail);
+        $contract->setType($type);
+        if($type == "location") $contract->setDateEnd($dateEnd);
         $order->setTva($cart["tva"]);
         $order->setPrice($cart["price"]);
         $order->setReference($this->refGen->generateReference("order"));
