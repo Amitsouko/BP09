@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Parser;
 use Bp\ProductBundle\Entity\Product;
 use Bp\ProductBundle\Entity\Pack;
+use Bp\ProductBundle\Entity\Object;
 
 class AdminCommand extends ContainerAwareCommand
 {
@@ -24,20 +25,8 @@ class AdminCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // $name = $input->getArgument('name');
-        // if ($name) {
-        //     $text = 'Bonjour '.$name;
-        // } else {
-        //     $text = 'Bonjour';
-        // }
-
-        // if ($input->getOption('yell')) {
-        //     $text = strtoupper($text);
-        // }
-
-
         $yaml = new Parser();
-
+        $refgen = $this->getContainer()->get("reference.generator");
         $data = $yaml->parse(file_get_contents(dirname(__FILE__).'/data.yml'));
 
         $em = $this->getContainer()->get("doctrine")->getEntityManager();
@@ -60,6 +49,23 @@ class AdminCommand extends ContainerAwareCommand
             $product->setSpecificite($value["specificite"]);
             $product->setQuantity($value["quantity"]);
             $em->persist($product);
+
+            //create objects
+            $objectsQty = $value["quantity"];
+            if($objectsQty > $product->getObjects()->count())
+            {
+                $iter = $objectsQty - $product->getObjects()->count();
+                for($i = 0; $i < $iter; $i++)
+                {
+                    $obj = new  Object();
+                    $obj->setReference($refgen->generateReference("object"));
+                    $obj->setQuality("neuf");
+                    $obj->setStatus("en stock");
+                    $obj->setProduct($product);
+                    $em->persist($obj);
+                }
+            }
+            $em->flush();
             
         }
         $em->flush();
