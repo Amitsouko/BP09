@@ -40,6 +40,13 @@ class Product implements ItemInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="specificite", type="text")
+     */
+    private $specificite;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="reference", type="string", length=255)
      */
     private $reference;
@@ -415,5 +422,28 @@ class Product implements ItemInterface
     public function getContracts()
     {
         return $this->contracts;
+    }
+
+    /**
+     * Set specificite
+     *
+     * @param string $specificite
+     * @return Product
+     */
+    public function setSpecificite($specificite)
+    {
+        $this->specificite = $specificite;
+
+        return $this;
+    }
+
+    /**
+     * Get specificite
+     *
+     * @return string 
+     */
+    public function getSpecificite()
+    {
+        return $this->specificite;
     }
 }

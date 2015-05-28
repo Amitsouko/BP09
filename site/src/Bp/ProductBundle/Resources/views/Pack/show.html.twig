@@ -3,7 +3,7 @@
 {% block body -%}
     <h1>Pack</h1>
 
-    <table class="record_properties">
+    <table class="record_properties table">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -23,7 +23,7 @@
             </tr>
             <tr>
                 <th>Price</th>
-                <td>{{ entity.price }}</td>
+                <td>{{ entity.price|price }}</td>
             </tr>
             <tr>
                 <th>Quantity</th>
@@ -36,7 +36,14 @@
         </tbody>
     </table>
 
-        <ul class="record_actions">
+    <h2>Products</h2>
+    <ul>
+        {% for product in entity.products %}
+            <li><a href="{{ path('admin_product_show', { 'id': product.id }) }}">{{ product.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+        <ul class="record_actions list-inline">
     <li>
         <a href="{{ path('admin_pack') }}">
             Back to the list

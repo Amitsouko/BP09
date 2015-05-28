@@ -1,0 +1,10 @@
+{% extends 'BpAdminBundle::layout.html.twig' %}
+
+{% block content %}
+<ul>
+    {% for contract in contracts %}
+    <li><a href="{{ path("bp_admin_contract_show", {ref:contract.reference}) }}"><strong>{{ contract.reference }}</strong></a> - {{ contract.dateStart|date }} - {{ contract.user.username }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

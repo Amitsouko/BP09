@@ -40,6 +40,13 @@ class Product implements ItemInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="specificite", type="text")
+     */
+    private $specificite;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="reference", type="string", length=255)
      */
     private $reference;

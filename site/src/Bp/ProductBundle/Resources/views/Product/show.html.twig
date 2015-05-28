@@ -3,7 +3,7 @@
 {% block body -%}
     <h1>Product</h1>
 
-    <table class="record_properties">
+    <table class="record_properties table ">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -23,7 +23,7 @@
             </tr>
             <tr>
                 <th>Price</th>
-                <td>{{ entity.price }}</td>
+                <td>{{ entity.price|price }}</td>
             </tr>
             <tr>
                 <th>Quantity</th>
@@ -36,7 +36,7 @@
         </tbody>
     </table>
 
-        <ul class="record_actions">
+        <ul class="record_actions list-inline">
     <li>
         <a href="{{ path('admin_product') }}">
             Back to the list

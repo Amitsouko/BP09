@@ -1,0 +1,31 @@
+{% extends 'BpAdminBundle::layout.html.twig' %}
+
+{% block content %}
+<h1>{{ contract.reference }}</h1>
+
+<ul>
+    <li><strong>Utilisateur : </strong> {{ contract.user.username }}</li>
+    <li><strong>Type du contrat : </strong> {{ contract.type }}</li>
+</ul>
+
+<h2>Facture</h2>
+<ul>
+    <li>Montant : {{ contract.order.price|price }}</li>
+    <li>TVA : {{ contract.order.tva|percent }}</li>
+    <li>Date : {{ contract.order.date|date }}</li>
+</ul>
+
+<h2>Détail des objets</h2>
+<ul>
+    {% for product in contract.order.detail %}
+    <li>
+        {{ product.name }} - {{ product.reference }}
+    </li>
+    {% endfor %}
+</ul>
+
+<h3>Actions</h3>
+<ul>
+    <li></li>
+</ul>
+{% endblock content %}

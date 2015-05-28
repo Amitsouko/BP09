@@ -65,6 +65,7 @@ class Object
     public function __construct()
     {
         $this->contracts = new ArrayCollection();
+        $this->date = new \DateTime("now");
     }
 
     /**
@@ -235,5 +236,28 @@ class Object
     public function getContracts()
     {
         return $this->contracts;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     * @return Object
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime 
+     */
+    public function getDate()
+    {
+        return $this->date;
     }
 }

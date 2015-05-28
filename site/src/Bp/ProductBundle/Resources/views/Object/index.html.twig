@@ -3,11 +3,12 @@
 {% block body -%}
     <h1>Object list</h1>
 
-    <table class="records_list">
+    <table class="records_list table table-striped">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Reference</th>
+                <th>Product</th>
                 <th>Status</th>
                 <th>Quality</th>
                 <th>Actions</th>
@@ -17,7 +18,8 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('admin_object_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.reference }}</td>
+                <td><a href="{{ path('admin_object_show', { 'id': entity.id }) }}">{{ entity.reference }}</a></td>
+                <td><a href="{{ path('admin_product_show', { 'id': entity.product.id }) }}">{{ entity.product.name }}</a></td>
                 <td>{{ entity.status }}</td>
                 <td>{{ entity.quality }}</td>
                 <td>
