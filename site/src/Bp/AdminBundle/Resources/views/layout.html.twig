@@ -26,6 +26,11 @@
     <div class="container">
         <div class="col-md-3">
             <div class="list-group">
+                <div class="list-group-item">
+                    <form method="get" action="{{ path("bp_admin_default_search") }}">
+                        <input type="text" name="search"/><button type="submit"> recherche</button>
+                    </form>
+                </div>
                 <a class="list-group-item" href="{{ url("admin_user") }}">Utilisateurs</a>
                 <a class="list-group-item" href="{{ url("admin_pack") }}">Packs</a>
                 <a class="list-group-item" href="{{ url("admin_product") }}">Produits</a>

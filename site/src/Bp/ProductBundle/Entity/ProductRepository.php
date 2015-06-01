@@ -26,4 +26,17 @@ class ProductRepository extends EntityRepository
              ))
              ->getSingleResult();
      }
+
+     public function findOneLikeRef($ref)
+      {
+          return $this->getEntityManager()
+              ->createQuery('SELECT p FROM BpProductBundle:Product p
+            
+                              WHERE p.reference LIKE :ref
+                         ')
+              ->setParameters(array(
+                  'ref' => "%$ref%"
+              ))
+              ->getResult();
+      }
 }

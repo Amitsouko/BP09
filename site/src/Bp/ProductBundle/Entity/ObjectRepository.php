@@ -27,4 +27,17 @@ class ObjectRepository extends EntityRepository
         ->setMaxResults($number)
         ->getResult();
     }
+
+    public function findOneLikeRef($ref)
+     {
+         return $this->getEntityManager()
+             ->createQuery('SELECT p FROM BpProductBundle:Object p
+           
+                             WHERE p.reference LIKE :ref
+                        ')
+             ->setParameters(array(
+                 'ref' => "%$ref%"
+             ))
+             ->getResult();
+     }
 }

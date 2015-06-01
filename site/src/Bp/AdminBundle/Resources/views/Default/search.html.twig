@@ -1,0 +1,20 @@
+{% extends 'BpAdminBundle::layout.html.twig' %}
+
+{% block content %}
+
+<h1>Recherche</h1>
+
+{% if message is defined %}
+<p>{{ message }}</p>
+{% endif %}
+<div class="list-group">
+{% if result is defined %}
+    {% for item in result %}
+      <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">{{ item.reference }}</h4>
+        <h5>{{ item|class }}</h5>
+      </a> 
+    {% endfor %}
+{% endif %}
+</div>
+{% endblock content %}

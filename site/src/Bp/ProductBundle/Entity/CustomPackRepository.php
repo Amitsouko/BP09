@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class CustomPackRepository extends EntityRepository
 {
+    public function findOneLikeRef($ref)
+     {
+         return $this->getEntityManager()
+             ->createQuery('SELECT p FROM BpProductBundle:CustomPack p
+           
+                             WHERE p.reference LIKE :ref
+                        ')
+             ->setParameters(array(
+                 'ref' => "%$ref%"
+             ))
+             ->getResult();
+     }
 }

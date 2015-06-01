@@ -27,4 +27,17 @@ class ContractRepository extends EntityRepository
              ))
              ->getResult();
      }
+
+     public function findOneLikeRef($ref)
+      {
+          return $this->getEntityManager()
+              ->createQuery('SELECT p FROM BpProductBundle:Contract p
+            
+                              WHERE p.reference LIKE :ref
+                         ')
+              ->setParameters(array(
+                  'ref' => "%$ref%"
+              ))
+              ->getResult();
+      }
 }

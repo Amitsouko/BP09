@@ -9,6 +9,7 @@ class customExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFilter('price', array($this, 'priceFilter')),
             new \Twig_SimpleFilter('percent', array($this, 'percentageFilter')),
+            new \Twig_SimpleFilter('class', array($this, 'getClass'))
         );
     }
 
@@ -24,6 +25,11 @@ class customExtension extends \Twig_Extension
     {
         return $percent . " %";
     }
+
+    public function getClass($object)
+     {
+         return (new \ReflectionClass($object))->getShortName();
+     }
 
     public function getName()
     {
