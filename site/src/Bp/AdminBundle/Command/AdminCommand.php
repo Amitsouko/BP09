@@ -64,6 +64,7 @@ class AdminCommand extends ContainerAwareCommand
                     $obj->setProduct($product);
                     $em->persist($obj);
                 }
+                $output->writeln("$i objets créés.");
             }
             $em->flush();
             
