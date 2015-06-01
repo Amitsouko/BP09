@@ -13,6 +13,7 @@
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Packs</th>
+                <th>Types</th>
                 <th>Active</th>
                 <th>Actions</th>
             </tr>
@@ -32,6 +33,13 @@
                         <li><a href="{{ path('admin_pack_show', { 'id': pack.id }) }}">{{ pack.name }}</a></li> 
                     {% endfor %}
                 {% endif %}
+                </td>
+                <td>
+                    <ul>
+                    {% for type in entity.types %}
+                        <li>{{ type.name }}</li>
+                    {% endfor %}
+                    </ul>
                 </td>
                 <td>{{ entity.active }}</td>
                 <td>

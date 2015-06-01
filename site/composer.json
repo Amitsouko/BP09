@@ -21,7 +21,8 @@
         "sensio/distribution-bundle": "~3.0,>=3.0.12",
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "friendsofsymfony/user-bundle": "~2.0@dev",
-        "paymentsuite/stripe-bundle": "v1.1"
+        "paymentsuite/stripe-bundle": "v1.1",
+        "liip/imagine-bundle": "*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

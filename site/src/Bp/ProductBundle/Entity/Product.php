@@ -92,10 +92,17 @@ class Product implements ItemInterface
      **/
     private $contracts;
 
+
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Type", mappedBy="products")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Type", inversedBy="types",cascade={"persist"})
+     * @ORM\JoinTable(name="type_product")
      **/
     private $types;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Photo", mappedBy="product")
+     **/
+    private $photos;
 
     public function __construct()
     {
@@ -483,5 +490,38 @@ class Product implements ItemInterface
     public function getTypes()
     {
         return $this->types;
+    }
+
+    /**
+     * Add photos
+     *
+     * @param \Bp\ProductBundle\Entity\Photo $photos
+     * @return Product
+     */
+    public function addPhoto(\Bp\ProductBundle\Entity\Photo $photos)
+    {
+        $this->photos[] = $photos;
+
+        return $this;
+    }
+
+    /**
+     * Remove photos
+     *
+     * @param \Bp\ProductBundle\Entity\Photo $photos
+     */
+    public function removePhoto(\Bp\ProductBundle\Entity\Photo $photos)
+    {
+        $this->photos->removeElement($photos);
+    }
+
+    /**
+     * Get photos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPhotos()
+    {
+        return $this->photos;
     }
 }

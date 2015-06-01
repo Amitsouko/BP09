@@ -7,21 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Bp\ProductBundle\Entity\Type;
-use Bp\ProductBundle\Form\TypeType;
+use Bp\ProductBundle\Entity\Photo;
+use Bp\ProductBundle\Form\PhotoType;
 
 /**
- * Type controller.
+ * Photo controller.
  *
- * @Route("/admin/type")
+ * @Route("/admin/photo")
  */
-class TypeController extends Controller
+class PhotoController extends Controller
 {
 
     /**
-     * Lists all Type entities.
+     * Lists all Photo entities.
      *
-     * @Route("/", name="admin_type")
+     * @Route("/", name="admin_photo")
      * @Method("GET")
      * @Template()
      */
@@ -29,22 +29,22 @@ class TypeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BpProductBundle:Type')->findAll();
+        $entities = $em->getRepository('BpProductBundle:Photo')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new Type entity.
+     * Creates a new Photo entity.
      *
-     * @Route("/", name="admin_type_create")
+     * @Route("/", name="admin_photo_create")
      * @Method("POST")
-     * @Template("BpProductBundle:Type:new.html.twig")
+     * @Template("BpProductBundle:Photo:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new Type();
+        $entity = new Photo();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -53,7 +53,7 @@ class TypeController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_type_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('admin_photo_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -63,16 +63,16 @@ class TypeController extends Controller
     }
 
     /**
-     * Creates a form to create a Type entity.
+     * Creates a form to create a Photo entity.
      *
-     * @param Type $entity The entity
+     * @param Photo $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Type $entity)
+    private function createCreateForm(Photo $entity)
     {
-        $form = $this->createForm(new TypeType(), $entity, array(
-            'action' => $this->generateUrl('admin_type_create'),
+        $form = $this->createForm(new PhotoType(), $entity, array(
+            'action' => $this->generateUrl('admin_photo_create'),
             'method' => 'POST',
         ));
 
@@ -82,15 +82,15 @@ class TypeController extends Controller
     }
 
     /**
-     * Displays a form to create a new Type entity.
+     * Displays a form to create a new Photo entity.
      *
-     * @Route("/new", name="admin_type_new")
+     * @Route("/new", name="admin_photo_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Type();
+        $entity = new Photo();
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -100,9 +100,9 @@ class TypeController extends Controller
     }
 
     /**
-     * Finds and displays a Type entity.
+     * Finds and displays a Photo entity.
      *
-     * @Route("/{id}", name="admin_type_show")
+     * @Route("/{id}", name="admin_photo_show")
      * @Method("GET")
      * @Template()
      */
@@ -110,10 +110,10 @@ class TypeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BpProductBundle:Type')->find($id);
+        $entity = $em->getRepository('BpProductBundle:Photo')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Type entity.');
+            throw $this->createNotFoundException('Unable to find Photo entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -125,9 +125,9 @@ class TypeController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Type entity.
+     * Displays a form to edit an existing Photo entity.
      *
-     * @Route("/{id}/edit", name="admin_type_edit")
+     * @Route("/{id}/edit", name="admin_photo_edit")
      * @Method("GET")
      * @Template()
      */
@@ -135,10 +135,10 @@ class TypeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BpProductBundle:Type')->find($id);
+        $entity = $em->getRepository('BpProductBundle:Photo')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Type entity.');
+            throw $this->createNotFoundException('Unable to find Photo entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -152,16 +152,16 @@ class TypeController extends Controller
     }
 
     /**
-    * Creates a form to edit a Type entity.
+    * Creates a form to edit a Photo entity.
     *
-    * @param Type $entity The entity
+    * @param Photo $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Type $entity)
+    private function createEditForm(Photo $entity)
     {
-        $form = $this->createForm(new TypeType(), $entity, array(
-            'action' => $this->generateUrl('admin_type_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new PhotoType(), $entity, array(
+            'action' => $this->generateUrl('admin_photo_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -170,30 +170,31 @@ class TypeController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Type entity.
+     * Edits an existing Photo entity.
      *
-     * @Route("/{id}", name="admin_type_update")
+     * @Route("/{id}", name="admin_photo_update")
      * @Method("PUT")
-     * @Template("BpProductBundle:Type:edit.html.twig")
+     * @Template("BpProductBundle:Photo:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BpProductBundle:Type')->find($id);
+        $entity = $em->getRepository('BpProductBundle:Photo')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Type entity.');
+            throw $this->createNotFoundException('Unable to find Photo entity.');
         }
-        $entity->setLastUpdate(new \DateTime("now"));
+
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
+        $entity->setLastUpdate(new \DateTime("now"));
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_type_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('admin_photo_edit', array('id' => $id)));
         }
 
         return array(
@@ -203,9 +204,9 @@ class TypeController extends Controller
         );
     }
     /**
-     * Deletes a Type entity.
+     * Deletes a Photo entity.
      *
-     * @Route("/{id}", name="admin_type_delete")
+     * @Route("/{id}", name="admin_photo_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -215,21 +216,21 @@ class TypeController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BpProductBundle:Type')->find($id);
+            $entity = $em->getRepository('BpProductBundle:Photo')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Type entity.');
+                throw $this->createNotFoundException('Unable to find Photo entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('admin_type'));
+        return $this->redirect($this->generateUrl('admin_photo'));
     }
 
     /**
-     * Creates a form to delete a Type entity by id.
+     * Creates a form to delete a Photo entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -238,7 +239,7 @@ class TypeController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('admin_type_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('admin_photo_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

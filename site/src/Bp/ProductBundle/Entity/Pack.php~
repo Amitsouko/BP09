@@ -76,7 +76,8 @@ class Pack implements ItemInterface
     private $contracts;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Type", mappedBy="packs")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Type", inversedBy="packs",cascade={"persist"})
+     * @ORM\JoinTable(name="type_pack")
      **/
     private $types;
 

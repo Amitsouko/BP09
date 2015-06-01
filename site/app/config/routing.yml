@@ -34,3 +34,6 @@ fos_user:
 stripe_payment_routes:
     resource: .
     type: stripe
+
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"

@@ -22,6 +22,7 @@ class PackType extends AbstractType
             ->add('quantity')
             ->add('active')
             ->add('products')
+            ->add('types')
         ;
     }
     

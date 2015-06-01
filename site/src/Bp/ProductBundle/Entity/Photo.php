@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Type
+ * Photo
  *
  * @ORM\Table()
  * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="Bp\ProductBundle\Entity\TypeRepository")
+ * @ORM\Entity(repositoryClass="Bp\ProductBundle\Entity\PhotoRepository")
  */
-class Type
+class Photo
 {
     /**
      * @var integer
@@ -26,34 +26,29 @@ class Type
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text")
-     */
-    private $description;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="path", type="string", length=255)
+     * @ORM\Column(name="path", type="string", length=255, nullable=true)
      */
     private $path;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product", mappedBy="types")
-     **/
-    private $products;
-
+     * @var string
+     *
+     * @ORM\Column(name="alt", type="string", length=255, nullable=true)
+     */
+    private $alt;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Pack", mappedBy="types")
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Bp\ProductBundle\Entity\Product", inversedBy="photos",cascade={"persist"})
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      **/
-    private $packs;
+    private $product;
 
     /**
      * @var string
@@ -61,7 +56,6 @@ class Type
      * @ORM\Column(name="lastUpdate", type="datetime", nullable=true)
      */
     private $lastUpdate;
-
 
     /**
      * @Assert\File(maxSize="6000000")
@@ -88,7 +82,7 @@ class Type
     {
         // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
         // le document/image dans la vue.
-        return 'uploads/documents/types';
+        return 'uploads/documents/photos';
     }
 
     /**
@@ -139,6 +133,7 @@ class Type
 
 
 
+
     /**
      * Get id
      *
@@ -150,33 +145,10 @@ class Type
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return Type
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
      * Set path
      *
      * @param string $path
-     * @return Type
+     * @return Photo
      */
     public function setPath($path)
     {
@@ -194,86 +166,35 @@ class Type
     {
         return $this->path;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->packs = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
-     * Add products
+     * Set alt
      *
-     * @param \Bp\ProductBundle\Entity\Product $products
-     * @return Type
+     * @param string $alt
+     * @return Photo
      */
-    public function addProduct(\Bp\ProductBundle\Entity\Product $products)
+    public function setAlt($alt)
     {
-        $this->products[] = $products;
+        $this->alt = $alt;
 
         return $this;
     }
 
     /**
-     * Remove products
+     * Get alt
      *
-     * @param \Bp\ProductBundle\Entity\Product $products
+     * @return string 
      */
-    public function removeProduct(\Bp\ProductBundle\Entity\Product $products)
+    public function getAlt()
     {
-        $this->products->removeElement($products);
-    }
-
-    /**
-     * Get products
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
-    /**
-     * Add packs
-     *
-     * @param \Bp\ProductBundle\Entity\Pack $packs
-     * @return Type
-     */
-    public function addPack(\Bp\ProductBundle\Entity\Pack $packs)
-    {
-        $this->packs[] = $packs;
-
-        return $this;
-    }
-
-    /**
-     * Remove packs
-     *
-     * @param \Bp\ProductBundle\Entity\Pack $packs
-     */
-    public function removePack(\Bp\ProductBundle\Entity\Pack $packs)
-    {
-        $this->packs->removeElement($packs);
-    }
-
-    /**
-     * Get packs
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getPacks()
-    {
-        return $this->packs;
+        return $this->alt;
     }
 
     /**
      * Set description
      *
      * @param string $description
-     * @return Type
+     * @return Photo
      */
     public function setDescription($description)
     {
@@ -293,10 +214,33 @@ class Type
     }
 
     /**
+     * Set product
+     *
+     * @param \Bp\ProductBundle\Entity\Product $product
+     * @return Photo
+     */
+    public function setProduct(\Bp\ProductBundle\Entity\Product $product = null)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product
+     *
+     * @return \Bp\ProductBundle\Entity\Product 
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
      * Set lastUpdate
      *
      * @param \DateTime $lastUpdate
-     * @return Type
+     * @return Photo
      */
     public function setLastUpdate($lastUpdate)
     {

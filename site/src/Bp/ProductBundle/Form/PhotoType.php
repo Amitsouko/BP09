@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class TypeType extends AbstractType
+class PhotoType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,11 +15,9 @@ class TypeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('description')
-            ->add('products')
-            ->add('packs')
             ->add('file')
+            ->add('alt')
+            ->add('description')
         ;
     }
     
@@ -29,7 +27,7 @@ class TypeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Bp\ProductBundle\Entity\Type'
+            'data_class' => 'Bp\ProductBundle\Entity\Photo'
         ));
     }
 
@@ -38,6 +36,6 @@ class TypeType extends AbstractType
      */
     public function getName()
     {
-        return 'bp_productbundle_type';
+        return 'bp_productbundle_photo';
     }
 }

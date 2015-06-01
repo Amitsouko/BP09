@@ -93,7 +93,7 @@ stripe:
     # Route defines which route will redirect if payment success
     # If order_append is true, Bundle will append cart identifier into route
     #    taking order_append_field value as parameter name and
-    #    PaymentOrderWrapper->getOrderId() value
+    #    PaymentOrderWrapper->getOrderId() valueliip_imagine
     payment_success:
         route: cart_thanks
         order_append: true
@@ -109,3 +109,16 @@ stripe:
         route: cart_view
         # cart_append: false
         # cart_append_field: cart_id
+
+liip_imagine:
+    driver:               gd
+    resolvers:
+       default:
+          web_path: ~
+
+    filter_sets:
+        cache: ~
+        type_medium:
+            quality: 80
+            filters:
+                thumbnail: { size: [120, 120], mode: outbound }

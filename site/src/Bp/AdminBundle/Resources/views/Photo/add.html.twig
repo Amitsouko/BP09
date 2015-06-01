@@ -1,0 +1,8 @@
+{% extends 'BpAdminBundle::layout.html.twig' %}
+
+{% block content %}
+<h2>Ajouter une photo pour le produit : {{ product.name }}</h2>
+<form method="post" action="" enctype="multipart/form-data">
+    {{ form_widget(form) }}
+</form>
+{% endblock content %}

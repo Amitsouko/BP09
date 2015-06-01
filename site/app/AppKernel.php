@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new PaymentSuite\PaymentCoreBundle\PaymentCoreBundle(),
             new PaymentSuite\StripeBundle\StripeBundle(),
             new Bp\AdminBundle\BpAdminBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
