@@ -530,4 +530,27 @@ class Product implements ItemInterface
     {
         return $this->photos;
     }
+
+    /**
+     * Set mainPhoto
+     *
+     * @param \Bp\ProductBundle\Entity\Photo $mainPhoto
+     * @return Product
+     */
+    public function setMainPhoto(\Bp\ProductBundle\Entity\Photo $mainPhoto = null)
+    {
+        $this->mainPhoto = $mainPhoto;
+
+        return $this;
+    }
+
+    /**
+     * Get mainPhoto
+     *
+     * @return \Bp\ProductBundle\Entity\Photo 
+     */
+    public function getMainPhoto()
+    {
+        return $this->mainPhoto;
+    }
 }

@@ -65,10 +65,10 @@
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('admin_type_show', { 'id': entity.id }) }}">show</a>
+                        <a href="{{ path('admin_photo_show', { 'id': image.id }) }}">show</a>
                     </li>
                     <li>
-                        <a href="{{ path('admin_type_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('admin_photo_edit', { 'id': image.id }) }}">edit</a>
                     </li>
                     <li>
                         {% if entity.mainPhoto == image %}
@@ -92,7 +92,7 @@
  
         <ul class="record_actions list-inline">
         <li>
-            <a href="{{ path("bp_admin_photo_add", { idProduct: entity.id }) }}">Ajouter une photo</a>
+            <a href="{{ path("bp_admin_photo_add", { id: entity.id, type:"product" }) }}">Ajouter une photo</a>
         </li>
     <li>
         <a href="{{ path('admin_product') }}">

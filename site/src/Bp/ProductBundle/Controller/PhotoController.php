@@ -188,13 +188,13 @@ class PhotoController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
-        $entity->setLastUpdate(new \DateTime("now"));
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $entity->setLastUpdate(new \DateTime("now"));
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_photo_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('admin_photo_show', array('id' => $id)));
         }
 
         return array(

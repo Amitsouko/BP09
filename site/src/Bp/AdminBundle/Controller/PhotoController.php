@@ -17,15 +17,24 @@ use Symfony\Component\HttpFoundation\Request;
 class PhotoController extends Controller
 {
     /**
-     * @Route("/photo/add/{idProduct}")
+     * @Route("/photo/add/{id}/{type}")
      * @Template()
      */
-    public function addAction(Request $request, $idProduct)
+    public function addAction(Request $request, $id, $type)
     {
         $em = $this->getDoctrine()->getManager();
-        $product = $em->getRepository("BpProductBundle:Product")->findOneById($idProduct);
+        $packProduct = false;
+        if($type == "product")
+        {
+            $packProduct = $em->getRepository("BpProductBundle:Product")->findOneById($id);
+            $redirectRoute = "admin_product_show";        
+        }else if($type == "pack")
+        {
+            $packProduct = $em->getRepository("BpProductBundle:Pack")->findOneById($id);
+            $redirectRoute = "admin_pack_show";
+        }
 
-        if(!$product) throw new \Exception("Pas de produit pour l'id $idProduct");
+        if(!$packProduct) throw new \Exception("Pas de produit pour l'id $id");
 
         $entity = new Photo();
 
@@ -37,21 +46,28 @@ class PhotoController extends Controller
 
         if($form->isValid()) {
             $entity->setLastUpdate(new \DateTime("now"));
-            if(!$product->getMainPhoto())
+            if(!$packProduct->getMainPhoto())
             {
-                $product->setMainPhoto($entity);
-                $em->persist($product);
+                $packProduct->setMainPhoto($entity);
+                $em->persist($packProduct);
             }
-            $entity->setProduct($product);
+            if($type == "product")
+            {
+                $entity->setProduct($packProduct);      
+            }else if($type == "pack")
+            {
+                $entity->setPack($packProduct);
+            }
+            
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_photo_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl($redirectRoute, array('id' => $packProduct->getId())));
         }
 
 
         return array(
-            'product' => $product,
+            'product' => $packProduct,
             'form'   => $form->createView(),
         );
     }

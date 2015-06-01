@@ -81,6 +81,17 @@ class Pack implements ItemInterface
      **/
     private $types;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Photo", mappedBy="pack")
+     **/
+    private $photos;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Bp\ProductBundle\Entity\Photo")
+     * @ORM\JoinColumn(name="main_photo_id", referencedColumnName="id")
+     **/
+    private $mainPhoto;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -372,5 +383,61 @@ class Pack implements ItemInterface
     public function getTypes()
     {
         return $this->types;
+    }
+
+    /**
+     * Add photos
+     *
+     * @param \Bp\ProductBundle\Entity\Photo $photos
+     * @return Pack
+     */
+    public function addPhoto(\Bp\ProductBundle\Entity\Photo $photos)
+    {
+        $this->photos[] = $photos;
+
+        return $this;
+    }
+
+    /**
+     * Remove photos
+     *
+     * @param \Bp\ProductBundle\Entity\Photo $photos
+     */
+    public function removePhoto(\Bp\ProductBundle\Entity\Photo $photos)
+    {
+        $this->photos->removeElement($photos);
+    }
+
+    /**
+     * Get photos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPhotos()
+    {
+        return $this->photos;
+    }
+
+    /**
+     * Set mainPhoto
+     *
+     * @param \Bp\ProductBundle\Entity\Photo $mainPhoto
+     * @return Pack
+     */
+    public function setMainPhoto(\Bp\ProductBundle\Entity\Photo $mainPhoto = null)
+    {
+        $this->mainPhoto = $mainPhoto;
+
+        return $this;
+    }
+
+    /**
+     * Get mainPhoto
+     *
+     * @return \Bp\ProductBundle\Entity\Photo 
+     */
+    public function getMainPhoto()
+    {
+        return $this->mainPhoto;
     }
 }

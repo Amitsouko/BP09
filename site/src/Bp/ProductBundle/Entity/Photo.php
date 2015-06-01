@@ -51,6 +51,12 @@ class Photo
     private $product;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Bp\ProductBundle\Entity\Pack", inversedBy="photos",cascade={"persist"})
+     * @ORM\JoinColumn(name="pack_id", referencedColumnName="id")
+     **/
+    private $pack;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="lastUpdate", type="datetime", nullable=true)
@@ -257,5 +263,28 @@ class Photo
     public function getLastUpdate()
     {
         return $this->lastUpdate;
+    }
+
+    /**
+     * Set pack
+     *
+     * @param \Bp\ProductBundle\Entity\Pack $pack
+     * @return Photo
+     */
+    public function setPack(\Bp\ProductBundle\Entity\Pack $pack = null)
+    {
+        $this->pack = $pack;
+
+        return $this;
+    }
+
+    /**
+     * Get pack
+     *
+     * @return \Bp\ProductBundle\Entity\Pack 
+     */
+    public function getPack()
+    {
+        return $this->pack;
     }
 }

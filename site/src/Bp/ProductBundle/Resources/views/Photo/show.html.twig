@@ -10,8 +10,8 @@
                 <td>{{ entity.id }}</td>
             </tr>
             <tr>
-                <th>Path</th>
-                <td>{{ entity.path }}</td>
+                <th>Image</th>
+                <td>    <img src="{{ entity.webPath|imagine_filter("type_medium") }}"></td>
             </tr>
             <tr>
                 <th>Alt</th>
@@ -20,6 +20,16 @@
             <tr>
                 <th>Description</th>
                 <td>{{ entity.description }}</td>
+            </tr>
+            <tr>
+                <th>Galerie</th>
+                <td>
+                    {% if entity.product %}
+                    <a href="{{ path("admin_product_show", {id: entity.product.id}) }}">{{ entity.product.name }}</a>
+                    {% else %}
+                    <a href="{{ path("admin_pack_show", {id: entity.pack.id}) }}">{{ entity.pack.name }}</a>
+                    {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>

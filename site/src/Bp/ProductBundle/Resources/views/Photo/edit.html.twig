@@ -2,7 +2,7 @@
 
 {% block body -%}
     <h1>Photo edit</h1>
-
+    <img src="{{ entity.webPath|imagine_filter("type_medium") }}">
     {{ form(edit_form) }}
 
         <ul class="record_actions">

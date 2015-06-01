@@ -81,6 +81,17 @@ class Pack implements ItemInterface
      **/
     private $types;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Photo", mappedBy="pack")
+     **/
+    private $photos;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Bp\ProductBundle\Entity\Photo")
+     * @ORM\JoinColumn(name="main_photo_id", referencedColumnName="id")
+     **/
+    private $mainPhoto;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();

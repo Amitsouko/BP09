@@ -43,6 +43,51 @@
         {% endfor %}
     </ul>
 
+    <h2>Images</h2>
+    <table class="records_list  table table-striped">
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>alt</th>
+                <th>description</th>
+                <th>action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for image in entity.photos %}
+            <tr>
+                <td><img src="{{ image.webPath|imagine_filter("type_medium") }}"></td>
+                <td>{{ image.alt }}</td>
+                <td>{{ image.description }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('admin_photo_show', { 'id': image.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('admin_photo_edit', { 'id': image.id }) }}">edit</a>
+                    </li>
+                    <li>
+                        {% if entity.mainPhoto == image %}
+                        cette photo est la photo principale
+                        {% else %}
+                        <form method="post" action="{{ path("bp_admin_photo_setmain") }}">
+                            <input type="hidden" name="type" value="product"/>
+                            <input type="hidden" name="id" value="{{ entity.id }}"/>
+                            <input type="hidden" name="id_photo" value="{{ image.id }}"/>
+                            <button type="submit">Mettre en photo principale</button>
+                        </form>
+                        {% endif %}
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path("bp_admin_photo_add", { id: entity.id, type:"pack" }) }}">Ajouter une photo</a>
+
         <ul class="record_actions list-inline">
     <li>
         <a href="{{ path('admin_pack') }}">
