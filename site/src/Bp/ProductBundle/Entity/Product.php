@@ -92,6 +92,11 @@ class Product implements ItemInterface
      **/
     private $contracts;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Type", mappedBy="products")
+     **/
+    private $types;
+
     public function __construct()
     {
         $this->active = true;
@@ -445,5 +450,38 @@ class Product implements ItemInterface
     public function getSpecificite()
     {
         return $this->specificite;
+    }
+
+    /**
+     * Add types
+     *
+     * @param \Bp\ProductBundle\Entity\Type $types
+     * @return Product
+     */
+    public function addType(\Bp\ProductBundle\Entity\Type $types)
+    {
+        $this->types[] = $types;
+
+        return $this;
+    }
+
+    /**
+     * Remove types
+     *
+     * @param \Bp\ProductBundle\Entity\Type $types
+     */
+    public function removeType(\Bp\ProductBundle\Entity\Type $types)
+    {
+        $this->types->removeElement($types);
+    }
+
+    /**
+     * Get types
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTypes()
+    {
+        return $this->types;
     }
 }

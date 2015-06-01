@@ -75,6 +75,11 @@ class Pack implements ItemInterface
      **/
     private $contracts;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Type", mappedBy="packs")
+     **/
+    private $types;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -333,5 +338,38 @@ class Pack implements ItemInterface
     public function getContracts()
     {
         return $this->contracts;
+    }
+
+    /**
+     * Add types
+     *
+     * @param \Bp\ProductBundle\Entity\Type $types
+     * @return Pack
+     */
+    public function addType(\Bp\ProductBundle\Entity\Type $types)
+    {
+        $this->types[] = $types;
+
+        return $this;
+    }
+
+    /**
+     * Remove types
+     *
+     * @param \Bp\ProductBundle\Entity\Type $types
+     */
+    public function removeType(\Bp\ProductBundle\Entity\Type $types)
+    {
+        $this->types->removeElement($types);
+    }
+
+    /**
+     * Get types
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTypes()
+    {
+        return $this->types;
     }
 }
