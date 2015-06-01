@@ -104,6 +104,12 @@ class Product implements ItemInterface
      **/
     private $photos;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Bp\ProductBundle\Entity\Photo")
+     * @ORM\JoinColumn(name="main_photo_id", referencedColumnName="id")
+     **/
+    private $mainPhoto;
+
     public function __construct()
     {
         $this->active = true;
@@ -523,5 +529,28 @@ class Product implements ItemInterface
     public function getPhotos()
     {
         return $this->photos;
+    }
+
+    /**
+     * Set mainPhoto
+     *
+     * @param \Bp\ProductBundle\Entity\Photo $mainPhoto
+     * @return Product
+     */
+    public function setMainPhoto(\Bp\ProductBundle\Entity\Photo $mainPhoto = null)
+    {
+        $this->mainPhoto = $mainPhoto;
+
+        return $this;
+    }
+
+    /**
+     * Get mainPhoto
+     *
+     * @return \Bp\ProductBundle\Entity\Photo 
+     */
+    public function getMainPhoto()
+    {
+        return $this->mainPhoto;
     }
 }
