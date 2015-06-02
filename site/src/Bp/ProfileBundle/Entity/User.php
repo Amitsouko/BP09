@@ -58,11 +58,17 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Contract", mappedBy="user")
      **/
     private $contracts;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="user")
+     **/
+    private $comments;
     
     public function __construct()
     {
         parent::__construct();
         $this->contracts = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -300,5 +306,38 @@ class User extends BaseUser
     public function getNewsLetter()
     {
         return $this->newsLetter;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \Bp\ProfileBundle\Entity\Comment $comments
+     * @return User
+     */
+    public function addComment(\Bp\ProfileBundle\Entity\Comment $comments)
+    {
+        $this->comments[] = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \Bp\ProfileBundle\Entity\Comment $comments
+     */
+    public function removeComment(\Bp\ProfileBundle\Entity\Comment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

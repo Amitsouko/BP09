@@ -92,9 +92,15 @@ class Pack implements ItemInterface
      **/
     private $mainPhoto;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="pakc")
+     **/
+    private $comments;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         $this->contracts = new ArrayCollection();
     }
 
@@ -383,5 +389,94 @@ class Pack implements ItemInterface
     public function getTypes()
     {
         return $this->types;
+    }
+
+    /**
+     * Add photos
+     *
+     * @param \Bp\ProductBundle\Entity\Photo $photos
+     * @return Pack
+     */
+    public function addPhoto(\Bp\ProductBundle\Entity\Photo $photos)
+    {
+        $this->photos[] = $photos;
+
+        return $this;
+    }
+
+    /**
+     * Remove photos
+     *
+     * @param \Bp\ProductBundle\Entity\Photo $photos
+     */
+    public function removePhoto(\Bp\ProductBundle\Entity\Photo $photos)
+    {
+        $this->photos->removeElement($photos);
+    }
+
+    /**
+     * Get photos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPhotos()
+    {
+        return $this->photos;
+    }
+
+    /**
+     * Set mainPhoto
+     *
+     * @param \Bp\ProductBundle\Entity\Photo $mainPhoto
+     * @return Pack
+     */
+    public function setMainPhoto(\Bp\ProductBundle\Entity\Photo $mainPhoto = null)
+    {
+        $this->mainPhoto = $mainPhoto;
+
+        return $this;
+    }
+
+    /**
+     * Get mainPhoto
+     *
+     * @return \Bp\ProductBundle\Entity\Photo 
+     */
+    public function getMainPhoto()
+    {
+        return $this->mainPhoto;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \Bp\ProfileBundle\Entity\Comment $comments
+     * @return Pack
+     */
+    public function addComment(\Bp\ProfileBundle\Entity\Comment $comments)
+    {
+        $this->comments[] = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \Bp\ProfileBundle\Entity\Comment $comments
+     */
+    public function removeComment(\Bp\ProfileBundle\Entity\Comment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

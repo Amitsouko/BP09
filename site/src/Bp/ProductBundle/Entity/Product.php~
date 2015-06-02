@@ -110,6 +110,11 @@ class Product implements ItemInterface
      **/
     private $mainPhoto;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="product")
+     **/
+    private $comments;
+
     public function __construct()
     {
         $this->active = true;
@@ -117,6 +122,7 @@ class Product implements ItemInterface
         $this->packs = new ArrayCollection();
         $this->customPacks = new ArrayCollection();
         $this->contracts = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
   
     public function __toString()
@@ -552,5 +558,38 @@ class Product implements ItemInterface
     public function getMainPhoto()
     {
         return $this->mainPhoto;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \Bp\ProfileBundle\Entity\Comment $comments
+     * @return Product
+     */
+    public function addComment(\Bp\ProfileBundle\Entity\Comment $comments)
+    {
+        $this->comments[] = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \Bp\ProfileBundle\Entity\Comment $comments
+     */
+    public function removeComment(\Bp\ProfileBundle\Entity\Comment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

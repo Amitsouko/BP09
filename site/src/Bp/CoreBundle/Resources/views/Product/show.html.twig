@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Produit</title>
+</head>
+<body>
+<h1>{{ product.name }}</h1>
+
+<h2>Description</h2>
+<div>
+    {{ product.description }}
+</div>
+<h2>Spécificités</h2>
+<div>
+    {{ product.specificite|raw }}
+</div>
+<h2>Types</h2>
+<div>
+    <ul>
+    {% for type in product.types %}
+    <li>{{ type.name }}</li>
+    {% endfor %}
+    </ul>
+</div>
+<h2>Prix</h2>
+<div>
+    {{ product.price|price }}
+</div>
+
+<h2>Photos</h2>
+{% for photo in product.photos %}
+<img src="{{ photo.webPath|imagine_filter("type_medium") }}">
+{% endfor %}
+<h2>Commentaires</h2>
+<ul>
+    {% for comment in product.comments %}
+    <li>{{ comment.user.username }} : {{ comment.text }} ({{ comment.date|date }}) - note {{ comment.note }}</li>
+    {% endfor %}
+</ul>
+{{ product|class }}
+<h3>Poster un commentaire</h3>
+{{ render(controller('BpProfileBundle:Comment:index', {id: product.id, type: product|class})) }}
+
+</body>
+</html>

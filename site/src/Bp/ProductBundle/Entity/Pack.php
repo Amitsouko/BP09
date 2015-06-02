@@ -92,9 +92,15 @@ class Pack implements ItemInterface
      **/
     private $mainPhoto;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="pakc")
+     **/
+    private $comments;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         $this->contracts = new ArrayCollection();
     }
 
@@ -439,5 +445,38 @@ class Pack implements ItemInterface
     public function getMainPhoto()
     {
         return $this->mainPhoto;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \Bp\ProfileBundle\Entity\Comment $comments
+     * @return Pack
+     */
+    public function addComment(\Bp\ProfileBundle\Entity\Comment $comments)
+    {
+        $this->comments[] = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \Bp\ProfileBundle\Entity\Comment $comments
+     */
+    public function removeComment(\Bp\ProfileBundle\Entity\Comment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }
