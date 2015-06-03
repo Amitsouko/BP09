@@ -23,6 +23,7 @@ class ProductType extends AbstractType
             ->add('active')
             ->add('packs')
             ->add('types')
+            ->add('categories')
         ;
     }
     

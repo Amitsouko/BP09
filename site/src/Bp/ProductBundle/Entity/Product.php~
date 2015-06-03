@@ -599,4 +599,37 @@ class Product implements ItemInterface
     {
         return $this->comments;
     }
+
+    /**
+     * Add categories
+     *
+     * @param \Bp\ProductBundle\Entity\Category $categories
+     * @return Product
+     */
+    public function addCategory(\Bp\ProductBundle\Entity\Category $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Bp\ProductBundle\Entity\Category $categories
+     */
+    public function removeCategory(\Bp\ProductBundle\Entity\Category $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
 }
