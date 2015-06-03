@@ -115,9 +115,16 @@ class Product implements ItemInterface
      **/
     private $comments;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Category", inversedBy="products",cascade={"persist"})
+     * @ORM\JoinTable(name="product_category")
+     **/
+    private $categories;
+
     public function __construct()
     {
         $this->active = true;
+        $this->categories = new ArrayCollection();
         $this->objects = new ArrayCollection();
         $this->packs = new ArrayCollection();
         $this->customPacks = new ArrayCollection();
@@ -591,5 +598,38 @@ class Product implements ItemInterface
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \Bp\ProductBundle\Entity\Category $categories
+     * @return Product
+     */
+    public function addCategory(\Bp\ProductBundle\Entity\Category $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Bp\ProductBundle\Entity\Category $categories
+     */
+    public function removeCategory(\Bp\ProductBundle\Entity\Category $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }

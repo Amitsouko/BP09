@@ -93,12 +93,19 @@ class Pack implements ItemInterface
     private $mainPhoto;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Category", inversedBy="packs",cascade={"persist"})
+     * @ORM\JoinTable(name="pack_category")
+     **/
+    private $categories;
+
+    /**
      * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="pakc")
      **/
     private $comments;
 
     public function __construct()
     {
+        $this->categories = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->contracts = new ArrayCollection();
@@ -478,5 +485,38 @@ class Pack implements ItemInterface
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \Bp\ProductBundle\Entity\Category $categories
+     * @return Pack
+     */
+    public function addCategory(\Bp\ProductBundle\Entity\Category $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \Bp\ProductBundle\Entity\Category $categories
+     */
+    public function removeCategory(\Bp\ProductBundle\Entity\Category $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }

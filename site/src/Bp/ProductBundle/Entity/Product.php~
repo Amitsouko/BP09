@@ -115,9 +115,16 @@ class Product implements ItemInterface
      **/
     private $comments;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Category", inversedBy="products",cascade={"persist"})
+     * @ORM\JoinTable(name="product_category")
+     **/
+    private $categories;
+
     public function __construct()
     {
         $this->active = true;
+        $this->categories = new ArrayCollection();
         $this->objects = new ArrayCollection();
         $this->packs = new ArrayCollection();
         $this->customPacks = new ArrayCollection();

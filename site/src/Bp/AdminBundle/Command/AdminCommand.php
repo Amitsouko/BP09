@@ -10,6 +10,7 @@ use Symfony\Component\Yaml\Parser;
 use Bp\ProductBundle\Entity\Product;
 use Bp\ProductBundle\Entity\Pack;
 use Bp\ProductBundle\Entity\Object;
+use Bp\ProductBundle\Entity\Category;
 
 class AdminCommand extends ContainerAwareCommand
 {
@@ -101,6 +102,27 @@ class AdminCommand extends ContainerAwareCommand
             $em->persist($p);
             
         }
+        $em->flush();
+
+        $output->writeln("Génération des catégories");
+
+        $categories = $data["category"];
+
+        foreach($categories as $value)
+        {
+            $c = $em->getRepository("BpProductBundle:Category")->findOneByName($value["name"]);
+            $category = ($c) ? $c : new Category();
+            $category->setName($value["name"]);
+            foreach($value["products"] as $v)
+            {
+                $product = $em->getRepository("BpProductBundle:Product")->findOneByReference($v);
+                if(!$product || $category->getPRoducts()->contains($product) ) continue;
+                $product->addCategory($category);
+                $em->persist($product);
+            }
+            $em->persist($category);
+        }
+
         $em->flush();
 
         $output->writeln("Ayé (>^.^)>, tout fini :)");

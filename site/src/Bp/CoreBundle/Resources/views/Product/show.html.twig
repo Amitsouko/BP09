@@ -27,6 +27,8 @@
     {{ product.price|price }}
 </div>
 
+<h2>Photo princpale</h2>
+<img src="{{ product.mainPhoto.webPath | imagine_filter("type_medium") }}">
 <h2>Photos</h2>
 {% for photo in product.photos %}
 <img src="{{ photo.webPath|imagine_filter("type_medium") }}">

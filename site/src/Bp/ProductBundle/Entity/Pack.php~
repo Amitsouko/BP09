@@ -93,12 +93,19 @@ class Pack implements ItemInterface
     private $mainPhoto;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Category", inversedBy="packs",cascade={"persist"})
+     * @ORM\JoinTable(name="pack_category")
+     **/
+    private $categories;
+
+    /**
      * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="pakc")
      **/
     private $comments;
 
     public function __construct()
     {
+        $this->categories = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->contracts = new ArrayCollection();

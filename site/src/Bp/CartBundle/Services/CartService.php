@@ -13,6 +13,7 @@ class CartService
     private $tva;
     private $cart;
     private $option;
+    private $adresse;
 
     public function __construct(Session $session, $em, $tva)
     {
@@ -28,7 +29,7 @@ class CartService
         }
 
         if($session->get("cart.option"))
-        {
+        {   
             $this->option = $session->get("cart.option");
         }else{
             $this->option = array();
@@ -97,6 +98,25 @@ class CartService
         return true;
     }
 
+    public function setAdresseLivraison($array)
+    {
+        $this->adresse["livraison"] = $array;
+    }
+
+    public function getAdresseLivraison()
+    {
+        return $this->adresse["livraison"];
+    }
+
+    public function setAdresseFacture($array)
+    {
+        $this->adresse["facture"] = $array;
+    }
+
+    public function getAdresseFacture()
+    {
+        return $this->adresse["facture"];
+    }
 
     public function getPriceHT()
     {

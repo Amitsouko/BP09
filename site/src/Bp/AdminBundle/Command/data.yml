@@ -77,7 +77,6 @@ product:
         specificite: <ul><li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li><li> Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum.</li><li> Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus.</li></ul>
         quantity: 10
 
-
 pack:
     PA-BEF7DABF53:
         name: Hipster kit
@@ -89,3 +88,9 @@ pack:
         description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in erat tincidunt, malesuada lorem nec, semper ipsum. Curabitur eu ultrices quam, a ultricies elit. Nulla arcu dui, fringilla nec nunc vitae, varius aliquam tellus. Sed magna est, luctus vitae lectus eget, lobortis condimentum turpis. Suspendisse pulvinar tincidunt odio vel egestas. Vestibulum scelerisque magna bibendum, blandit est ut, ultrices sem.
         price: 35
         products: ["PR-03D3F442C1", "PR-5B746E6940","PR-05DC33AF1A", "PR-BE10675185"]
+
+category:
+    - { name: smartwatch, products: ["PR-CDF2188E5C","PR-03D3F442C1","PR-4FCBBEE145","PR-BE10675185"] }
+    - { name: sport, products:["PR-5B746E6940","PR-05DC33AF1A"] }
+    - { name: maison, products: ["PR-C8EB2966C4", "PR-6E171859C3","PR-5D1998EE7F"] }
+    - { name: santé, products:["PR-5D1998EE7F","PR-32654AAFE4","PR-5B746E6940"] }
