@@ -15,7 +15,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $cart = $this->get("cart");
         return array();
     }
 }

@@ -1,0 +1,17 @@
+<h2>Panier</h2>
+{% if cart.products|length == 0  %}
+<span>Pas d'articles dans votre panier</span>
+{% else %}
+<ul>
+    <li>Nombre d'articles {{ cart.products|length }} </li>
+    <li>Prix {{ cart.priceTtc|price }} </li>
+    <li>
+        liste des articles :
+        <ul>
+            {% for article in cart.products %}
+            <li>{{ article.name }} x{{ article.userQuantity }}</li>
+            {% endfor %}
+        </ul>
+    </li>
+</ul>
+{% endif %}

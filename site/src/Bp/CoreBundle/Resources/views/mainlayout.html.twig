@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<header>
+<h1>Register</h1>
+    {% render(path("bp_profile_registration_registerembed")) %}
+    <h1>Login</h1>
+    {% render(path("bp_profile_security_embedlogin")) %}
+    <h1>Panier</h1>
+    {% render(path("bp_cart_default_embedcart")) %}
+</header>
+<div>
+    <h1>Main</h1>
+{% block body %}
+{% endblock body %}
+
+</div>
+<footer>
+    
+</footer>
+</body>
+</html>

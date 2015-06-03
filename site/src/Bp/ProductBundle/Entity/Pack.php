@@ -99,7 +99,7 @@ class Pack implements ItemInterface
     private $categories;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="pakc")
+     * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="pack")
      **/
     private $comments;
 
