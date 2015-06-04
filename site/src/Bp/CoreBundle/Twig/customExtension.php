@@ -16,6 +16,7 @@ class customExtension extends \Twig_Extension
             new \Twig_SimpleFilter('price', array($this, 'priceFilter')),
             new \Twig_SimpleFilter('percent', array($this, 'percentageFilter')),
             new \Twig_SimpleFilter('ttcPrice', array($this, 'ttcPrice')),
+            new \Twig_SimpleFilter('averageNote', array($this, 'getNote')),
             new \Twig_SimpleFilter('class', array($this, 'getClass'))
         );
     }
@@ -47,5 +48,17 @@ class customExtension extends \Twig_Extension
     public function getName()
     {
         return 'custom_extension';
+    }
+
+    public function getNote($comments)
+    {
+        $sum = 0;
+        $commentNumber = 0;
+        foreach($comments as $comment)
+        {
+            $commentNumber++;
+            $sum += $comment->getNote();
+        }
+        return ($commentNumber > 0) ? number_format($sum/$commentNumber, 2) : "pas de note";
     }
 }

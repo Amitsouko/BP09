@@ -6,10 +6,14 @@
 <body>
 
 <header>
+{% if app.user %}
+user connecté : {{ app.user.username }}
+{% else %}
 <h1>Register</h1>
     {% render(path("bp_profile_registration_registerembed")) %}
     <h1>Login</h1>
     {% render(path("bp_profile_security_embedlogin")) %}
+{% endif %}
     <h1>Panier</h1>
     {% render(path("bp_cart_default_embedcart")) %}
 </header>
@@ -22,5 +26,6 @@
 <footer>
     
 </footer>
+{% include  "BpCoreBundle::tawkto.html.twig" %}
 </body>
 </html>

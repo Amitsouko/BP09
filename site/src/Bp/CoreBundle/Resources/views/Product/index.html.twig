@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends "BpCoreBundle::mainlayout.html.twig" %}
+
+{% block body %}
 <ul>
 {% for product in products %}
 <li> <a href="{{ path("bp_core_product_show", { id:product.id }) }}">{{ product.name }}</a></li>
 {% endfor %}
 </ul>
-</body>
-</html>
+{% endblock body %}

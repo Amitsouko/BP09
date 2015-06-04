@@ -29,15 +29,6 @@
 <img src="{{ photo.webPath|imagine_filter("type_medium") }}">
 {% endfor %}
 
-<h2>Commentaires</h2>
-<ul>
-    {% for comment in pack.comments %}
-    <li>{{ comment.user.username }} : {{ comment.text }} ({{ comment.date|date }}) - note {{ comment.note }}</li>
-    {% endfor %}
-</ul>
-<h3>Poster un commentaire</h3>
-{{ render(controller('BpProfileBundle:Comment:index', {id: pack.id, type: pack|class})) }}
-
 
 {% endblock body %}
 
