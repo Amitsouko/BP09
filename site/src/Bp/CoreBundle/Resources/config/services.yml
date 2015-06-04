@@ -1,5 +1,6 @@
 services:
     core.twig.custom_extension:
         class: Bp\CoreBundle\Twig\customExtension
+        arguments: [%cart.tva%]
         tags:
             - { name: twig.extension }

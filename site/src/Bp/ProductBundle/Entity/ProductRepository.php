@@ -39,4 +39,18 @@ class ProductRepository extends EntityRepository
               ))
               ->getResult();
       }
+
+      public function findOnHome($limit = 5)
+       {
+           return $this->getEntityManager()
+               ->createQuery('SELECT p FROM BpProductBundle:Product p
+             
+                               WHERE p.onHome = :onHome
+                          ')
+               ->setMaxResults($limit)
+               ->setParameters(array(
+                   'onHome' => true
+               ))
+               ->getResult();
+       }
 }

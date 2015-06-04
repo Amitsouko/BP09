@@ -21,6 +21,7 @@ class PackType extends AbstractType
             ->add('price')
             ->add('quantity')
             ->add('active')
+            ->add('onHome')
             ->add('products')
             ->add('types')
         ;

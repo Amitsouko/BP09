@@ -1,0 +1,20 @@
+{% extends "BpCoreBundle::mainlayout.html.twig" %}
+
+{% block body %}
+<h1>Packs</h1>
+
+
+
+{% for pack in packs %}
+
+<ul>
+    <li>Nom : <a href="{{ path("bp_core_pack_show", {id:pack.id}) }}">{{ pack.name }}</a></li>
+    <li>Prix : {{ pack.price|ttcPrice }}</li>
+    {% if pack.mainPhoto %}
+    <li><img src="{{ pack.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="{{ pack.mainPhoto.alt }}" title="{{ pack.mainPhoto.description }}"></li>
+    {% endif %}
+</ul>
+
+{% endfor %}
+
+{% endblock body %}

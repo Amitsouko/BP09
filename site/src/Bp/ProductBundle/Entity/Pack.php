@@ -65,6 +65,13 @@ class Pack implements ItemInterface
     private $active;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="onHome", type="boolean")
+     */
+    private $onHome;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product", inversedBy="packs",cascade={"persist"})
      * @ORM\JoinTable(name="pack_product")
      **/
@@ -518,5 +525,28 @@ class Pack implements ItemInterface
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    /**
+     * Set onHome
+     *
+     * @param boolean $onHome
+     * @return Pack
+     */
+    public function setOnHome($onHome)
+    {
+        $this->onHome = $onHome;
+
+        return $this;
+    }
+
+    /**
+     * Get onHome
+     *
+     * @return boolean 
+     */
+    public function getOnHome()
+    {
+        return $this->onHome;
     }
 }

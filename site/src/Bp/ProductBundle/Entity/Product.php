@@ -59,6 +59,13 @@ class Product implements ItemInterface
     private $price;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="taxe", type="decimal")
+     */
+    private $taxe;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="quantity", type="integer")
@@ -71,6 +78,13 @@ class Product implements ItemInterface
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="onHome", type="boolean")
+     */
+    private $onHome;
 
     /**
      * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Object", mappedBy="product")
@@ -130,6 +144,7 @@ class Product implements ItemInterface
         $this->customPacks = new ArrayCollection();
         $this->contracts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->taxe = 0;
     }
   
     public function __toString()
@@ -631,5 +646,51 @@ class Product implements ItemInterface
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    /**
+     * Set taxe
+     *
+     * @param string $taxe
+     * @return Product
+     */
+    public function setTaxe($taxe)
+    {
+        $this->taxe = $taxe;
+
+        return $this;
+    }
+
+    /**
+     * Get taxe
+     *
+     * @return string 
+     */
+    public function getTaxe()
+    {
+        return $this->taxe;
+    }
+
+    /**
+     * Set onHome
+     *
+     * @param boolean $onHome
+     * @return Product
+     */
+    public function setOnHome($onHome)
+    {
+        $this->onHome = $onHome;
+
+        return $this;
+    }
+
+    /**
+     * Get onHome
+     *
+     * @return boolean 
+     */
+    public function getOnHome()
+    {
+        return $this->onHome;
     }
 }

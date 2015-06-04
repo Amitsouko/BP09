@@ -1,5 +1,34 @@
 {% extends "BpCoreBundle::mainlayout.html.twig" %}
 
 {% block body %}
-Accueil
+<h1>Accueil</h1>
+
+<h2>Packs</h2>
+
+{% for product in products %}
+<ul>
+    <li>Nom : {{ product.name }}</li>
+    <li>Prix : {{ product.price|ttcPrice }}</li>
+    {% if product.taxe > 0 %}
+    <li>Taxe : {{ product.taxe }}</li>
+    {% endif %}
+    {% if product.mainPhoto %}
+    <li><img src="{{ product.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="{{ product.mainPhoto.alt }}" title="{{ product.mainPhoto.description }}"></li>
+    {% endif %}
+</ul>
+{% endfor %}
+
+<h2>Packs</h2>
+{% for pack in packs %}
+
+<ul>
+    <li>Nom : {{ pack.name }}</li>
+    <li>Prix : {{ pack.price|ttcPrice }}</li>
+    {% if pack.mainPhoto %}
+    <li><img src="{{ pack.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="{{ pack.mainPhoto.alt }}" title="{{ pack.mainPhoto.description }}"></li>
+    {% endif %}
+</ul>
+
+{% endfor %}
+
 {% endblock body %}

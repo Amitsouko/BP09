@@ -15,6 +15,13 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return array();
+        $em = $this->getDoctrine()->getManager();
+
+        //get products and pack with "onHome" = true
+        $products = $em->getRepository("BpProductBundle:Product")->findOnHome();
+        $packs = $em->getRepository("BpProductBundle:Pack")->findOnHome();
+
+        return array("products" => $products, "packs" => $packs);
     }
+
 }

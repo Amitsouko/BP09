@@ -39,5 +39,19 @@ class PackRepository extends EntityRepository
               ))
               ->getResult();
       }
+
+      public function findOnHome($limit = 2)
+       {
+           return $this->getEntityManager()
+               ->createQuery('SELECT p FROM BpProductBundle:Pack p
+             
+                               WHERE p.onHome = :onHome
+                          ')
+               ->setMaxResults($limit)
+               ->setParameters(array(
+                   'onHome' => true
+               ))
+               ->getResult();
+       }
     
 }
