@@ -37,6 +37,7 @@ class CommentController extends Controller
 
         $form = $this->createFormBuilder($comment)
             ->add('text', 'text')
+            ->add('note')
             ->add("type", "hidden", array('mapped' => false, "attr" => array("value" => $id )))
             ->add("id", "hidden", array('mapped' => false, "attr" => array("value" => $type )));
 

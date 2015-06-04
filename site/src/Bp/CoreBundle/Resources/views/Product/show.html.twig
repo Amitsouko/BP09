@@ -28,7 +28,9 @@
 </div>
 
 <h2>Photo princpale</h2>
+{% if product.mainPhoto %}
 <img src="{{ product.mainPhoto.webPath | imagine_filter("type_medium") }}">
+{% endif %}
 <h2>Photos</h2>
 {% for photo in product.photos %}
 <img src="{{ photo.webPath|imagine_filter("type_medium") }}">
@@ -39,7 +41,7 @@
     <li>{{ comment.user.username }} : {{ comment.text }} ({{ comment.date|date }}) - note {{ comment.note }}</li>
     {% endfor %}
 </ul>
-{{ product|class }}
+
 <h3>Poster un commentaire</h3>
 {{ render(controller('BpProfileBundle:Comment:index', {id: product.id, type: product|class})) }}
 

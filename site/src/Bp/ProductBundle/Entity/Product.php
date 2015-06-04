@@ -87,7 +87,7 @@ class Product implements ItemInterface
     private $onHome;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Object", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Object", mappedBy="product",cascade={"all"})
      **/
     private $objects;
 
@@ -125,9 +125,15 @@ class Product implements ItemInterface
     private $mainPhoto;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="product",cascade={"all"})
      **/
     private $comments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Bp\ProductBundle\Entity\Brand", inversedBy="products",cascade={"persist"})
+     * @ORM\JoinColumn(name="brand_id", referencedColumnName="id")
+     **/
+    private $brand;
 
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Category", inversedBy="products",cascade={"persist"})
@@ -692,5 +698,28 @@ class Product implements ItemInterface
     public function getOnHome()
     {
         return $this->onHome;
+    }
+
+    /**
+     * Set brand
+     *
+     * @param \Bp\ProductBundle\Entity\Brand $brand
+     * @return Product
+     */
+    public function setBrand(\Bp\ProductBundle\Entity\Brand $brand = null)
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * Get brand
+     *
+     * @return \Bp\ProductBundle\Entity\Brand 
+     */
+    public function getBrand()
+    {
+        return $this->brand;
     }
 }

@@ -12,11 +12,32 @@
 </ul>
 
 <h2>Objets du pack</h2>
-<ul>
     {% for product in pack.products %}
-    <li>Nom : {{ product.name }}</li>
+    <h4> <a href="{{ path("bp_core_product_show", { id:product.id }) }}">{{ product.name }}</a> </h4>
+<ul>
+    <li>Marque : {{ product.brand.name }}</li>
+    <li>Prix : {{ product.price|ttcPrice }}</li>
+    <li>Taxe : {{ product.taxe|ttcPrice }}</li>
+    {% if product.mainPhoto %}
+    <li><img src="{{ product.mainPhoto.webPath | imagine_filter("type_medium") }}"></li>
+    {% endif %}
+</ul>
+    {% endfor %}
 
+<h2>Images du pack</h2>
+{% for photo in pack.photos %}
+<img src="{{ photo.webPath|imagine_filter("type_medium") }}">
+{% endfor %}
+
+<h2>Commentaires</h2>
+<ul>
+    {% for comment in pack.comments %}
+    <li>{{ comment.user.username }} : {{ comment.text }} ({{ comment.date|date }}) - note {{ comment.note }}</li>
     {% endfor %}
 </ul>
+<h3>Poster un commentaire</h3>
+{{ render(controller('BpProfileBundle:Comment:index', {id: pack.id, type: pack|class})) }}
+
 
 {% endblock body %}
+

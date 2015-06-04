@@ -130,6 +130,12 @@ class Product implements ItemInterface
     private $comments;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Bp\ProductBundle\Entity\Brand", inversedBy="products",cascade={"persist"})
+     * @ORM\JoinColumn(name="brand_id", referencedColumnName="id")
+     **/
+    private $brand;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Category", inversedBy="products",cascade={"persist"})
      * @ORM\JoinTable(name="product_category")
      **/
@@ -144,6 +150,7 @@ class Product implements ItemInterface
         $this->customPacks = new ArrayCollection();
         $this->contracts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->taxe = 0;
     }
   
     public function __toString()

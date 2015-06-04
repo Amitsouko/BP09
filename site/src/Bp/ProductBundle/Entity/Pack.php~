@@ -526,4 +526,27 @@ class Pack implements ItemInterface
     {
         return $this->categories;
     }
+
+    /**
+     * Set onHome
+     *
+     * @param boolean $onHome
+     * @return Pack
+     */
+    public function setOnHome($onHome)
+    {
+        $this->onHome = $onHome;
+
+        return $this;
+    }
+
+    /**
+     * Get onHome
+     *
+     * @return boolean 
+     */
+    public function getOnHome()
+    {
+        return $this->onHome;
+    }
 }

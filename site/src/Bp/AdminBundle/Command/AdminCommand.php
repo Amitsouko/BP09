@@ -10,6 +10,7 @@ use Symfony\Component\Yaml\Parser;
 use Bp\ProductBundle\Entity\Product;
 use Bp\ProductBundle\Entity\Pack;
 use Bp\ProductBundle\Entity\Object;
+use Bp\ProductBundle\Entity\Brand;
 use Bp\ProductBundle\Entity\Category;
 
 class AdminCommand extends ContainerAwareCommand
@@ -67,8 +68,17 @@ class AdminCommand extends ContainerAwareCommand
                 }
                 $output->writeln("$i objets créés.");
             }
-            $em->flush();
-            
+
+            //create brand
+            $brand = $em->getRepository("BpProductBundle:Brand")->findOneByName($value["company"]);
+            if(!$brand){
+                $brand = new Brand();
+                $brand->setName($value["company"]);
+                $em->persist($brand);
+            } 
+
+            $product->setBrand($brand);
+
         }
         $em->flush();
 
