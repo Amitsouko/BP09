@@ -16,7 +16,7 @@ class PackRepository extends EntityRepository
   public function findPagination($offset = 0, $limit = 20)
   {
       return $this->getEntityManager()
-                 ->createQuery('SELECT p.id, p.name, p.description, f.path, p.price, p.taxe FROM BpProductBundle:Pack p
+                 ->createQuery('SELECT p.id, p.name, p.description, f.path, p.price FROM BpProductBundle:Pack p
                                 LEFT JOIN p.mainPhoto f
                                  WHERE p.active = :active
                             ')

@@ -13,22 +13,39 @@ use Doctrine\ORM\EntityRepository;
 class ProductRepository extends EntityRepository
 {
 
-  public function findPagination($offset = 0, $limit = 20)
+  public function findPagination($offset = 0, $limit = 20, $category, $brand)
   {
-      return $this->getEntityManager()
-                 ->createQuery('SELECT p.id, p.reference, p.name, p.description, f.path, p.price, p.taxe, b.name as brand FROM BpProductBundle:Product p
-                                LEFT JOIN p.mainPhoto f
-                                LEFT JOIN p.brand b
-                                 WHERE p.active = :active
-                            ')
-                 ->setParameters(array(
-                     'active' => true
-                 ))
-                 ->setFirstResult($offset)
-                 ->setMaxResults($limit)
-                 ->getArrayResult();
+    $qb = $this->createQueryBuilder("p");
+    $query = $qb->select("p.id, p.reference, p.name, p.description,p.specificite, f.path, p.price, p.taxe, b.name")
+        ->leftJoin("p.mainPhoto", "f")
+        ->leftJoin("p.brand", "b")
+        ->leftJoin("p.categories", "c")
+        ->where("p.active = :active")
+        
+        ->setFirstResult($offset)
+        ->setMaxResults($limit);
+
+      if($category)
+      {
+        $query->andWhere("c.name = :cat")
+        ->setParameter("cat", $category);
+      }
+
+      if($brand)
+      {
+        $query->andWhere("b.name = :brandName")
+        ->setParameter("brandName", $brand);
+      }
+
+      $query
+        ->setParameter('active' , true)
+        ->setFirstResult($offset)
+        ->setMaxResults($limit);
+
+      return $query->getQuery()->getArrayResult();
   }
 
+ 
     public function findOneActiveById($id)
      {
          return $this->getEntityManager()

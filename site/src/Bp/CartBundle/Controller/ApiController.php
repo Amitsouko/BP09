@@ -30,6 +30,10 @@ class ApiController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $cart = $this->container->get("cart");
         $cart = $cart->getCart();
+
+        $cart["products"] = $cart["products"];
+        $cart["options"] = $cart["options"];
+
         $response = new Response(json_encode(
                 array(  
                         "status" =>"success", 
@@ -90,17 +94,7 @@ class ApiController extends Controller
         
         $cart->addObject($item, $quantity);
 
-
-        $cart = $cart->getCart();
-        $response = new Response(json_encode(
-                array(  
-                        "status" =>"success", 
-                        "data" => array("cart" => $cart)
-                    )
-                ));
-
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
+        return $this->cartAction($request);
     }
 
 
@@ -154,11 +148,13 @@ class ApiController extends Controller
     {
         $limit = $request->get("limit");
         $offset = $request->get("offset");
+        $category = $request->get("category");
+        $brand = $request->get("brand");
         $this->checkAjax($request);  
         $em = $this->getDoctrine()->getEntityManager();
-        $products = $em->getRepository("BpProductBundle:Product")->findPagination($offset,$limit);
+        $products = $em->getRepository("BpProductBundle:Product")->findPagination($offset,$limit, $category, $brand);
 
-        if(count($products) ==0) return $this->returnError("0 produits renvoyé");
+        if(count($products) == 0 ) return $this->returnError("0 produits renvoyé");
 
         $productArray = array();
         $photo = new Photo();
@@ -167,7 +163,7 @@ class ApiController extends Controller
         {
             if($p["path"])
             {
-                $p["path"]  =   $photo->getUploadDir() . $p["path"];
+                $p["path"]  =   $photo->getUploadDir() . "/" . $p["path"];
             }
             $productArray[] = $p;
         }
@@ -189,11 +185,7 @@ class ApiController extends Controller
      */
     public function productAction(Request $request)
     {
-        $encoders = array(new XmlEncoder(), new JsonEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
         $liip_imagine = $this->get('liip_imagine.cache.manager');
-
         $id = $request->get("id");
         $filter = ($request->get("filter")) ? $request->get("filter") : "type_medium";
         $em = $this->getDoctrine()->getEntityManager();
@@ -205,7 +197,7 @@ class ApiController extends Controller
         foreach($product->getPhotos() as $f)
         {
             $thumbnail = $liip_imagine->getBrowserPath($f->getWebPath(), $filter);
-            $galery[] = array("path"=> $f->getWebPath(), "thumbnail" =>$thumbnail);
+            $galery[] = array("path"=> $f->getWebPath(), "thumbnail" =>$thumbnail,"description" => $f->getDescription(),"alt" => $f->getAlt());
 
         }
 
@@ -232,6 +224,54 @@ class ApiController extends Controller
         return $response;
     }
 
+
+    /**
+     * @Route("/pack")
+     * @Template()
+     * @Method("GET")
+     */
+    public function packAction(Request $request)
+    {
+        $liip_imagine = $this->get('liip_imagine.cache.manager');
+        $id = $request->get("id");
+        $filter = ($request->get("filter")) ? $request->get("filter") : "type_medium";
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $pack = $em->getRepository("BpProductBundle:Pack")->findOneById($id);
+
+        if(!$pack) return $this->returnError("Pas de pack pour cet id");
+
+        $galery = array();
+        foreach($pack->getPhotos() as $f)
+        {
+            $thumbnail = $liip_imagine->getBrowserPath($f->getWebPath(), $filter);
+            $galery[] = array("path"=> $f->getWebPath(), "thumbnail" =>$thumbnail,"description" => $f->getDescription(),"alt" => $f->getAlt());
+
+        }
+
+
+        $array = array(
+                "name" => $pack->getName(),
+                "path" => $pack->getMainPhoto()->getWebPath() ,
+                "description" => $pack->getDescription() ,
+                "price" => $pack->getPrice() ,
+                "reference" => $pack->getReference() ,
+                "galery" => $galery
+            );
+
+
+        $response = new Response(json_encode(
+                array(  
+                        "status" =>"success", 
+                        "data" => $array
+                    )
+                ));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
+    }
+
+
     /**
      * @Route("/packs")
      * @Template()
@@ -242,9 +282,10 @@ class ApiController extends Controller
         $limit = $request->get("limit");
         $offset = $request->get("offset");
         $this->checkAjax($request);  
+        $filter = ($request->get("filter")) ? $request->get("filter") : "type_medium";
         $em = $this->getDoctrine()->getEntityManager();
-        $packs = $em->getRepository("BpProductBundle:Product")->findPagination($offset,$limit);
-
+        $packs = $em->getRepository("BpProductBundle:Pack")->findPagination($offset,$limit);
+        $liip_imagine = $this->get('liip_imagine.cache.manager');
         if(count($packs) ==0) return $this->returnError("0 pack renvoyé");
 
         $packArray = array();
@@ -254,7 +295,8 @@ class ApiController extends Controller
         {
             if($p["path"])
             {
-                $p["path"]  =   $photo->getUploadDir() . $p["path"];
+                $p["path"]  =   $photo->getUploadDir() . "/" . $p["path"];
+                $p["thumbnail"] = $liip_imagine->getBrowserPath($p["path"], $filter);
             }
             $packArray[] = $p;
         }
@@ -271,16 +313,6 @@ class ApiController extends Controller
     }
     
 
-    /**
-     * @Route("/embed/cart")
-     * @Template()
-     */
-    public function embedCartAction(Request $request)
-    {
-        $cart = $this->container->get("cart");
-        $cart = $cart->getCart();
-        return array("cart" => $cart);
-    }
 
     private function checkAjax($request)
     {
