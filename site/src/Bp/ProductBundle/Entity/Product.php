@@ -82,7 +82,7 @@ class Product implements ItemInterface
     /**
      * @var integer
      *
-     * @ORM\Column(name="onHome", type="boolean")
+     * @ORM\Column(name="onHome", type="boolean", nullable=true)
      */
     private $onHome;
 

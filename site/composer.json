@@ -22,6 +22,7 @@
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "paymentsuite/stripe-bundle": "v1.1",
+        "friendsofsymfony/jsrouting-bundle" : "1.*",
         "liip/imagine-bundle": "*"
     },
     "require-dev": {
