@@ -12,6 +12,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductRepository extends EntityRepository
 {
+
+  public function findPagination($offset = 0, $limit = 20)
+  {
+      return $this->getEntityManager()
+                 ->createQuery('SELECT p.id, p.reference, p.name, p.description, f.path, p.price, p.taxe, b.name as brand FROM BpProductBundle:Product p
+                                LEFT JOIN p.mainPhoto f
+                                LEFT JOIN p.brand b
+                                 WHERE p.active = :active
+                            ')
+                 ->setParameters(array(
+                     'active' => true
+                 ))
+                 ->setFirstResult($offset)
+                 ->setMaxResults($limit)
+                 ->getArrayResult();
+  }
+
     public function findOneActiveById($id)
      {
          return $this->getEntityManager()
