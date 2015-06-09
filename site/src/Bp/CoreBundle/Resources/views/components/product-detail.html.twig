@@ -1,0 +1,163 @@
+<div class="product-detail">
+	<div class="top-header">
+		<div class="container">
+			<div class="slider-product">
+				<div class="slides-container">
+					<div class="slides">
+						{% for photo in product.photos %}
+						<div class="slide active">
+							<img src="{{ photo.webPath|imagine_filter("type_medium") }}" alt="">
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+				<ul>
+					{% for photo in product.photos %}
+					<li class="active"><img src="{{ photo.webPath|imagine_filter("type_medium") }}" alt=""></li>
+					{# <li class="video"></li> #}
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="product-info">
+				<h1>{{ product.name }}</h1>
+				<h2>{{ product.brand.name }}</h2>
+				<p>{{ product.description }}</p>
+				<h3>Couleur</h3>
+				<div class="color-container">
+					<a href="#" class="color"></a>
+					<a href="#" class="color"></a>
+					<a href="#" class="color"></a>
+					<a href="#" class="color"></a>
+				</div>
+				<h3>Taille</h3>
+				<div class="size-container">
+					<a href="#" class="size">s</a>
+					<a href="#" class="size">m</a>
+					<a href="#" class="size">l</a>
+				</div>
+				{% if product.quantity > 0 %}
+				<p class="disponibility">En stock</p>
+				{% else %}
+				<p class="disponibility">En rupture</p>
+				{% endif %}
+				<div class="action-container">
+					<div>
+						<div class="price-container">
+							<a href="#" class="button">Ajouter à mon pack</a>	
+							<p class="price">+ 5,00 &euro;</p>
+						</div>
+						<a href="#" class="icon-container favorites">
+							{{ icons('heart')|raw }}
+							<span>Favoris</span>
+						</a>
+					</div>
+				</div>
+				<div class="more-detail">
+					<a href="#" class="button">Détail</a><a href="#" class="plus">+</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="more-info-container">
+		<div class="more-info">
+			<div class="container">
+				<h1>Fonctionnalités</h1>
+				<div class="fonctionnality-container">
+					<div class="fonctionnality">
+						<div class="icon-container">
+							{{ icons('running')|raw }}
+						</div>
+						<p>Track activity</p>
+					</div>
+					<div class="fonctionnality">
+						<div class="icon-container">
+							{{ icons('moon')|raw }}
+						</div>
+						<p>Track sleep</p>
+					</div>
+					<div class="fonctionnality">
+						<div class="icon-container">
+							{{ icons('heartrate')|raw }}
+						</div>
+						<p>Track heart rate</p>
+					</div>
+					<div class="fonctionnality">
+						<div class="icon-container">
+							{{ icons('alarm')|raw }}
+						</div>
+						<p>Wake you With Silent Alarm</p>
+					</div>
+					<div class="fonctionnality">
+						<div class="icon-container">
+							{{ icons('phone')|raw }}
+						</div>
+						<p>Get call notifications</p>
+					</div>
+					<div class="fonctionnality">
+						<div class="icon-container">
+							{{ icons('water')|raw }}
+						</div>
+						<p>Water resistant</p>
+					</div>
+					<div class="fonctionnality">
+						<div class="icon-container">
+							{{ icons('wireless')|raw }}
+						</div>
+						<p>Wireless syncing</p>
+					</div>
+				</div>
+			</div>
+			<div class="container spec">
+				<h1>Spécifications</h1>
+				<ul>
+					{{ product.specificite|raw }}
+				</ul>
+			</div>
+		</div>
+		<div class="reviews-container">
+			<div class="container">
+				<h1>Témoiniages ({{ product.comments|length }})</h1>
+				<div class="score-container">
+					<div class="score" style="width:{{ product.comments|averageNote * 10 }}%;">
+						<div class="round"></div>
+						<div class="round"></div>
+						<div class="round"></div>
+						<div class="round"></div>
+						<div class="round"></div>
+					</div>
+					<div class="score-circle">
+						<div class="circle"></div>
+						<div class="circle"></div>
+						<div class="circle"></div>
+						<div class="circle"></div>
+						<div class="circle"></div>
+					</div>
+				</div>
+    			{% for comment in product.comments %}
+				<div class="reviews">
+					<h3>{{ comment.user.username }}</h3>
+					<div>
+						<div class="score-container">
+							<div class="score" style="width:{{ comment.note * 10 }}%;">
+								<div class="round"></div>
+								<div class="round"></div>
+								<div class="round"></div>
+								<div class="round"></div>
+								<div class="round"></div>
+							</div>
+							<div class="score-circle">
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+							</div>
+						</div>
+						<p>{{ comment.text }}</p>
+					</div>
+				</div>
+    			{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>

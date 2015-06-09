@@ -1,9 +1,47 @@
 {% extends "BpCoreBundle::mainlayout.html.twig" %}
 
 {% block body %}
-<ul>
-{% for product in products %}
-<li> <a href="{{ path("bp_core_product_show", { id:product.id }) }}">{{ product.name }}</a></li>
-{% endfor %}
-</ul>
+
+	<div class="top-content">
+		<img src="img/highlight-list-product.png" alt="">
+		<div class="container">
+			<div class="breadcrumb">
+				<a href="#">Accueil</a>
+				<a href="#">Boutique</a>
+			</div>
+			<div class="pack-highlight">
+				<div class="info">
+					<h1>Withings activité Pop</h1>
+					<p>Nullam quis risus eget urna mollis ornare vel eu leo. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Vestibulum id ligula porta felis euismod semper.</p>
+					<a href="#" class="button">Découvrir</a>
+					<div class="price-container">
+						<a href="#" class="button">Ajouter à mon panier</a>	
+						<p class="price">+ 5,00 &euro;</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="list-products">
+		<div class="container">
+			
+			{% include 'BpCoreBundle:components:filter-product.html.twig' %}
+			
+			<div class="product-container">
+				
+				{% for product in products %}
+				{% set data = {'product':product, 'page':'shop'} %}
+				{% include 'BpCoreBundle:components:block_product.html.twig' with data %}
+				{% endfor %}
+				
+				<div class="loader-container">
+					<div class="loader"></div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
 {% endblock body %}

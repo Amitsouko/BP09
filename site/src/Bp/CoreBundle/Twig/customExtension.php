@@ -61,4 +61,17 @@ class customExtension extends \Twig_Extension
         }
         return ($commentNumber > 0) ? number_format($sum/$commentNumber, 2) : "pas de note";
     }
+    
+    public function getFunctions()
+    {
+        return array(
+            'icons' => new \Twig_Function_Function(function($name){
+                $html = '';
+                $html .= '<svg class="icon ' . $name . '">';
+                $html .= '  <use xlink:href="#' . $name . '"></use>';
+                $html .= '</svg>';
+                return $html;
+            })
+        );
+    }
 }

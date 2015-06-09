@@ -1,33 +1,23 @@
 <!DOCTYPE html>
-<html>
+<!--[if IE 9 ]><html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html><!--<![endif]-->
 <head>
-    <title></title>
+	{{ include('BpCoreBundle:partials:head.html.twig') }}
 </head>
 <body>
+	<div class="icons">	
+	{{ include('BpCoreBundle:partials:icons.html.twig') }}
+	</div>
+	{{ include('BpCoreBundle:partials:header.html.twig') }}
 
-<header>
-{% if app.user %}
-user connecté : {{ app.user.username }}
-{% else %}
-<h1>Register</h1>
-    {% render(path("bp_profile_registration_registerembed")) %}
-    <h1>Login</h1>
-    {% render(path("bp_profile_security_embedlogin")) %}
-{% endif %}
-    <h1>Panier</h1>
-    {% render(path("bp_cart_default_embedcart")) %}
-</header>
-<div>
-    <h1>Main</h1>
-{% block body %}
-{% endblock body %}
+	<div class="content-page" id="page-{{ page is defined ? page }}">
+	{% block body %}
 
-</div>
-<footer>
-    
-</footer>
-{% include  "BpCoreBundle::tawkto.html.twig" %}
-<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-<script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+	{% endblock %}
+	</div>
+
+	{{ include('BpCoreBundle:partials:footer.html.twig') }}
+	{{ include('BpCoreBundle:partials:foot.html.twig') }}
+	{# {{ include('desktop/components/grid.html.twig') }} #}
 </body>
 </html>

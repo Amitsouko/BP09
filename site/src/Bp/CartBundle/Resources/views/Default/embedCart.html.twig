@@ -1,4 +1,4 @@
-<h2>Panier</h2>
+{# <h2>Panier</h2>
 {% if cart.products|length == 0  %}
 <span>Pas d'articles dans votre panier</span>
 {% else %}
@@ -14,4 +14,59 @@
         </ul>
     </li>
 </ul>
-{% endif %}
+{% endif %} #}
+
+<div class="mini-cart">
+    {% if cart.products|length == 0  %}
+    <div class="pack-personalized">
+        <h3>Vorte panier est vide</h3>
+    </div>
+
+    {% else %}
+
+    <div class="pack-personalized">
+        <h3>Votre pack presonnalisé</h3>
+        <div class="item">
+            <div class="img-container">
+                <img src="{{ asset('public/img/default-product-pack.png') }}" alt="">
+                <p>1/4</p>
+            </div>
+            <div class="info-container">
+                <h6>Pack personnalisé</h6>
+                <p>1/4 objets</p>
+            </div>
+        </div>
+        <div class="still">
+            <h4>choisissez encore 3 autres produits pour completer votre pack</h4>
+            <a href="#" class="button">Voir le catalogue</a>
+        </div>
+    </div>
+
+    <div class="shop-cart">
+        <h3>Votre panier<span>Prix</span></h3>
+
+        {% for article in cart.products %}
+
+        <div class="item">
+            <div class="img-container">
+                <img src="{{ asset('public/img/default-product-pack.png') }}" alt="">
+            </div>
+            <div class="info-container">
+                <h6>{{ article.name }}</h6>
+                {# <p>1/4 objets</p> #}
+                <p class="price">{{ article.price|ttcPrice }}</p>
+            </div>
+        </div>
+
+        {% endfor %}
+
+        <div class="total">
+            <p>Total<span>{{ cart.priceTtc|price }}</span></p>
+        </div>
+    </div>
+    <div class="action-container">
+        <a href="{{ path('bp_core_product_index') }}">Continuer mes achats</a>
+        <a href="#" class="button">Valider ma commande</a>
+    </div>
+    {% endif %}
+</div>

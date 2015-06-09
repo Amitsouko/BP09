@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 class ApiController extends Controller
 {
     /**
-     * @Route("/cart")
+     * @Route("/cart",  options={"expose"=true})
      * @Template()
      * @Method("GET")
      */
@@ -46,7 +46,7 @@ class ApiController extends Controller
     }
 
     /**
-     * @Route("/cart/clear")
+     * @Route("/cart/clear", options={"expose"=true})
      * @Template()
      * @Method("POST")
      */
@@ -69,7 +69,7 @@ class ApiController extends Controller
     }
 
     /**
-     * @Route("/cart/set-quantity")
+     * @Route("/cart/set-quantity", options={"expose"=true})
      * @Template()
      * @Method("GET")
      */
@@ -99,7 +99,7 @@ class ApiController extends Controller
 
 
     /**
-     * @Route("/cart/remove")
+     * @Route("/cart/remove", options={"expose"=true})
      * @Template()
      * @Method("GET")
      */
@@ -140,7 +140,7 @@ class ApiController extends Controller
 
 
     /**
-     * @Route("/products")
+     * @Route("/products", options={"expose"=true})
      * @Template()
      * @Method("GET")
      */
@@ -179,7 +179,7 @@ class ApiController extends Controller
     }
 
     /**
-     * @Route("/product")
+     * @Route("/product", options={"expose"=true})
      * @Template()
      * @Method("GET")
      */
@@ -226,7 +226,7 @@ class ApiController extends Controller
 
 
     /**
-     * @Route("/pack")
+     * @Route("/pack", options={"expose"=true})
      * @Template()
      * @Method("GET")
      */
@@ -273,7 +273,7 @@ class ApiController extends Controller
 
 
     /**
-     * @Route("/packs")
+     * @Route("/packs", options={"expose"=true})
      * @Template()
      * @Method("GET")
      */

@@ -20,8 +20,9 @@ class DefaultController extends Controller
         //get products and pack with "onHome" = true
         $products = $em->getRepository("BpProductBundle:Product")->findOnHome();
         $packs = $em->getRepository("BpProductBundle:Pack")->findOnHome();
+        // $cart = $em->getRepository("BpCartBundle:Service")->getCart();
 
-        return array("products" => $products, "packs" => $packs);
+        return array("products" => $products, "packs" => $packs, "page"=>'home');
     }
 
 }

@@ -1,0 +1,64 @@
+<header class="main-header">
+	<div class="connection-container">
+		<div class="container">
+			<div class="login">
+				{{ render(controller('BpProfileBundle:Security:embedLogin' )) }}
+			</div>
+			<div class="register">
+				{{ render(controller('BpProfileBundle:Registration:registerEmbed' )) }}
+			</div>
+		</div>
+		<div class="close">
+			{{ icons('cross')|raw }}
+		</div>
+	</div>
+	<div class="holder">
+		<div class="container">
+			<div class="logo-container">
+				<a href="{{ path('bp_core_default_index') }}">{{ icons('logo_bg_white')|raw }}</a>
+			</div>
+			<nav>
+				<ul>
+					<li><a href="{{ path('bp_core_pack_index') }}">Choisir un pack</a></li>
+					<li><a href="/pack-editor">Créer son pack</a></li>
+					<li class="shop">
+						<a href="#">Boutique {{ icons('triangle')|raw }}</a>
+					</li>
+					<li><a href="#">Notre concept</a></li>
+				</ul>
+			</nav>
+			<div class="account-info">
+				<a class="my-account" href="#">
+					{{ icons('account')|raw }}
+					<span>Mon compte</span>
+				</a>
+				<a class="cart" href="#">
+					{{ icons('cart-ic')|raw }}
+					<span><span>300</span> - Eur</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="sub-menu shop">
+		<div class="container">
+			
+			{% set category = {'title':'Sport','icon':'bracelet','link':path("bp_core_product_index")} %}
+			{% include 'BpCoreBundle:components:category.html.twig' with category %}
+
+			{% set category = {'title':'Smartwatch','icon':'smartwatch','link': path("bp_core_product_index") } %}
+			{% include 'BpCoreBundle:components:category.html.twig' with category  %}
+
+			{% set category = {'title':'Santé','icon':'sante','link':path("bp_core_product_index") } %}
+			{% include 'BpCoreBundle:components:category.html.twig' with category  %}
+
+			{% set category = {'title':'Maison','icon':'home','link':path("bp_core_product_index") } %}
+			{% include 'BpCoreBundle:components:category.html.twig' with category  %}
+
+		</div>
+	</div>
+	<div class="cart-container">
+		<div class="container">
+			{{ render(controller('BpCartBundle:Default:embedCart' )) }}
+		</div>
+	</div>
+</header>

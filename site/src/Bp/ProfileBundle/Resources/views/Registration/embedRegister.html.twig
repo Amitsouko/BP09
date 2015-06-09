@@ -1,4 +1,11 @@
-<form action="{{ path("fos_user_registration_register") }}" method="post">
+{# <form action="{{ path("fos_user_registration_register") }}" method="post">
     {{ form_widget(form) }}
     <input type="submit" value="s'enregistrer"/>
-</form>
+</form> #}
+{% if app.user %}
+	
+{% else %}
+	<h1>Première connexion</h1>
+	<p>Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Aenean lacinia bibendum nulla sed consectetur. Curabitur blandit tempus porttitor. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+	<a href="#" class="button">Créer un compte</a>
+{% endif %}

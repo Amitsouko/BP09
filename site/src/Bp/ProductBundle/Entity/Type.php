@@ -33,14 +33,14 @@ class Type
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="path", type="string", length=255)
+     * @ORM\Column(name="path", type="string", length=255, nullable=true)
      */
     private $path;
 

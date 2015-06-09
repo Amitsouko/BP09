@@ -1,7 +1,7 @@
 
 {% trans_default_domain 'FOSUserBundle' %}
 
-
+{# 
 {% if error %}
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
@@ -19,4 +19,33 @@
     <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
 
     <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+</form> #}
+
+<h1>Connexion</h1>
+{% if error %}
+    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+{% if app.user %}
+	<h6>{{ app.user.username }}</h6>
+    <a href="{{ path("fos_user_security_logout") }}" class="button">Déconnection</a>
+{% else %}
+<form action="{{ path("fos_user_security_check") }}" method="post">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+	<div class="input">
+		<p>Email</p>
+		{# <input type="text" placeholder="Email"> #}
+		<input type="text" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="Email" />
+	</div>
+	<div class="input">
+		<p>Mot de passe</p>
+		<input type="password" id="password" name="_password" required="required"  placeholder="Mot de passe" />
+		{# <input type="text" placeholder="Mot de passe"> #}
+	</div>
+	<div class="action-holder">
+		<a href="#">Mot de passe oublié ?</a>
+		{# <a href="#" class="button">Connexion</a> #}
+		<input class="button" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+	</div>
 </form>
+{% endif %}
+

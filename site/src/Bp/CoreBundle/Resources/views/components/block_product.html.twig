@@ -1,0 +1,44 @@
+<div class="block-product {{page}}" id="{{ product.id }}">
+	<div class="image-container">
+		{% if product.mainPhoto %}
+		<img src="{{ product.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="">
+		{% else %}
+		<img src="{{ asset('public/img/default-product-pack.png')}}" alt="">
+		{% endif %}
+		<div class="action-container">
+			<div class="in-my-pack">
+				<p>Dans mon pack</p>
+			</div>
+			<a href="/pack-editor/?id=" class="icon-container add-to-pack">
+				<span>Ajouter à mon pack</span>
+				{{ icons('add_box')|raw }}
+			</a>
+			<a href="#" class="icon-container edit">
+				<span>Éditer</span>
+				{{ icons('edit')|raw }}
+			</a>
+			<a href="#" class="icon-container add-to-cart">
+				<span>Ajouter à mon panier</span>
+				{{ icons('add_cart')|raw }}
+			</a>
+			<a href="#" class="icon-container favorites">
+				{{ icons('heart')|raw }}
+				<span>Favoris</span>
+			</a>
+		</div>
+	</div>
+	<div class="info-container">
+		<a href="{{ path("bp_core_product_show", { id:product.id }) }}">
+			{% if product.brand.name is defined %}
+			<h6>{{ product.brand.name }}</h6>
+			{% endif %}
+			<h3>{{ product.name }}</h3>
+			{% if product.taxe is defined and page != "shop" and product.taxe > 0 %}
+			<p class="overprice">+ {{ product.taxe }}</p>
+			{% endif %}
+			{% if product.price is defined and ( page == "shop" or page == "pack") %}
+			<p class="price">{{ product.price|ttcPrice }}</p>
+			{% endif %}
+		</a>
+	</div>
+</div>

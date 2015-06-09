@@ -1,20 +1,72 @@
 {% extends "BpCoreBundle::mainlayout.html.twig" %}
 
 {% block body %}
-<h1>Packs</h1>
+
+	<div class="top-content">
+		<img src="{{ asset('public/img/withings-activity.png')}}" alt="">
+		<div class="container">
+			<div class="breadcrumb">
+				<a href="{{ path('bp_core_default_index') }}">Accueil</a>
+				<a href="{{ path('bp_core_pack_index') }}">Choisir son pack</a>
+			</div>
+			<div class="pack-highlight">
+				<div class="info">
+					<h1>Withings activité Pop</h1>
+					<p>Nullam quis risus eget urna mollis ornare vel eu leo. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Vestibulum id ligula porta felis euismod semper.</p>
+					<a href="#" class="button">Découvrir</a>
+					<div class="price-container">
+						<a href="#" class="button">Ajouter à mon panier</a>	
+						<p class="price">+ 5,00 &euro;</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
+	<div class="list-packs">
+		<div class="container">
 
-{% for pack in packs %}
+			{% for pack in packs %}
 
-<ul>
-    <li>Nom : <a href="{{ path("bp_core_pack_show", {id:pack.id}) }}">{{ pack.name }}</a></li>
-    <li>Prix : {{ pack.price|ttcPrice }}</li>
-    {% if pack.mainPhoto %}
-    <li><img src="{{ pack.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="{{ pack.mainPhoto.alt }}" title="{{ pack.mainPhoto.description }}"></li>
-    {% endif %}
-</ul>
+			{% set pack = {'product':pack,page:'pack'} %}
+			{% include 'BpCoreBundle:components:block_product.html.twig' with pack %}
 
-{% endfor %}
+    {# <li><img src="{{ pack.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="{{ pack.mainPhoto.alt }}" title="{{ pack.mainPhoto.description }}"></li> #}
+
+			{% endfor %}
+
+			{# 
+			{% set pack = {'name':'Withings pack','image_src':'img/withings-pack.png', 'price':'36,00','url':'/pack-detail/withings'} %}
+			{% include '/desktop/components/block_product.html.twig' with pack %}
+			
+			{% set pack = {'name':'Withings pack','image_src':'img/withings-pack.png', 'price':'36,00','url':'/pack-detail/withings'} %}
+			{% include '/desktop/components/block_product.html.twig' with pack %}
+			
+			{% set pack = {'name':'Withings pack','image_src':'img/withings-pack.png', 'price':'36,00','url':'/pack-detail/withings'} %}
+			{% include '/desktop/components/block_product.html.twig' with pack %}
+			
+			{% set pack = {'name':'Withings pack','image_src':'img/withings-pack.png', 'price':'36,00','url':'/pack-detail/withings'} %}
+			{% include '/desktop/components/block_product.html.twig' with pack %}
+			
+			{% set pack = {'name':'Withings pack','image_src':'img/withings-pack.png', 'price':'36,00','url':'/pack-detail/withings'} %}
+			{% include '/desktop/components/block_product.html.twig' with pack %}
+			
+			{% set pack = {'name':'Withings pack','image_src':'img/withings-pack.png', 'price':'36,00','url':'/pack-detail/withings'} %}
+			{% include '/desktop/components/block_product.html.twig' with pack %}
+			
+			{% set pack = {'name':'Withings pack','image_src':'img/withings-pack.png', 'price':'36,00','url':'/pack-detail/withings'} %}
+			{% include '/desktop/components/block_product.html.twig' with pack %}
+			
+			{% set pack = {'name':'Withings pack','image_src':'img/withings-pack.png', 'price':'36,00','url':'/pack-detail/withings'} %}
+			{% include '/desktop/components/block_product.html.twig' with pack %}
+			 #}
+			<div class="loader-container">
+				<div class="loader"></div>
+			</div>
+
+		</div>
+	</div>
+
 
 {% endblock body %}

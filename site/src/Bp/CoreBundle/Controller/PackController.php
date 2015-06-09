@@ -24,7 +24,8 @@ class PackController extends Controller
         $packs = $em->getRepository('BpProductBundle:Pack')->findAll();
 
         return array(
-            'packs' => $packs
+            'packs' => $packs,
+            'page' => 'list-pack'
         );
     }
 
@@ -43,7 +44,8 @@ class PackController extends Controller
         if(!$pack) throw new NotFoundHttpException("Ce pack n'existe pas");
 
         return array(
-            'pack' => $pack
+            'pack' => $pack,
+            'page' => 'pack-detail'
         );
     }
 }
