@@ -42,7 +42,7 @@
 		{# <input type="text" placeholder="Mot de passe"> #}
 	</div>
 	<div class="action-holder">
-		<a href="#">Mot de passe oublié ?</a>
+		<a href="{{ path("fos_user_resetting_request") }}">Mot de passe oublié ?</a>
 		{# <a href="#" class="button">Connexion</a> #}
 		<input class="button" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
 	</div>

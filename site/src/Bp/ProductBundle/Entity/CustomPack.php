@@ -67,28 +67,7 @@ class CustomPack implements ItemInterface
         return $this->id;
     }
 
-    /**
-     * Set ref
-     *
-     * @param string $ref
-     * @return CustomPack
-     */
-    public function setRef($ref)
-    {
-        $this->ref = $ref;
-
-        return $this;
-    }
-
-    /**
-     * Get ref
-     *
-     * @return string 
-     */
-    public function getRef()
-    {
-        return $this->ref;
-    }
+  
 
     /**
      * Set price

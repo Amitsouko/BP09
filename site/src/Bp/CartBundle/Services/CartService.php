@@ -5,6 +5,11 @@ namespace Bp\CartBundle\Services;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Doctrine\Common\Collections\ArrayCollection;
 use Bp\CartBundle\Interfaces\ItemInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+
 
 class CartService
 {
@@ -45,7 +50,8 @@ class CartService
             $this->cart[$item->getReference()]["quantity"] += $quantity;
         }else{
             //need this to get children in cart
-            if(get_class($item) == "Bp\ProductBundle\Entity\Pack" || get_class($item) == "Bp\ProductBundle\Entity\CustomPack") $item->getProducts()->initialize();
+
+            if( (get_class($item) == "Bp\ProductBundle\Entity\Pack" || get_class($item) == "Bp\ProductBundle\Entity\CustomPack" ) && get_class($item->getProducts()) != "Doctrine\Common\Collections\ArrayCollection") $item->getProducts()->initialize();
 
             $this->cart[$item->getReference()] = array(
                     "id" => $item->getId(),
@@ -153,7 +159,7 @@ class CartService
     }
 
     public function getCart()
-    {
+    {        
         $array["products"] = $this->getProducts();
         $array["options"] = $this->getOptions();
         $array["price"] = $this->getPriceHT();
@@ -168,6 +174,7 @@ class CartService
         foreach($this->cart as $it)
         {
             $obj = $it["entity"];
+
             $obj->userQuantity = $it["quantity"];
             switch (get_class($it["entity"])) {
                 case 'Bp\ProductBundle\Entity\Pack':
