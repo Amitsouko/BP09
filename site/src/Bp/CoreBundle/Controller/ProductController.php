@@ -29,7 +29,6 @@ class ProductController extends Controller
         $em = $this->getDoctrine()->getManager();
         $product = $em->getRepository("BpProductBundle:Product")->findOneById($id);
         $products = $em->getRepository("BpProductBundle:Product")->findOnHome();
-        // $products = $em->getRepository("BpProductBundle:Product")->findAll();
 
         return array("product" => $product,'products' => $products,'page'=>"product-page");
     }

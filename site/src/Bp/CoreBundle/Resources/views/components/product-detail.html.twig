@@ -14,7 +14,6 @@
 				<ul>
 					{% for photo in product.photos %}
 					<li class="active"><img src="{{ photo.webPath|imagine_filter("type_medium") }}" alt=""></li>
-					{# <li class="video"></li> #}
 					{% endfor %}
 				</ul>
 			</div>
@@ -63,48 +62,14 @@
 			<div class="container">
 				<h1>Fonctionnalités</h1>
 				<div class="fonctionnality-container">
+					{% for type in product.types %}
 					<div class="fonctionnality">
 						<div class="icon-container">
-							{{ icons('running')|raw }}
+							{{ icons(type.name|lower|replace({' ': '_'}))|raw }}
 						</div>
-						<p>Track activity</p>
+						<p>{{ type.name }}</p>
 					</div>
-					<div class="fonctionnality">
-						<div class="icon-container">
-							{{ icons('moon')|raw }}
-						</div>
-						<p>Track sleep</p>
-					</div>
-					<div class="fonctionnality">
-						<div class="icon-container">
-							{{ icons('heartrate')|raw }}
-						</div>
-						<p>Track heart rate</p>
-					</div>
-					<div class="fonctionnality">
-						<div class="icon-container">
-							{{ icons('alarm')|raw }}
-						</div>
-						<p>Wake you With Silent Alarm</p>
-					</div>
-					<div class="fonctionnality">
-						<div class="icon-container">
-							{{ icons('phone')|raw }}
-						</div>
-						<p>Get call notifications</p>
-					</div>
-					<div class="fonctionnality">
-						<div class="icon-container">
-							{{ icons('water')|raw }}
-						</div>
-						<p>Water resistant</p>
-					</div>
-					<div class="fonctionnality">
-						<div class="icon-container">
-							{{ icons('wireless')|raw }}
-						</div>
-						<p>Wireless syncing</p>
-					</div>
+					{% endfor %}
 				</div>
 			</div>
 			<div class="container spec">
