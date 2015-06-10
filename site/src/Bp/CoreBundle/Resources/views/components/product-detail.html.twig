@@ -47,7 +47,11 @@
 					<div>
 						<div class="price-container">
 							<a href="#" class="button">Ajouter à mon pack</a>	
-							<p class="price">+ 5,00 &euro;</p>
+							{% if page == 'list-product' and page is defined %}
+							<p class="price">{{ product.price|ttcPrice }}</p>
+							{% elseif  product.taxe is defined and product.taxe > 0 %}
+							<p class="price">+ {{ product.taxe }}</p>
+							{% endif %}
 						</div>
 						<a href="#" class="icon-container favorites">
 							{{ icons('heart')|raw }}

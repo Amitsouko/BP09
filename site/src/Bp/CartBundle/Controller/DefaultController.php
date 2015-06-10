@@ -33,4 +33,16 @@ class DefaultController extends Controller
         $cart = $cart->getCart();
         return array("cart" => $cart);
     }
+
+
+    /**
+     * @Route("/embed/cartBtn")
+     * @Template()
+     */
+    public function embedCartBtnAction(Request $request)
+    {
+        $cart = $this->container->get("cart");
+        $cart = $cart->getCart();
+        return array("cart" => $cart);
+    }
 }
