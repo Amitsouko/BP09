@@ -266,10 +266,10 @@ class ApiController extends Controller
             $galery[] = array("path"=> $f->getWebPath(), "thumbnail" =>$thumbnail,"description" => $f->getDescription(),"alt" => $f->getAlt());
 
         }
-
+        $path = ($product->getMainPhoto()) ? $product->getMainPhoto()->getWebPath() : "";
         $array = array(
                 "name" => $product->getName(),
-                "path" => $product->getMainPhoto()->getWebPath() ,
+                "path" =>  $path,
                 "description" => $product->getDescription() ,
                 "price" => $product->getPrice() ,
                 "taxe" => $product->getTaxe() ,
