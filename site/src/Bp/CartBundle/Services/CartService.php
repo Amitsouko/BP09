@@ -205,6 +205,8 @@ class CartService
         return $array;
     }
 
+
+
     private function refreshSessionCart()
     {
         $this->session->set("cart.cart", $this->cart);

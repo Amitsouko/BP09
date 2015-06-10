@@ -37,6 +37,12 @@ class CustomPack implements ItemInterface
      */
     private $price;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Bp\ProfileBundle\Entity\User", inversedBy="customPacks",cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     **/
+    private $user;
+
 
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product", inversedBy="customPacks")
@@ -67,28 +73,7 @@ class CustomPack implements ItemInterface
         return $this->id;
     }
 
-    /**
-     * Set ref
-     *
-     * @param string $ref
-     * @return CustomPack
-     */
-    public function setRef($ref)
-    {
-        $this->ref = $ref;
-
-        return $this;
-    }
-
-    /**
-     * Get ref
-     *
-     * @return string 
-     */
-    public function getRef()
-    {
-        return $this->ref;
-    }
+  
 
     /**
      * Set price

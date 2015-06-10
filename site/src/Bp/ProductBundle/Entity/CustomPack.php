@@ -37,6 +37,12 @@ class CustomPack implements ItemInterface
      */
     private $price;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Bp\ProfileBundle\Entity\User", inversedBy="customPacks",cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     **/
+    private $user;
+
 
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product", inversedBy="customPacks")
@@ -212,5 +218,28 @@ class CustomPack implements ItemInterface
     public function getContracts()
     {
         return $this->contracts;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Bp\ProfileBundle\Entity\User $user
+     * @return CustomPack
+     */
+    public function setUser(\Bp\ProfileBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Bp\ProfileBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

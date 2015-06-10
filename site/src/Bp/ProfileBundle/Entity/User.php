@@ -60,6 +60,11 @@ class User extends BaseUser
     private $contracts;
 
     /**
+     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\CustomPack", mappedBy="user")
+     **/
+    private $customPacks;
+
+    /**
      * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="user")
      **/
     private $comments;
@@ -340,5 +345,38 @@ class User extends BaseUser
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Add customPacks
+     *
+     * @param \Bp\ProductBundle\Entity\CustomPack $customPacks
+     * @return User
+     */
+    public function addCustomPack(\Bp\ProductBundle\Entity\CustomPack $customPacks)
+    {
+        $this->customPacks[] = $customPacks;
+
+        return $this;
+    }
+
+    /**
+     * Remove customPacks
+     *
+     * @param \Bp\ProductBundle\Entity\CustomPack $customPacks
+     */
+    public function removeCustomPack(\Bp\ProductBundle\Entity\CustomPack $customPacks)
+    {
+        $this->customPacks->removeElement($customPacks);
+    }
+
+    /**
+     * Get customPacks
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCustomPacks()
+    {
+        return $this->customPacks;
     }
 }

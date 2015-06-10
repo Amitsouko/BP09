@@ -67,7 +67,7 @@ class Pack implements ItemInterface
     /**
      * @var integer
      *
-     * @ORM\Column(name="onHome", type="boolean")
+     * @ORM\Column(name="onHome", type="boolean", nullable=true)
      */
     private $onHome;
 
@@ -106,7 +106,7 @@ class Pack implements ItemInterface
     private $categories;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="pack")
+     * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="pack",cascade={"all"})
      **/
     private $comments;
 

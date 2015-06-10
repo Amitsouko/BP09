@@ -82,12 +82,12 @@ class Product implements ItemInterface
     /**
      * @var integer
      *
-     * @ORM\Column(name="onHome", type="boolean")
+     * @ORM\Column(name="onHome", type="boolean", nullable=true)
      */
     private $onHome;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Object", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Object", mappedBy="product",cascade={"all"})
      **/
     private $objects;
 
@@ -125,7 +125,7 @@ class Product implements ItemInterface
     private $mainPhoto;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="product",cascade={"all"})
      **/
     private $comments;
 
@@ -411,39 +411,6 @@ class Product implements ItemInterface
     }
 
     /**
-     * Add orders
-     *
-     * @param \Bp\ProductBundle\Entity\UserOrder $orders
-     * @return Product
-     */
-    public function addOrder(\Bp\ProductBundle\Entity\UserOrder $orders)
-    {
-        $this->orders[] = $orders;
-
-        return $this;
-    }
-
-    /**
-     * Remove orders
-     *
-     * @param \Bp\ProductBundle\Entity\UserOrder $orders
-     */
-    public function removeOrder(\Bp\ProductBundle\Entity\UserOrder $orders)
-    {
-        $this->orders->removeElement($orders);
-    }
-
-    /**
-     * Get orders
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getOrders()
-    {
-        return $this->orders;
-    }
-
-    /**
      * Add contracts
      *
      * @param \Bp\ProductBundle\Entity\Contract $contracts
@@ -698,5 +665,28 @@ class Product implements ItemInterface
     public function getOnHome()
     {
         return $this->onHome;
+    }
+
+    /**
+     * Set brand
+     *
+     * @param \Bp\ProductBundle\Entity\Brand $brand
+     * @return Product
+     */
+    public function setBrand(\Bp\ProductBundle\Entity\Brand $brand = null)
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * Get brand
+     *
+     * @return \Bp\ProductBundle\Entity\Brand 
+     */
+    public function getBrand()
+    {
+        return $this->brand;
     }
 }

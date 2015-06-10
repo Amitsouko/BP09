@@ -140,7 +140,29 @@ class ApiController extends Controller
         return $response;
     }
 
+    /**
+     * @Route("/delete-pack", options={"expose"=true})
+     * @Template()
+     * @Method("GET")
+     */
+    public function deletePackAction(Request $request)
+    {
+        $id = $request->get("id");
+        $em = $this->getDoctrine()->getManager();
 
+        $customPack = $em->getRepository("BpProductBundle:CustomPack")->findOneById($id);
+
+        if(!$customPack) return $this->returnError("Aucun custom pack pour cette référence ".$id);
+        if($customPack->getUser() != $this->getUser()) return $this->returnError("L'utilisateur n'est pas propriétaire de ce custom pack.");
+        $em->remove($customPack);
+        $em->flush();
+        $response = new Response(json_encode(
+                array("status" => "success", "data" => null)
+                ));
+
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
 
     /**
      * @Route("/create-pack", options={"expose"=true})
@@ -161,6 +183,7 @@ class ApiController extends Controller
         if(!$products)return $this->returnError("0 produits renvoyé");
 
         $customPack = new CustomPack();
+        $customPack->setUser($this->getUser());
         $customPack->setReference($refGen->generateReference("customPack"));
         $price = 35;
         foreach($products as $p)
@@ -253,7 +276,8 @@ class ApiController extends Controller
                 "reference" => $product->getReference() ,
                 "brand" => $product->getBrand()->getName() ,
                 "specificite" => $product->getSpecificite(),
-                "galery" => $galery
+                "onHome" => $product->getOnHome(),
+                "galery" => $galery,
             );
 
 
