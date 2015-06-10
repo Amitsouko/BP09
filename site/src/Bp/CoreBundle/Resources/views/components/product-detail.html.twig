@@ -21,6 +21,7 @@
 				<h1>{{ product.name }}</h1>
 				<h2>{{ product.brand.name }}</h2>
 				<p>{{ product.description }}</p>
+				{% if product.colors is defined %}
 				<h3>Couleur</h3>
 				<div class="color-container">
 					<a href="#" class="color"></a>
@@ -28,12 +29,15 @@
 					<a href="#" class="color"></a>
 					<a href="#" class="color"></a>
 				</div>
+				{% endif %}
+				{% if product.size is defined %}
 				<h3>Taille</h3>
 				<div class="size-container">
 					<a href="#" class="size">s</a>
 					<a href="#" class="size">m</a>
 					<a href="#" class="size">l</a>
 				</div>
+				{% endif %}
 				{% if product.quantity > 0 %}
 				<p class="disponibility">En stock</p>
 				{% else %}
@@ -60,6 +64,7 @@
 	<div class="more-info-container">
 		<div class="more-info">
 			<div class="container">
+				{% if product.types is defined and product.types|length > 0 %}
 				<h1>Fonctionnalités</h1>
 				<div class="fonctionnality-container">
 					{% for type in product.types %}
@@ -71,14 +76,18 @@
 					</div>
 					{% endfor %}
 				</div>
+				{% endif %}
 			</div>
+			{% if product.specificite is defined %}
 			<div class="container spec">
 				<h1>Spécifications</h1>
 				<ul>
 					{{ product.specificite|raw }}
 				</ul>
 			</div>
+			{% endif %}
 		</div>
+		{% if product.comments is defined and product.comments|length > 0 %}
 		<div class="reviews-container">
 			<div class="container">
 				<h1>Témoiniages ({{ product.comments|length }})</h1>
@@ -124,5 +133,6 @@
     			{% endfor %}
 			</div>
 		</div>
+		{% endif %}
 	</div>
 </div>

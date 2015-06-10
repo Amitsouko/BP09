@@ -411,39 +411,6 @@ class Product implements ItemInterface
     }
 
     /**
-     * Add orders
-     *
-     * @param \Bp\ProductBundle\Entity\UserOrder $orders
-     * @return Product
-     */
-    public function addOrder(\Bp\ProductBundle\Entity\UserOrder $orders)
-    {
-        $this->orders[] = $orders;
-
-        return $this;
-    }
-
-    /**
-     * Remove orders
-     *
-     * @param \Bp\ProductBundle\Entity\UserOrder $orders
-     */
-    public function removeOrder(\Bp\ProductBundle\Entity\UserOrder $orders)
-    {
-        $this->orders->removeElement($orders);
-    }
-
-    /**
-     * Get orders
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getOrders()
-    {
-        return $this->orders;
-    }
-
-    /**
      * Add contracts
      *
      * @param \Bp\ProductBundle\Entity\Contract $contracts

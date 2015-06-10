@@ -14,11 +14,11 @@
     <tbody>
         {% for item in cart.products %}
         <tr>
-            <td>{{ item.name }}
+            <td>{{ item.name is defined ? item.name : item.reference }}
             {% if item.products is defined %}
                 <table>
                 {% for it in item.products %}
-                    <tr><td>{{ it.name }}</td></tr>
+                    <tr><td>{{ it.name is defined ? it.name : it.reference }}</td></tr>
                 {% endfor %}
                 </table>
             {% endif %}

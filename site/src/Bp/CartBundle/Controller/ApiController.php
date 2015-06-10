@@ -9,10 +9,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Bp\ProductBundle\Entity\Photo;
+use Bp\ProductBundle\Entity\CustomPack;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+
 
 /**
 * @Route("/api")
@@ -138,6 +140,47 @@ class ApiController extends Controller
         return $response;
     }
 
+
+
+    /**
+     * @Route("/create-pack", options={"expose"=true})
+     * @Template()
+     * @Method("GET")
+     */
+    public function createPackAction(Request $request)
+    {
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new GetSetMethodNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+        $cart = $this->get("cart");
+        $type = $request->get("type");
+        $ids = $request->get("ids");
+        $em = $this->getDoctrine()->getEntityManager();
+        $products = $em->getRepository("BpProductBundle:Product")->findById($ids);
+        $refGen = $this->get("reference.generator");
+        if(!$products)return $this->returnError("0 produits renvoyé");
+
+        $customPack = new CustomPack();
+        $customPack->setReference($refGen->generateReference("customPack"));
+        $price = 35;
+        foreach($products as $p)
+        {
+            $price += $p->getTaxe();
+            $customPack->addProduct($p);
+        }
+
+        $cart->addObject($customPack, 1);
+
+        $customPack->setPrice($price);
+        $em->persist($customPack);
+        $em->flush();
+        $response = new Response(json_encode(
+                array("status" => "success", "data" => null)
+                ));
+
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
 
     /**
      * @Route("/products", options={"expose"=true})

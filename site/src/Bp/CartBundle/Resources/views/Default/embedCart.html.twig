@@ -1,20 +1,4 @@
-{# <h2>Panier</h2>
-{% if cart.products|length == 0  %}
-<span>Pas d'articles dans votre panier</span>
-{% else %}
-<ul>
-    <li>Nombre d'articles {{ cart.products|length }} </li>
-    <li>Prix {{ cart.priceTtc|price }} </li>
-    <li>
-        liste des articles :
-        <ul>
-            {% for article in cart.products %}
-            <li>{{ article.name }} x{{ article.userQuantity }}</li>
-            {% endfor %}
-        </ul>
-    </li>
-</ul>
-{% endif %} #}
+
 
 <div class="mini-cart">
     {% if cart.products|length == 0  %}
@@ -52,7 +36,7 @@
                 <img src="{{ asset('public/img/default-product-pack.png') }}" alt="">
             </div>
             <div class="info-container">
-                <h6>{{ article.name }}</h6>
+                <h6>{{ article.name is defined ? article.name : article.reference }}</h6>
                 {# <p>1/4 objets</p> #}
                 <p class="price">{{ article.price|ttcPrice }}</p>
             </div>
