@@ -22,8 +22,10 @@ class PackController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $packs = $em->getRepository('BpProductBundle:Pack')->findAll();
+        $packHighlight = $em->getRepository("BpProductBundle:Pack")->findOneBy(array('onHome' => 1));
 
         return array(
+            'packHighlight' => $packHighlight,
             'packs' => $packs,
             'page' => 'list-pack'
         );

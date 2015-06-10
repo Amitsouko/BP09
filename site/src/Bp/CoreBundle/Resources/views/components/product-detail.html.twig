@@ -14,7 +14,6 @@
 				<ul>
 					{% for photo in product.photos %}
 					<li class="active"><img src="{{ photo.webPath|imagine_filter("type_medium") }}" alt=""></li>
-					{# <li class="video"></li> #}
 					{% endfor %}
 				</ul>
 			</div>
@@ -22,6 +21,7 @@
 				<h1>{{ product.name }}</h1>
 				<h2>{{ product.brand.name }}</h2>
 				<p>{{ product.description }}</p>
+				{% if product.colors is defined %}
 				<h3>Couleur</h3>
 				<div class="color-container">
 					<a href="#" class="color"></a>
@@ -29,12 +29,15 @@
 					<a href="#" class="color"></a>
 					<a href="#" class="color"></a>
 				</div>
+				{% endif %}
+				{% if product.size is defined %}
 				<h3>Taille</h3>
 				<div class="size-container">
 					<a href="#" class="size">s</a>
 					<a href="#" class="size">m</a>
 					<a href="#" class="size">l</a>
 				</div>
+				{% endif %}
 				{% if product.quantity > 0 %}
 				<p class="disponibility">En stock</p>
 				{% else %}
@@ -44,7 +47,11 @@
 					<div>
 						<div class="price-container">
 							<a href="#" class="button">Ajouter à mon pack</a>	
-							<p class="price">+ 5,00 &euro;</p>
+							{% if page == 'list-product' and page is defined %}
+							<p class="price">{{ product.price|ttcPrice }}</p>
+							{% elseif  product.taxe is defined and product.taxe > 0 %}
+							<p class="price">+ {{ product.taxe }}</p>
+							{% endif %}
 						</div>
 						<a href="#" class="icon-container favorites">
 							{{ icons('heart')|raw }}
@@ -61,59 +68,30 @@
 	<div class="more-info-container">
 		<div class="more-info">
 			<div class="container">
+				{% if product.types is defined and product.types|length > 0 %}
 				<h1>Fonctionnalités</h1>
 				<div class="fonctionnality-container">
+					{% for type in product.types %}
 					<div class="fonctionnality">
 						<div class="icon-container">
-							{{ icons('running')|raw }}
+							{{ icons(type.name|lower|replace({' ': '_'}))|raw }}
 						</div>
-						<p>Track activity</p>
+						<p>{{ type.name }}</p>
 					</div>
-					<div class="fonctionnality">
-						<div class="icon-container">
-							{{ icons('moon')|raw }}
-						</div>
-						<p>Track sleep</p>
-					</div>
-					<div class="fonctionnality">
-						<div class="icon-container">
-							{{ icons('heartrate')|raw }}
-						</div>
-						<p>Track heart rate</p>
-					</div>
-					<div class="fonctionnality">
-						<div class="icon-container">
-							{{ icons('alarm')|raw }}
-						</div>
-						<p>Wake you With Silent Alarm</p>
-					</div>
-					<div class="fonctionnality">
-						<div class="icon-container">
-							{{ icons('phone')|raw }}
-						</div>
-						<p>Get call notifications</p>
-					</div>
-					<div class="fonctionnality">
-						<div class="icon-container">
-							{{ icons('water')|raw }}
-						</div>
-						<p>Water resistant</p>
-					</div>
-					<div class="fonctionnality">
-						<div class="icon-container">
-							{{ icons('wireless')|raw }}
-						</div>
-						<p>Wireless syncing</p>
-					</div>
+					{% endfor %}
 				</div>
+				{% endif %}
 			</div>
+			{% if product.specificite is defined %}
 			<div class="container spec">
 				<h1>Spécifications</h1>
 				<ul>
 					{{ product.specificite|raw }}
 				</ul>
 			</div>
+			{% endif %}
 		</div>
+		{% if product.comments is defined and product.comments|length > 0 %}
 		<div class="reviews-container">
 			<div class="container">
 				<h1>Témoiniages ({{ product.comments|length }})</h1>
@@ -159,5 +137,6 @@
     			{% endfor %}
 			</div>
 		</div>
+		{% endif %}
 	</div>
 </div>

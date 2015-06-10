@@ -33,8 +33,7 @@
 					<span>Mon compte</span>
 				</a>
 				<a class="cart" href="#">
-					{{ icons('cart-ic')|raw }}
-					<span><span>300</span> - Eur</span>
+					{{ render(controller('BpCartBundle:Default:embedCartBtn' )) }}
 				</a>
 			</div>
 		</div>

@@ -17,7 +17,8 @@ class ProductController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $products = $em->getRepository("BpProductBundle:Product")->findAll();
-        return array("products"=>$products,'page'=>"list-product");
+        $productHighlight = $em->getRepository("BpProductBundle:Product")->findOneBy(array('onHome' => 1));
+        return array("products"=>$products,'productHighlight'=>$productHighlight,'page'=>"list-product");
     }
 
     /**
@@ -29,7 +30,6 @@ class ProductController extends Controller
         $em = $this->getDoctrine()->getManager();
         $product = $em->getRepository("BpProductBundle:Product")->findOneById($id);
         $products = $em->getRepository("BpProductBundle:Product")->findOnHome();
-        // $products = $em->getRepository("BpProductBundle:Product")->findAll();
 
         return array("product" => $product,'products' => $products,'page'=>"product-page");
     }
