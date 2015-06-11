@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
-
+use Bp\ProductBundle\Entity\Photo;
 
 class CartService
 {
@@ -163,6 +163,7 @@ class CartService
     {
         $array = $this->getCart();
         $serializedProducts = array();
+        $photo = new Photo();
         foreach($array["products"] as $p)
         {
             $name = method_exists($p,'getName') ? $p->getName() : $p->getReference();
@@ -176,7 +177,8 @@ class CartService
                             "price" => $p->getPrice()
                         )
                 );
-
+             if((new \ReflectionClass($p))->getShortName() != "CustomPack") $temp["entity"]["path"] = $p->getMainPhoto()->getWebPath();
+            
              if(method_exists($p,'getProducts'))
              {
                 foreach($p->getProducts() as $pp)
@@ -187,7 +189,8 @@ class CartService
                         "id" => $pp->getId(),
                         "name" => $name,
                         "reference" => $pp->getReference(),
-                        "price" => $pp->getPrice()
+                        "price" => $pp->getPrice(),
+                        "path" => ($pp->getMainPhoto()) ? $pp->getMainPhoto()->getWebPath() : null
                         );
                 }
              }
