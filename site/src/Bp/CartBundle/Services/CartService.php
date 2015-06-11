@@ -127,9 +127,10 @@ class CartService
     public function getPriceHT()
     {
         $price = 0;
+
         foreach($this->cart as $it)
         {
-            $price += $it["price"]*$it["quantity"];
+            $price += $it["entity"]->getPrice()*$it["quantity"];
         }
         $reduction = 0;
         foreach($this->option as $it)
@@ -156,6 +157,45 @@ class CartService
     public function getTva()
     {
         return $this->tva;
+    }
+
+    public function getSerializedCart()
+    {
+        $array = $this->getCart();
+        $serializedProducts = array();
+        foreach($array["products"] as $p)
+        {
+            $name = method_exists($p,'getName') ? $p->getName() : $p->getReference();
+             $temp = array(
+                    "userQuantity" => $p->userQuantity,
+                    "entity" => array(  
+                            "type" => (new \ReflectionClass($p))->getShortName(),
+                            "id" => $p->getId(),
+                            "name" => $name,
+                            "reference" => $p->getReference(),
+                            "price" => $p->getPrice()
+                        )
+                );
+
+             if(method_exists($p,'getProducts'))
+             {
+                foreach($p->getProducts() as $pp)
+                {
+                    $name = method_exists($pp,'getName') ? $pp->getName() : $pp->getReference();
+                    $temp["products"][] = array(
+                        "type" => (new \ReflectionClass($pp))->getShortName(),
+                        "id" => $pp->getId(),
+                        "name" => $name,
+                        "reference" => $pp->getReference(),
+                        "price" => $pp->getPrice()
+                        );
+                }
+             }
+
+             $serializedProducts[] = $temp;
+        }
+        $array["products"] = $serializedProducts;
+        return $array;
     }
 
     public function getCart()

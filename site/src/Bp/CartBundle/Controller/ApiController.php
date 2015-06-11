@@ -31,7 +31,7 @@ class ApiController extends Controller
         $this->checkAjax($request);   
         $em = $this->getDoctrine()->getEntityManager();
         $cart = $this->container->get("cart");
-        $cart = $cart->getCart();
+        $cart = $cart->getSerializedCart();
 
         $cart["products"] = $cart["products"];
         $cart["options"] = $cart["options"];
@@ -192,11 +192,11 @@ class ApiController extends Controller
             $customPack->addProduct($p);
         }
 
-        $cart->addObject($customPack, 1);
-
         $customPack->setPrice($price);
         $em->persist($customPack);
         $em->flush();
+        $cart->addObject($customPack, 1);
+
         $response = new Response(json_encode(
                 array("status" => "success", "data" => null)
                 ));
