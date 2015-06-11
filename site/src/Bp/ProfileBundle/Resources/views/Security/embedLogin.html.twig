@@ -27,7 +27,8 @@
 {% endif %}
 {% if app.user %}
 	<h6>{{ app.user.username }}</h6>
-    <a href="{{ path("fos_user_security_logout") }}" class="button">Déconnection</a>
+    {% if is_granted('ROLE_ADMIN') %}<a href="{{ path("bp_admin_default_index") }}">admin</a><br/> {% endif %}
+    <a href="{{ path("fos_user_security_logout") }}" class="button">Déconnexion</a>
 {% else %}
 <form action="{{ path("fos_user_security_check") }}" method="post">
     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />

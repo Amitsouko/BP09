@@ -4,7 +4,7 @@
 
 	<div class="top-content">
 		{% if productHighlight.mainPhoto %}
-		<img src="{{ product.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="">
+		<img src="{{ productHighlight.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="">
 		{% else %}
 		<img src="{{ asset('public/img/highlight-list-product.png')}}" alt="">
 		{% endif %}

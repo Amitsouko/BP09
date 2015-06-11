@@ -4,7 +4,7 @@
 
 	<div class="top-content">
 		{% if packHighlight.mainPhoto %}
-		<img src="{{ product.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="">
+		<img src="{{ packHighlight.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="">
 		{% else %}
 		<img src="{{ asset('public/img/withings-activity.png')}}" alt="">
 		{% endif %}
