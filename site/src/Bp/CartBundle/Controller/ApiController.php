@@ -387,7 +387,7 @@ class ApiController extends Controller
 
         $array = array(
                 "name" => $pack->getName(),
-                "path" => ($pack->getMainPhoto()) ? $pack->getMainPhoto()->getWebPath()  : ,null,
+                "path" => ($pack->getMainPhoto()) ? $pack->getMainPhoto()->getWebPath()  : null,
                 "description" => $pack->getDescription() ,
                 "price" => $pack->getPrice() ,
                 "reference" => $pack->getReference() ,
