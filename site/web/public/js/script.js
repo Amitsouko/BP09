@@ -31,7 +31,7 @@ if (!window.requestAnimationFrame) {
     })();
 }
 
-var App, AppCore, BlockProduct, ComponentsBase, Event, FilterProduct, Highlight, Home, ListPack, ListProduct, Loader, Menu, MiniCart, Normalize, PackDetail, PackEditor, Page, ProductDetail, ProductPage, ProductSlider, Router, Slider, SocialSharing, Transitions, Utils, W, YourPack,
+var App, AppCore, BlockProduct, ComponentsBase, Event, FilterProduct, Highlight, Home, ListPack, ListProduct, Loader, Menu, MiniCart, Normalize, PackDetail, PackEditor, Page, Popin, ProductDetail, ProductPage, ProductSlider, Router, Slider, SocialSharing, Transitions, Utils, W, YourPack,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -720,9 +720,12 @@ BlockProduct = (function(superClass) {
 
   function BlockProduct(options) {
     this.getValues = bind(this.getValues, this);
+    this.removeFromPack = bind(this.removeFromPack, this);
     this.addToPack = bind(this.addToPack, this);
+    this.openPopin = bind(this.openPopin, this);
     this.addToCart = bind(this.addToCart, this);
     this.addToFavorite = bind(this.addToFavorite, this);
+    this.editClick = bind(this.editClick, this);
     this.addToCartClick = bind(this.addToCartClick, this);
     this.addToPackClick = bind(this.addToPackClick, this);
     this.favoritesClick = bind(this.favoritesClick, this);
@@ -739,8 +742,7 @@ BlockProduct = (function(superClass) {
     this.addToCartBtn = this.actionContainer.find('.add-to-cart');
     this.addToPackBtn = this.actionContainer.find('.add-to-pack');
     this.values = {};
-    this.getValues();
-    return console.log(this);
+    return this.getValues();
   };
 
   BlockProduct.prototype._initEvents = function() {
@@ -748,7 +750,9 @@ BlockProduct = (function(superClass) {
     this.favoritesBtn.on(Event.CLICK, this.favoritesClick);
     this.editBtn.on(Event.CLICK, this.editClick);
     this.addToCartBtn.on(Event.CLICK, this.addToCartClick);
-    return this.addToPackBtn.on(Event.CLICK, this.addToPackClick);
+    this.addToPackBtn.on(Event.CLICK, this.addToPackClick);
+    $(window).on('Product::addToPack', this.addToPack);
+    return $(window).on('Product::removeFromPack', this.removeFromPack);
   };
 
   BlockProduct.prototype.favoritesClick = function(e) {
@@ -758,12 +762,17 @@ BlockProduct = (function(superClass) {
 
   BlockProduct.prototype.addToPackClick = function(e) {
     e.preventDefault();
-    return this.addToPack();
+    return this.openPopin();
   };
 
   BlockProduct.prototype.addToCartClick = function(e) {
     e.preventDefault();
     return this.addToCart();
+  };
+
+  BlockProduct.prototype.editClick = function(e) {
+    e.preventDefault();
+    return this.openPopin();
   };
 
   BlockProduct.prototype.addToFavorite = function() {
@@ -789,9 +798,20 @@ BlockProduct = (function(superClass) {
     })(this));
   };
 
-  BlockProduct.prototype.addToPack = function() {
-    this.container.addClass('added');
-    return $(window).trigger("Pack::addToPack", [this.values]);
+  BlockProduct.prototype.openPopin = function() {
+    return $(window).trigger("Popin::openPopin", [this.values]);
+  };
+
+  BlockProduct.prototype.addToPack = function(e, product) {
+    if (product.id === this.values.id) {
+      return this.container.addClass('added');
+    }
+  };
+
+  BlockProduct.prototype.removeFromPack = function(e, product) {
+    if (product.id === this.values.id) {
+      return this.container.removeClass('added');
+    }
   };
 
   BlockProduct.prototype.getValues = function() {
@@ -1165,6 +1185,285 @@ MiniCart = (function(superClass) {
 
 })(ComponentsBase);
 
+Popin = (function(superClass) {
+  extend(Popin, superClass);
+
+  function Popin(options) {
+    this.getPackFromLocalstorage = bind(this.getPackFromLocalstorage, this);
+    this.isPackFull = bind(this.isPackFull, this);
+    this.isInPack = bind(this.isInPack, this);
+    this.checkFavorites = bind(this.checkFavorites, this);
+    this.favoritesBtnClick = bind(this.favoritesBtnClick, this);
+    this.changeSize = bind(this.changeSize, this);
+    this.sizeBtnClick = bind(this.sizeBtnClick, this);
+    this.changeColor = bind(this.changeColor, this);
+    this.colorBtnClick = bind(this.colorBtnClick, this);
+    this.addToPack = bind(this.addToPack, this);
+    this.addToPackClick = bind(this.addToPackClick, this);
+    this.removeFromPack = bind(this.removeFromPack, this);
+    this.removeFromPackClick = bind(this.removeFromPackClick, this);
+    this.initAfterLoaded = bind(this.initAfterLoaded, this);
+    this.addActionContainer = bind(this.addActionContainer, this);
+    this.addDisponibility = bind(this.addDisponibility, this);
+    this.addSize = bind(this.addSize, this);
+    this.addColors = bind(this.addColors, this);
+    this.addProductInfo = bind(this.addProductInfo, this);
+    this.addNavSlider = bind(this.addNavSlider, this);
+    this.addImgsSlider = bind(this.addImgsSlider, this);
+    this.initContentLoaded = bind(this.initContentLoaded, this);
+    this.getContent = bind(this.getContent, this);
+    this.closePopin = bind(this.closePopin, this);
+    this.openPopin = bind(this.openPopin, this);
+    this._initEvents = bind(this._initEvents, this);
+    this._initContent = bind(this._initContent, this);
+    Popin.__super__.constructor.apply(this, arguments);
+  }
+
+  Popin.prototype._initContent = function() {
+    Popin.__super__._initContent.apply(this, arguments);
+    this.slidesContainer = this.container.find('.slide-product');
+    this.productInfo = this.container.find('.product-info');
+    this.actionContainer = this.container.find('.action-container');
+    this.popin = this.container.find('.top-header');
+    console.log(this.popin);
+    return this.product = null;
+  };
+
+  Popin.prototype._initEvents = function() {
+    Popin.__super__._initEvents.apply(this, arguments);
+    return $(window).on("Popin::openPopin", this.openPopin);
+  };
+
+  Popin.prototype.openPopin = function(e, product) {
+    this.getContent(product.id);
+    this.container.addClass('open');
+    console.log(this.popin.outerWidth());
+    return this.popin.css({
+      'margin-left': (W.ww - this.popin.outerWidth()) / 2,
+      'margin-top': (W.wh - this.popin.outerHeight() + 94) / 2
+    });
+  };
+
+  Popin.prototype.closePopin = function() {
+    return this.container.removeClass('open');
+  };
+
+  Popin.prototype.getContent = function(productId) {
+    return $.ajax({
+      method: "GET",
+      url: Routing.generate('bp_cart_api_product', true) + '?id=' + productId
+    }).done((function(_this) {
+      return function(data) {
+        _this.product = data.data;
+        return _this.initContentLoaded();
+      };
+    })(this));
+  };
+
+  Popin.prototype.initContentLoaded = function() {
+    var navSlide, slides;
+    slides = this.addImgsSlider();
+    navSlide = this.addNavSlider();
+    this.slidesContainer.find('.slides').html(slides);
+    this.slidesContainer.find('ul').html(navSlide);
+    this.addProductInfo();
+    return this.initAfterLoaded();
+  };
+
+  Popin.prototype.addImgsSlider = function() {
+    var html, i, len, photo, ref;
+    html = '';
+    ref = this.product.galery;
+    for (i = 0, len = ref.length; i < len; i++) {
+      photo = ref[i];
+      html += '<div class="slide active">';
+      html += '<img src="' + this.product.img + '" alt="">';
+      html += '</div>';
+    }
+    return html;
+  };
+
+  Popin.prototype.addNavSlider = function() {
+    var html, i, len, photo, ref;
+    html = '';
+    ref = this.product.galery;
+    for (i = 0, len = ref.length; i < len; i++) {
+      photo = ref[i];
+      html += '<li class="active"><img src="{{ photo.webPath|imagine_filter("type_medium") }}" alt=""></li>';
+    }
+    return html;
+  };
+
+  Popin.prototype.addProductInfo = function() {
+    this.productInfo.find('h1').html(this.product.name);
+    this.productInfo.find('h2').html(this.product.brand);
+    if (this.product.sizes != null) {
+      this.productInfo.find('h2').after(this.addSize());
+    }
+    if (this.product.colors != null) {
+      this.productInfo.find('h2').after(this.addColors());
+    }
+    this.addDisponibility();
+    return this.actionContainer.html(this.addActionContainer());
+  };
+
+  Popin.prototype.addColors = function() {
+    var color, html, i, len, ref;
+    html = '<h3>Couleur</h3>';
+    html = '<div class="color-container">';
+    ref = this.product.colors;
+    for (i = 0, len = ref.length; i < len; i++) {
+      color = ref[i];
+      html += '<a href="#" class="color" style="background-color:' + color + '"></a>';
+    }
+    html += '</div>';
+    return html;
+  };
+
+  Popin.prototype.addSize = function() {
+    var html, i, len, ref, size;
+    html = '<h3>Taille</h3>';
+    html = '<div class="size-container">';
+    ref = this.product.sizes;
+    for (i = 0, len = ref.length; i < len; i++) {
+      size = ref[i];
+      html += '<a href="#" class="size">' + size + '</a>';
+    }
+    html += '</div>';
+    return html;
+  };
+
+  Popin.prototype.addDisponibility = function() {
+    if (this.product.quantity > 0) {
+      return this.productInfo.find('.disponibility').html('En stock');
+    } else {
+      return this.productInfo.find('.disponibility').html('En rupture');
+    }
+  };
+
+  Popin.prototype.addActionContainer = function() {
+    var html;
+    html = '<div>';
+    html += '<div class="price-container">';
+    if (this.isInPack(this.product.id)) {
+      html += '<a href="#" class="button validate">Valider</a>';
+      html += '<a href="#" class="button delete">Suprimer</a>';
+    } else {
+      html += '<a href="#" class="button add">Ajouter à mon pack</a>';
+    }
+    html += '</div>';
+    return html += '</div>';
+  };
+
+  Popin.prototype.initAfterLoaded = function() {
+    this.colorBtn = this.container.find('.color');
+    this.sizeBtn = this.container.find('.size');
+    this.favoritesBtn = this.container.find('.favorites');
+    new ProductSlider({
+      container: this.container.find('.slider-product')
+    });
+    this.actionContainer.find('.add').on(Event.CLICK, this.addToPackClick);
+    return this.actionContainer.find('.delete').on(Event.CLICK, this.removeFromPackClick);
+  };
+
+  Popin.prototype.removeFromPackClick = function(e) {
+    e.preventDefault();
+    return this.removeFromPack();
+  };
+
+  Popin.prototype.removeFromPack = function() {
+    $(window).trigger("CustomPack::removeFromPack", [this.product]);
+    $(window).trigger("Product::removeFromPack", [this.product]);
+    return this.closePopin();
+  };
+
+  Popin.prototype.addToPackClick = function(e) {
+    e.preventDefault();
+    return this.addToPack();
+  };
+
+  Popin.prototype.addToPack = function() {
+    $(window).trigger("CustomPack::addToPack", [this.product]);
+    $(window).trigger("Product::addToPack", [this.product]);
+    return this.closePopin();
+  };
+
+  Popin.prototype.colorBtnClick = function(e) {
+    var target;
+    e.preventDefault();
+    target = $(e.currentTarget);
+    return this.changeColor(target);
+  };
+
+  Popin.prototype.changeColor = function(target) {
+    this.colorBtn.removeClass('active');
+    return target.addClass('active');
+  };
+
+  Popin.prototype.sizeBtnClick = function(e) {
+    var target;
+    e.preventDefault();
+    target = $(e.currentTarget);
+    return this.changeSize(target);
+  };
+
+  Popin.prototype.changeSize = function(target) {
+    this.sizeBtn.removeClass('active');
+    return target.addClass('active');
+  };
+
+  Popin.prototype.favoritesBtnClick = function(e) {
+    e.preventDefault();
+    return this.checkFavorites();
+  };
+
+  Popin.prototype.checkFavorites = function() {
+    if (!this.favoritesBtn.hasClass('active')) {
+      return this.favoritesBtn.addClass('active');
+    } else {
+      return this.favoritesBtn.removeClass('active');
+    }
+  };
+
+  Popin.prototype.isInPack = function(id) {
+    var i, item, key, len, pack;
+    pack = this.getPackFromLocalstorage();
+    if (pack !== null) {
+      for (key = i = 0, len = pack.length; i < len; key = ++i) {
+        item = pack[key];
+        if (item === id) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  Popin.prototype.isPackFull = function() {
+    var pack;
+    pack = this.getPackFromLocalstorage();
+    if (pack.length >= 4) {
+      return true;
+    }
+    return false;
+  };
+
+  Popin.prototype.getPackFromLocalstorage = function() {
+    var pack;
+    if (typeof localStorage !== 'undefined') {
+      pack = JSON.parse(localStorage.getItem('customPack'));
+      if (pack !== null) {
+        return pack;
+      } else {
+        return null;
+      }
+    }
+  };
+
+  return Popin;
+
+})(ComponentsBase);
+
 ProductDetail = (function(superClass) {
   extend(ProductDetail, superClass);
 
@@ -1413,8 +1712,7 @@ ProductSlider = (function(superClass) {
   ProductSlider.prototype._initContent = function() {
     ProductSlider.__super__._initContent.apply(this, arguments);
     this.slides = this.container.find('.slide');
-    this.navItem = this.container.find('ul li');
-    return console.log(this);
+    return this.navItem = this.container.find('ul li');
   };
 
   ProductSlider.prototype._initEvents = function() {
@@ -1448,6 +1746,13 @@ YourPack = (function(superClass) {
   extend(YourPack, superClass);
 
   function YourPack(options) {
+    this.getPackFromLocalstorage = bind(this.getPackFromLocalstorage, this);
+    this.removeFromLocalstorage = bind(this.removeFromLocalstorage, this);
+    this.addToLocalstorage = bind(this.addToLocalstorage, this);
+    this.isInPack = bind(this.isInPack, this);
+    this.refreshPackBar = bind(this.refreshPackBar, this);
+    this.initBar = bind(this.initBar, this);
+    this.removeFromPack = bind(this.removeFromPack, this);
     this.addToPack = bind(this.addToPack, this);
     this._onLoaderComplete = bind(this._onLoaderComplete, this);
     this.resize = bind(this.resize, this);
@@ -1476,12 +1781,14 @@ YourPack = (function(superClass) {
     });
     this["break"] = {};
     this["break"].point = this.fixContainer.offset().top + this.fixContainer.outerHeight();
-    return this["break"].breaked = false;
+    this["break"].breaked = false;
+    return this.initBar();
   };
 
   YourPack.prototype._initEvents = function() {
     YourPack.__super__._initEvents.apply(this, arguments);
-    $(window).on('Pack::addToPack', this.addToPack);
+    $(window).on('CustomPack::addToPack', this.addToPack);
+    $(window).on('CustomPack::removeFromPack', this.removeFromPack);
     return $(window).on(Event.WHEEL, this.wheelEvent);
   };
 
@@ -1526,7 +1833,103 @@ YourPack = (function(superClass) {
     index = this.container.find('.product-choice.added').length;
     if (index < 4) {
       this.productChoice[index].el.find('img').attr('src', values.img);
-      return this.productChoice[index].el.addClass('added');
+      this.productChoice[index].el.addClass('added ' + values.id);
+      return this.addToLocalstorage(values.id);
+    }
+  };
+
+  YourPack.prototype.removeFromPack = function(e, values) {
+    var element;
+    element = this.container.find('.product-choice.added.' + values.id);
+    element.removeClass(values.id);
+    this.removeFromLocalstorage(values.id);
+    return this.initBar();
+  };
+
+  YourPack.prototype.initBar = function() {
+    var i, item, key, len, pack, productChoices, results;
+    productChoices = this.container.find('.product-choice').removeAttr('class');
+    productChoices.addClass('product-choice');
+    pack = this.getPackFromLocalstorage();
+    if (pack !== null) {
+      results = [];
+      for (key = i = 0, len = pack.length; i < len; key = ++i) {
+        item = pack[key];
+        results.push(this.refreshPackBar(item, key));
+      }
+      return results;
+    }
+  };
+
+  YourPack.prototype.refreshPackBar = function(id, key) {
+    var i, len, productChoice, ref;
+    ref = this.container.find('.product-choice');
+    for (i = 0, len = ref.length; i < len; i++) {
+      productChoice = ref[i];
+      $(productChoice).find('img').attr('src', $(productChoice).find('img').attr('data-src'));
+    }
+    $('#' + id).addClass('added');
+    this.productChoice[key].el.find('img').attr('src', $('#', id).find('img').attr('src'));
+    return this.productChoice[key].el.addClass('added ' + id);
+  };
+
+  YourPack.prototype.isInPack = function(id) {
+    var i, item, len, pack;
+    pack = this.getPackFromLocalstorage();
+    if (pack !== null) {
+      for (i = 0, len = pack.length; i < len; i++) {
+        item = pack[i];
+        if (item === id) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+  };
+
+  YourPack.prototype.addToLocalstorage = function(id) {
+    var pack;
+    if (typeof localStorage !== 'undefined') {
+      pack = JSON.parse(localStorage.getItem('customPack'));
+      console.log(pack);
+      if (pack !== null) {
+        pack.push(id);
+      } else {
+        pack = new Array();
+        pack.push(id);
+      }
+      pack = JSON.stringify(pack);
+      return localStorage.setItem('customPack', pack);
+    }
+  };
+
+  YourPack.prototype.removeFromLocalstorage = function(id) {
+    var i, item, key, len, pack;
+    if (typeof localStorage !== 'undefined') {
+      pack = JSON.parse(localStorage.getItem('customPack'));
+      if (pack !== null) {
+        for (key = i = 0, len = pack.length; i < len; key = ++i) {
+          item = pack[key];
+          if (id === item) {
+            pack.splice(key, 1);
+          }
+        }
+      }
+      pack = JSON.stringify(pack);
+      return localStorage.setItem('customPack', pack);
+    }
+  };
+
+  YourPack.prototype.getPackFromLocalstorage = function() {
+    var pack;
+    if (typeof localStorage !== 'undefined') {
+      pack = JSON.parse(localStorage.getItem('customPack'));
+      if (pack !== null) {
+        return pack;
+      } else {
+        return null;
+      }
     }
   };
 
@@ -1736,6 +2139,9 @@ PackEditor = (function(superClass) {
     new YourPack({
       fixContainer: this.container.find('.top-content'),
       container: this.container.find('.your-pack-container')
+    });
+    new Popin({
+      container: this.container.find('.popin-container')
     });
     this.product = [];
     ref = this.container.find('.block-product');

@@ -268,6 +268,7 @@ class ApiController extends Controller
         }
         $path = ($product->getMainPhoto()) ? $product->getMainPhoto()->getWebPath() : "";
         $array = array(
+                "id" => $product->getId(),
                 "name" => $product->getName(),
                 "path" =>  $path,
                 "description" => $product->getDescription() ,
@@ -277,6 +278,7 @@ class ApiController extends Controller
                 "brand" => $product->getBrand()->getName() ,
                 "specificite" => $product->getSpecificite(),
                 "onHome" => $product->getOnHome(),
+                "quantity" => $product->getQuantity(),
                 "galery" => $galery,
             );
 
