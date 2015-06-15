@@ -14,6 +14,7 @@ class customExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFilter('price', array($this, 'priceFilter')),
+            new \Twig_SimpleFilter('gallery', array($this, 'getGallery')),
             new \Twig_SimpleFilter('percent', array($this, 'percentageFilter')),
             new \Twig_SimpleFilter('ttcPrice', array($this, 'ttcPrice')),
             new \Twig_SimpleFilter('averageNote', array($this, 'getNote')),
@@ -27,6 +28,14 @@ class customExtension extends \Twig_Extension
         $price = $price . " €";
 
         return $price;
+    }
+
+    public function getGallery($entity)
+    {
+        $photos = $entity->getPhotos();
+        $photos->removeElement($entity->getMainPhoto());
+        return $photos;
+
     }
 
     public function percentageFilter($percent)
