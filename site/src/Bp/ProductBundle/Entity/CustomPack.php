@@ -5,12 +5,17 @@ namespace Bp\ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Bp\CartBundle\Interfaces\ItemInterface;
 use \Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * CustomPack
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Bp\ProductBundle\Entity\CustomPackRepository")
+ * @ExclusionPolicy("none")
  */
 class CustomPack implements ItemInterface
 {
@@ -45,13 +50,15 @@ class CustomPack implements ItemInterface
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product", inversedBy="customPacks")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product")
      * @ORM\JoinTable(name="custompack_product")
+     * @MaxDepth(4)
      **/
     private $products;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Contract", mappedBy="customPacks")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Contract")
+     * @Exclude
      **/
     private $contracts;
 

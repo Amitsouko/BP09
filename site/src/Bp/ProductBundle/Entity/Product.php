@@ -5,6 +5,10 @@ namespace Bp\ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Bp\CartBundle\Interfaces\ItemInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * Product
@@ -88,27 +92,31 @@ class Product implements ItemInterface
 
     /**
      * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Object", mappedBy="product",cascade={"all"})
+     * @Exclude
      **/
     private $objects;
 
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Pack", mappedBy="products")
+     * @Exclude
      **/
     private $packs;
 
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\CustomPack", mappedBy="products")
+     * @Exclude
      **/
     private $customPacks;
 
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Contract", mappedBy="products")
+     * @Exclude
      **/
     private $contracts;
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Type", inversedBy="types",cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Type", inversedBy="products",cascade={"persist"})
      * @ORM\JoinTable(name="type_product")
      **/
     private $types;
@@ -126,6 +134,7 @@ class Product implements ItemInterface
 
     /**
      * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="product",cascade={"all"})
+     * @Exclude
      **/
     private $comments;
 

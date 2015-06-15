@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use JMS\Serializer\SerializationContext;
 
 
 /**
@@ -33,8 +34,10 @@ class ApiController extends Controller
         $cart = $this->container->get("cart");
         $cart = $cart->getSerializedCart();
 
-        $cart["products"] = $cart["products"];
-        $cart["options"] = $cart["options"];
+
+        $serializer = $serializer = $this->container->get('jms_serializer');
+        $jsonContent = $serializer->serialize($cart, 'json',SerializationContext::create()->enableMaxDepthChecks());
+        
 
         $response = new Response(json_encode(
                 array(  
@@ -129,6 +132,9 @@ class ApiController extends Controller
 
 
         $cart = $cart->getCart();
+        $serializer = $serializer = $this->container->get('jms_serializer');
+        $jsonContent = $serializer->serialize($cart, 'json',SerializationContext::create()->enableMaxDepthChecks());
+        
         $response = new Response(json_encode(
                 array(  
                         "status" =>"success", 
@@ -244,8 +250,23 @@ class ApiController extends Controller
      * @Template()
      * @Method("GET")
      */
-    public function customPackAction()
+    public function customPackAction(Request $request)
     {
+        $id = $request->get("id");
+        $em = $this->getDoctrine()->getEntityManager();
+        $customPack = $em->getRepository("BpProductBundle:CustomPack")->findOneById($id);
+
+        if(!$customPack) return $this->returnError("Pas de Custom Pack pour l'id $id");
+
+        $serializer = $serializer = $this->container->get('jms_serializer');
+        $jsonContent = $serializer->serialize($customPack, 'json',SerializationContext::create()->enableMaxDepthChecks());
+       
+
+        $response = new Response($jsonContent);
+
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
         return true;
     }
 
@@ -268,6 +289,9 @@ class ApiController extends Controller
 
         $productArray = array();
         $photo = new Photo();
+        $serializer = $serializer = $this->container->get('jms_serializer');
+        $jsonContent = $serializer->serialize($products, 'json',SerializationContext::create()->enableMaxDepthChecks());
+        
 
         foreach($products as $p)
         {
@@ -370,7 +394,7 @@ class ApiController extends Controller
                 "galery" => $galery
             );
 
-
+        
         $response = new Response(json_encode(
                 array(  
                         "status" =>"success", 

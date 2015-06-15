@@ -23,7 +23,8 @@
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "paymentsuite/stripe-bundle": "v1.1",
         "friendsofsymfony/jsrouting-bundle" : "1.*",
-        "liip/imagine-bundle": "*"
+        "liip/imagine-bundle": "*",
+        "jms/serializer-bundle": "*"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
