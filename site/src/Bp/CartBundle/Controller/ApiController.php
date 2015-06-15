@@ -342,7 +342,7 @@ class ApiController extends Controller
                 "price" => $product->getPrice() ,
                 "taxe" => $product->getTaxe() ,
                 "reference" => $product->getReference() ,
-                "brand" => $product->getBrand()->getName() ,
+                "brand" => ($product->getBrand()) ? $product->getBrand()->getName() : null ,
                 "specificite" => $product->getSpecificite(),
                 "onHome" => $product->getOnHome(),
                 "galery" => $galery,
@@ -387,7 +387,7 @@ class ApiController extends Controller
 
         $array = array(
                 "name" => $pack->getName(),
-                "path" => $pack->getMainPhoto()->getWebPath() ,
+                "path" => ($pack->getMainPhoto()) ? $pack->getMainPhoto()->getWebPath()  : ,null,
                 "description" => $pack->getDescription() ,
                 "price" => $pack->getPrice() ,
                 "reference" => $pack->getReference() ,
