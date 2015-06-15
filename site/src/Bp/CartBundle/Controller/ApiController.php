@@ -167,7 +167,7 @@ class ApiController extends Controller
     /**
      * @Route("/create-pack", options={"expose"=true})
      * @Template()
-     * @Method("GET")
+     * @Method("POST")
      */
     public function createPackAction(Request $request)
     {
@@ -175,7 +175,7 @@ class ApiController extends Controller
         $normalizers = array(new GetSetMethodNormalizer());
         $serializer = new Serializer($normalizers, $encoders);
         $cart = $this->get("cart");
-        $type = $request->get("type");
+        //$type = $request->get("type");
         $ids = $request->get("ids");
         $em = $this->getDoctrine()->getEntityManager();
         $products = $em->getRepository("BpProductBundle:Product")->findById($ids);
@@ -203,6 +203,50 @@ class ApiController extends Controller
 
         $response->headers->set('Content-Type', 'application/json');
         return $response;
+    }
+
+    /**
+     * @Route("/edit-pack", options={"expose"=true})
+     * @Template()
+     * @Method("POST")
+     */
+    public function editPackAction(Request $request)
+    {
+        $idPack = $request->get("id_pack");
+        $ids = $request->get("ids");
+        $em = $this->getDoctrine()->getEntityManager();
+        $customPack = $em->getRepository("BpProductBundle:CustomPack")->findOneById($idPack);
+
+        if(!$customPack) return $this->returnError("Pas de Custom Pack pour l'id $idPack");
+
+        $products = $em->getRepository("BpProductBundle:Product")->findById($ids);
+        //on empty the customPack
+        foreach($customPack->getProducts() as $p)
+        {
+            $customPack->removeProduct($p);
+        }
+        foreach($products as $product)
+        {
+            $customPack->addProduct($product);
+        }
+        $em->persist($customPack);
+        $em->flush();
+        $response = new Response(json_encode(
+                array("status" => "success", "data" => null)
+                ));
+
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+
+    /**
+     * @Route("/custom-pack", options={"expose"=true})
+     * @Template()
+     * @Method("GET")
+     */
+    public function customPackAction()
+    {
+        return true;
     }
 
     /**
