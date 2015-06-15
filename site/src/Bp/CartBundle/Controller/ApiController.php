@@ -331,7 +331,7 @@ class ApiController extends Controller
         foreach($product->getPhotos() as $f)
         {
             $thumbnail = $liip_imagine->getBrowserPath($f->getWebPath(), $filter);
-            $galery[] = array("path"=> $f->getWebPath(), "thumbnail" =>$thumbnail,"description" => $f->getDescription(),"alt" => $f->getAlt());
+            $galery[] = array("id" =>$f->getId(), "path"=> $f->getWebPath(), "thumbnail" =>$thumbnail,"description" => $f->getDescription(),"alt" => $f->getAlt());
 
         }
         $path = ($product->getMainPhoto()) ? $product->getMainPhoto()->getWebPath() : "";
@@ -380,7 +380,7 @@ class ApiController extends Controller
         foreach($pack->getPhotos() as $f)
         {
             $thumbnail = $liip_imagine->getBrowserPath($f->getWebPath(), $filter);
-            $galery[] = array("path"=> $f->getWebPath(), "thumbnail" =>$thumbnail,"description" => $f->getDescription(),"alt" => $f->getAlt());
+            $galery[] = array("id" => $f->getId(), "path"=> $f->getWebPath(), "thumbnail" =>$thumbnail,"description" => $f->getDescription(),"alt" => $f->getAlt());
 
         }
 
