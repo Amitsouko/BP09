@@ -36,7 +36,7 @@ class Brand
     private $path;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Brand", mappedBy="brand")
+     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Product", mappedBy="brand")
      **/
     private $products;
 

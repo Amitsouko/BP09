@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use JMS\Serializer\SerializationContext;
 
 
 /**
@@ -33,8 +34,10 @@ class ApiController extends Controller
         $cart = $this->container->get("cart");
         $cart = $cart->getSerializedCart();
 
-        $cart["products"] = $cart["products"];
-        $cart["options"] = $cart["options"];
+
+        $serializer = $serializer = $this->container->get('jms_serializer');
+        $jsonContent = $serializer->serialize($cart, 'json',SerializationContext::create()->enableMaxDepthChecks());
+        
 
         $response = new Response(json_encode(
                 array(  
@@ -129,6 +132,9 @@ class ApiController extends Controller
 
 
         $cart = $cart->getCart();
+        $serializer = $serializer = $this->container->get('jms_serializer');
+        $jsonContent = $serializer->serialize($cart, 'json',SerializationContext::create()->enableMaxDepthChecks());
+        
         $response = new Response(json_encode(
                 array(  
                         "status" =>"success", 
@@ -244,8 +250,23 @@ class ApiController extends Controller
      * @Template()
      * @Method("GET")
      */
-    public function customPackAction()
+    public function customPackAction(Request $request)
     {
+        $id = $request->get("id");
+        $em = $this->getDoctrine()->getEntityManager();
+        $customPack = $em->getRepository("BpProductBundle:CustomPack")->findOneById($id);
+
+        if(!$customPack) return $this->returnError("Pas de Custom Pack pour l'id $id");
+
+        $serializer = $serializer = $this->container->get('jms_serializer');
+        $jsonContent = $serializer->serialize($customPack, 'json',SerializationContext::create()->enableMaxDepthChecks());
+       
+
+        $response = new Response($jsonContent);
+
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+
         return true;
     }
 
@@ -268,6 +289,9 @@ class ApiController extends Controller
 
         $productArray = array();
         $photo = new Photo();
+        $serializer = $serializer = $this->container->get('jms_serializer');
+        $jsonContent = $serializer->serialize($products, 'json',SerializationContext::create()->enableMaxDepthChecks());
+        
 
         foreach($products as $p)
         {
@@ -309,8 +333,7 @@ class ApiController extends Controller
             $medium = $liip_imagine->getBrowserPath($f->getWebPath(), 'medium');
             $large = $liip_imagine->getBrowserPath($f->getWebPath(), 'large');
             $small = $liip_imagine->getBrowserPath($f->getWebPath(), 'small');
-            $galery[] = array("path"=> $f->getWebPath(), "small" =>$small, "medium" =>$medium, "large" =>$large,"description" => $f->getDescription(),"alt" => $f->getAlt());
-
+            $galery[] = array("id" =>$f->getId(), "path"=> $f->getWebPath(), "small" =>$small, "medium" =>$medium, "large" =>$large,"description" => $f->getDescription(),"alt" => $f->getAlt());
         }
         $path = ($product->getMainPhoto()) ? $product->getMainPhoto()->getWebPath() : "";
         $array = array(
@@ -321,7 +344,7 @@ class ApiController extends Controller
                 "price" => $product->getPrice() ,
                 "taxe" => $product->getTaxe() ,
                 "reference" => $product->getReference() ,
-                "brand" => $product->getBrand()->getName() ,
+                "brand" => ($product->getBrand()) ? $product->getBrand()->getName() : null ,
                 "specificite" => $product->getSpecificite(),
                 "onHome" => $product->getOnHome(),
                 "quantity" => $product->getQuantity(),
@@ -360,21 +383,21 @@ class ApiController extends Controller
         foreach($pack->getPhotos() as $f)
         {
             $thumbnail = $liip_imagine->getBrowserPath($f->getWebPath(), $filter);
-            $galery[] = array("path"=> $f->getWebPath(), "thumbnail" =>$thumbnail,"description" => $f->getDescription(),"alt" => $f->getAlt());
+            $galery[] = array("id" => $f->getId(), "path"=> $f->getWebPath(), "thumbnail" =>$thumbnail,"description" => $f->getDescription(),"alt" => $f->getAlt());
 
         }
 
 
         $array = array(
                 "name" => $pack->getName(),
-                "path" => $pack->getMainPhoto()->getWebPath() ,
+                "path" => ($pack->getMainPhoto()) ? $pack->getMainPhoto()->getWebPath()  : null,
                 "description" => $pack->getDescription() ,
                 "price" => $pack->getPrice() ,
                 "reference" => $pack->getReference() ,
                 "galery" => $galery
             );
 
-
+        
         $response = new Response(json_encode(
                 array(  
                         "status" =>"success", 
