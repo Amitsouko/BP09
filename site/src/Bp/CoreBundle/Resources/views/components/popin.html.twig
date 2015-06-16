@@ -1,6 +1,9 @@
 <div class="popin-container">
 	<div class="popin">
 		<div class="top-header">
+			<div class="close">
+				{{ icons('cross')|raw }}
+			</div>
 			<div class="container">
 				<div class="slider-product">
 					<div class="slides-container">
@@ -34,6 +37,51 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="validate">
+			<div class="close">
+				{{ icons('cross')|raw }}
+			</div>
+            <div class="exergue">
+                {{ icons('logo_reduce')|raw }}
+                <h1>Confirmation de votre sélection</h1>
+                <h5>Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</h5>
+            </div>
+            <div class="products">
+            	<div class="product">
+            		<img src="" alt="">
+            		<h6></h6>
+            		<h3></h3>
+            		{# <h4></h4> #}
+            	</div>
+            	<div class="product">
+            		<img src="" alt="">
+            		<h6></h6>
+            		<h3></h3>
+            		{# <h4></h4> #}
+            	</div>
+            	<div class="product">
+            		<img src="" alt="">
+            		<h6></h6>
+            		<h3></h3>
+            		{# <h4></h4> #}
+            	</div>
+            	<div class="product">
+            		<img src="" alt="">
+            		<h6></h6>
+            		<h3></h3>
+            		{# <h4></h4> #}
+            	</div>
+            	<div class="clear"></div>
+            </div>
+            <div class="action-container">
+            	<a href="#" class="button edit-btn">{{ icons('edit')|raw }}Modifier</a>
+            	<div class="price-container">
+					<a href="#" class="button">Ajouter au panier</a>	
+					<p class="price">30,00 &euro;</p>
+				</div>
+				<div class="clear"></div>
+            </div>
 		</div>
 	</div>
 </div>

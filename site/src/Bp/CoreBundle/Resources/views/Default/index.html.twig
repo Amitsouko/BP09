@@ -77,7 +77,7 @@
 
             <div class="half pack-{{ loop.index }}">
                 {% if pack.mainPhoto %}
-                <img src="{{ pack.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="{{ pack.mainPhoto.alt }}" title="{{ pack.mainPhoto.description }}">
+                <img src="{{ pack.mainPhoto.webPath|imagine_filter("large") }}" alt="{{ pack.mainPhoto.alt }}" title="{{ pack.mainPhoto.description }}">
                 {% else %}
                 <img src="{{ asset('public/img/home-pack-' ~ loop.index ~ '.png') }}" alt="">
                 {% endif %}

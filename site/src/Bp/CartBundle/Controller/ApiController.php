@@ -306,8 +306,10 @@ class ApiController extends Controller
         $galery = array();
         foreach($product->getPhotos() as $f)
         {
-            $thumbnail = $liip_imagine->getBrowserPath($f->getWebPath(), $filter);
-            $galery[] = array("path"=> $f->getWebPath(), "thumbnail" =>$thumbnail,"description" => $f->getDescription(),"alt" => $f->getAlt());
+            $medium = $liip_imagine->getBrowserPath($f->getWebPath(), 'medium');
+            $large = $liip_imagine->getBrowserPath($f->getWebPath(), 'large');
+            $small = $liip_imagine->getBrowserPath($f->getWebPath(), 'small');
+            $galery[] = array("path"=> $f->getWebPath(), "small" =>$small, "medium" =>$medium, "large" =>$large,"description" => $f->getDescription(),"alt" => $f->getAlt());
 
         }
         $path = ($product->getMainPhoto()) ? $product->getMainPhoto()->getWebPath() : "";

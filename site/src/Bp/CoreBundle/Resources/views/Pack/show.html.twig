@@ -7,7 +7,7 @@
         <div class="container">
             <div class="img-container">
                 {% if pack.mainPhoto %}
-                <img src="{{ pack.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="{{ pack.mainPhoto.alt }}" title="{{ pack.mainPhoto.description }}">
+                <img src="{{ pack.mainPhoto.webPath|imagine_filter("medium") }}" alt="{{ pack.mainPhoto.alt }}" title="{{ pack.mainPhoto.description }}">
                 {% else %}
                 <img src="{{ asset('public/img/withings-pack-large.png') }}" alt="">
                 {% endif %}
@@ -34,35 +34,6 @@
 
         </div>
     </div>
-
-
-{# <h1>Pack {{ pack.name }}</h1>
-
-<ul>
-    <li>Nom : <a href="{{ path("bp_core_pack_show", {id:pack.id}) }}">{{ pack.name }}</a></li>
-    <li>Prix : {{ pack.price|ttcPrice }}</li>
-    {% if pack.mainPhoto %}
-    <li><img src="{{ pack.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="{{ pack.mainPhoto.alt }}" title="{{ pack.mainPhoto.description }}"></li>
-    {% endif %}
-</ul>
-
-<h2>Objets du pack</h2>
-    {% for product in pack.products %}
-    <h4> <a href="{{ path("bp_core_product_show", { id:product.id }) }}">{{ product.name }}</a> </h4>
-<ul>
-    <li>Marque : {{ product.brand.name }}</li>
-    <li>Prix : {{ product.price|ttcPrice }}</li>
-    <li>Taxe : {{ product.taxe|ttcPrice }}</li>
-    {% if product.mainPhoto %}
-    <li><img src="{{ product.mainPhoto.webPath | imagine_filter("type_medium") }}"></li>
-    {% endif %}
-</ul>
-    {% endfor %}
-
-<h2>Images du pack</h2>
-{% for photo in pack.photos %}
-<img src="{{ photo.webPath|imagine_filter("type_medium") }}">
-{% endfor %} #}
 
 
 {% endblock body %}
