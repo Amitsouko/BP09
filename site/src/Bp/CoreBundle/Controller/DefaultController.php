@@ -27,7 +27,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/photo/{filter}/{id}", name="photo_url")
+     * @Route("/photo/{filter}/{id}", name="photo_url",  options={"expose"=true})
      * @Template()
      */
     public function photoAction($filter,$id)

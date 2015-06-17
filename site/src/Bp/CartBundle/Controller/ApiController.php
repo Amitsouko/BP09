@@ -203,8 +203,13 @@ class ApiController extends Controller
         $em->flush();
         $cart->addObject($customPack, 1);
 
+        $data = array(
+            'name' => $customPack->getReference(),
+            'price' => $price
+        );
+
         $response = new Response(json_encode(
-                array("status" => "success", "data" => null)
+                array("status" => "success", "data" => $data)
                 ));
 
         $response->headers->set('Content-Type', 'application/json');

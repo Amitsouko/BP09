@@ -720,6 +720,7 @@ BlockProduct = (function(superClass) {
 
   function BlockProduct(options) {
     this.getValues = bind(this.getValues, this);
+    this.removeAllFromPack = bind(this.removeAllFromPack, this);
     this.removeFromPack = bind(this.removeFromPack, this);
     this.addToPack = bind(this.addToPack, this);
     this.openPopin = bind(this.openPopin, this);
@@ -752,7 +753,8 @@ BlockProduct = (function(superClass) {
     this.addToCartBtn.on(Event.CLICK, this.addToCartClick);
     this.addToPackBtn.on(Event.CLICK, this.addToPackClick);
     $(window).on('Product::addToPack', this.addToPack);
-    return $(window).on('Product::removeFromPack', this.removeFromPack);
+    $(window).on('Product::removeFromPack', this.removeFromPack);
+    return $(window).on('Product::removeAllFromPack', this.removeAllFromPack);
   };
 
   BlockProduct.prototype.favoritesClick = function(e) {
@@ -812,6 +814,11 @@ BlockProduct = (function(superClass) {
     if (product.id === this.values.id) {
       return this.container.removeClass('added');
     }
+  };
+
+  BlockProduct.prototype.removeAllFromPack = function(e) {
+    e.preventDefault();
+    return this.container.removeClass('added');
   };
 
   BlockProduct.prototype.getValues = function() {
@@ -1155,30 +1162,63 @@ MiniCart = (function(superClass) {
   extend(MiniCart, superClass);
 
   function MiniCart(options) {
+    this.addToCart = bind(this.addToCart, this);
     this._initEvents = bind(this._initEvents, this);
     this._initContent = bind(this._initContent, this);
     MiniCart.__super__.constructor.apply(this, arguments);
   }
 
   MiniCart.prototype._initContent = function() {
-    var i, imgContainer, len, ref, results;
+    var i, imgContainer, len, ref;
     MiniCart.__super__._initContent.apply(this, arguments);
     new Loader({
       container: this.container
     });
     ref = this.container.find('.img-container');
-    results = [];
     for (i = 0, len = ref.length; i < len; i++) {
       imgContainer = ref[i];
-      results.push(new Highlight({
+      new Highlight({
         container: $(imgContainer)
-      }));
+      });
     }
-    return results;
+    return this.shopCart = this.container.find('.shop-cart');
   };
 
   MiniCart.prototype._initEvents = function() {
-    return MiniCart.__super__._initEvents.apply(this, arguments);
+    MiniCart.__super__._initEvents.apply(this, arguments);
+    $(window).on('EmbedCart:addToCart', this.addToCart);
+    return console.log('item deja', this.shopCart.find('.item'));
+  };
+
+  MiniCart.prototype.addToCart = function(e, product) {
+    var html;
+    console.log('mini-cart', e, product);
+    html = '<div class="item">';
+    html += '<div class="img-container">';
+    if (product.image != null) {
+      html += '<img src="' + Routing.generate('photo_url', {
+        filter: 'small',
+        id: 1
+      }) + '" alt="">';
+    } else {
+      html += '<img src="' + Routing.generate('photo_url', {
+        filter: 'small',
+        id: 1
+      }) + '" alt="">';
+    }
+    html += '</div>';
+    html += '<div class="info-container">';
+    html += '<h6>' + product.name + '</h6>';
+    html += '<p class="price">' + product.price + '</p>';
+    html += '</div>';
+    html += '</div>';
+    if (this.shopCart.find('.item').length > 0) {
+      console.log('item deja', this.shopCart.find('.item:last-of-type'));
+      return this.shopCart.find('.item').last().after(html);
+    } else {
+      console.log('item non deja');
+      return this.shopCart.find('h3').after(html);
+    }
   };
 
   return MiniCart;
@@ -1189,6 +1229,7 @@ Popin = (function(superClass) {
   extend(Popin, superClass);
 
   function Popin(options) {
+    this.getPackIds = bind(this.getPackIds, this);
     this.getPackFromLocalstorage = bind(this.getPackFromLocalstorage, this);
     this.isPackFull = bind(this.isPackFull, this);
     this.isInPack = bind(this.isInPack, this);
@@ -1202,6 +1243,8 @@ Popin = (function(superClass) {
     this.addToPackClick = bind(this.addToPackClick, this);
     this.removeFromPack = bind(this.removeFromPack, this);
     this.removeFromPackClick = bind(this.removeFromPackClick, this);
+    this.editFromPack = bind(this.editFromPack, this);
+    this.editFromPackClick = bind(this.editFromPackClick, this);
     this.initAfterLoaded = bind(this.initAfterLoaded, this);
     this.addActionContainer = bind(this.addActionContainer, this);
     this.addDisponibility = bind(this.addDisponibility, this);
@@ -1212,6 +1255,9 @@ Popin = (function(superClass) {
     this.addImgsSlider = bind(this.addImgsSlider, this);
     this.initContentLoaded = bind(this.initContentLoaded, this);
     this.getContent = bind(this.getContent, this);
+    this.addCustomPackToCart = bind(this.addCustomPackToCart, this);
+    this.addCustomPackToCartClick = bind(this.addCustomPackToCartClick, this);
+    this.initValidateEvent = bind(this.initValidateEvent, this);
     this.initValidatePopin = bind(this.initValidatePopin, this);
     this.closePopin = bind(this.closePopin, this);
     this.closeClick = bind(this.closeClick, this);
@@ -1276,20 +1322,47 @@ Popin = (function(superClass) {
   };
 
   Popin.prototype.initValidatePopin = function() {
-    var i, item, key, len, pack, product, results;
+    var i, item, key, len, pack, product;
     product = this.validate.find('.product');
     pack = this.getPackFromLocalstorage();
-    results = [];
     for (key = i = 0, len = pack.length; i < len; key = ++i) {
       item = pack[key];
-      console.log(key, item);
       if (item.img !== '') {
         $(product[key]).find('img')[0].src = item.img;
       }
       $(product[key]).find('h6').html(item.brand);
-      results.push($(product[key]).find('h3').html(item.name));
+      $(product[key]).find('h3').html(item.name);
     }
-    return results;
+    return this.initValidateEvent();
+  };
+
+  Popin.prototype.initValidateEvent = function() {
+    this.validate.find('.edit-btn').on(Event.CLICK, this.closeClick);
+    return this.validate.find('.price-container .button').on(Event.CLICK, this.addCustomPackToCartClick);
+  };
+
+  Popin.prototype.addCustomPackToCartClick = function(e) {
+    e.preventDefault();
+    return this.addCustomPackToCart();
+  };
+
+  Popin.prototype.addCustomPackToCart = function() {
+    var data;
+    data = this.getPackIds();
+    return $.ajax({
+      method: "POST",
+      url: Routing.generate('bp_cart_api_createpack', true),
+      data: {
+        'ids': data
+      }
+    }).done((function(_this) {
+      return function(data, err) {
+        console.log('err : ', err, 'data : ', data);
+        $(window).trigger('EmbedCart:addToCart', [data.data]);
+        $(window).trigger("CustomPack::removePack");
+        return _this.closePopin();
+      };
+    })(this));
   };
 
   Popin.prototype.getContent = function(productId) {
@@ -1414,7 +1487,18 @@ Popin = (function(superClass) {
       container: this.container.find('.slider-product')
     });
     this.actionContainer.find('.add').on(Event.CLICK, this.addToPackClick);
+    this.actionContainer.find('.edit').on(Event.CLICK, this.editFromPackClick);
     return this.actionContainer.find('.delete').on(Event.CLICK, this.removeFromPackClick);
+  };
+
+  Popin.prototype.editFromPackClick = function(e) {
+    e.preventDefault();
+    return this.editFromPack();
+  };
+
+  Popin.prototype.editFromPack = function() {
+    $(window).trigger("CustomPack::editFromPack", [this.product]);
+    return this.closePopin();
   };
 
   Popin.prototype.removeFromPackClick = function(e) {
@@ -1509,6 +1593,17 @@ Popin = (function(superClass) {
         return null;
       }
     }
+  };
+
+  Popin.prototype.getPackIds = function() {
+    var data, i, item, key, len, pack;
+    data = [];
+    pack = this.getPackFromLocalstorage();
+    for (key = i = 0, len = pack.length; i < len; key = ++i) {
+      item = pack[key];
+      data.push(item.id);
+    }
+    return data;
   };
 
   return Popin;
@@ -1797,13 +1892,17 @@ YourPack = (function(superClass) {
   extend(YourPack, superClass);
 
   function YourPack(options) {
+    this.removePackFromLocalstorage = bind(this.removePackFromLocalstorage, this);
     this.getPackFromLocalstorage = bind(this.getPackFromLocalstorage, this);
+    this.editFromLocalstorage = bind(this.editFromLocalstorage, this);
     this.removeFromLocalstorage = bind(this.removeFromLocalstorage, this);
     this.addToLocalstorage = bind(this.addToLocalstorage, this);
     this.isInPack = bind(this.isInPack, this);
+    this.removePack = bind(this.removePack, this);
     this.refreshPackBar = bind(this.refreshPackBar, this);
     this.initBar = bind(this.initBar, this);
     this.removeFromPack = bind(this.removeFromPack, this);
+    this.editFromPack = bind(this.editFromPack, this);
     this.validateCheck = bind(this.validateCheck, this);
     this.validateClick = bind(this.validateClick, this);
     this.unvalidatePack = bind(this.unvalidatePack, this);
@@ -1848,6 +1947,8 @@ YourPack = (function(superClass) {
     YourPack.__super__._initEvents.apply(this, arguments);
     $(window).on('CustomPack::addToPack', this.addToPack);
     $(window).on('CustomPack::removeFromPack', this.removeFromPack);
+    $(window).on('CustomPack::editFromPack', this.editFromPack);
+    $(window).on('CustomPack::removePack', this.removePack);
     $(window).on(Event.WHEEL, this.wheelEvent);
     this.btnValidate.on(Event.CLICK, this.validateClick);
     return this.editBtn.on(Event.CLICK, this.editClick);
@@ -1948,6 +2049,10 @@ YourPack = (function(superClass) {
     }
   };
 
+  YourPack.prototype.editFromPack = function(e, values) {
+    return this.editFromLocalstorage(values);
+  };
+
   YourPack.prototype.removeFromPack = function(e, values) {
     var element;
     element = this.container.find('.product-choice.added.' + values.id);
@@ -1983,6 +2088,11 @@ YourPack = (function(superClass) {
     return this.validateBtnCheck();
   };
 
+  YourPack.prototype.removePack = function(e) {
+    e.preventDefault();
+    return this.removePackFromLocalstorage();
+  };
+
   YourPack.prototype.isInPack = function(id) {
     var i, item, len, pack;
     pack = this.getPackFromLocalstorage();
@@ -2002,7 +2112,6 @@ YourPack = (function(superClass) {
     var item, pack;
     if (typeof localStorage !== 'undefined') {
       pack = JSON.parse(localStorage.getItem('customPack'));
-      console.log(values);
       if (pack === null) {
         pack = new Array();
       }
@@ -2042,6 +2151,39 @@ YourPack = (function(superClass) {
     }
   };
 
+  YourPack.prototype.editFromLocalstorage = function(values) {
+    var i, item, itemTemp, key, len, pack, packTemp;
+    if (typeof localStorage !== 'undefined') {
+      pack = JSON.parse(localStorage.getItem('customPack'));
+      packTemp = [];
+      if (pack !== null) {
+        for (key = i = 0, len = pack.length; i < len; key = ++i) {
+          item = pack[key];
+          if (item.id === values.id) {
+            itemTemp = {
+              'id': values.id,
+              'color': values.color,
+              'size': values.size,
+              'name': values.name,
+              'brand': values.brand,
+              'taxe': values.taxe
+            };
+            if (values.galery[0] != null) {
+              itemTemp.img = values.galery[0].medium;
+            } else {
+              itemTemp.img = '';
+            }
+            packTemp.push(itemTemp);
+          } else {
+            packTemp.push(item);
+          }
+        }
+      }
+      packTemp = JSON.stringify(packTemp);
+      return localStorage.setItem('customPack', packTemp);
+    }
+  };
+
   YourPack.prototype.getPackFromLocalstorage = function() {
     var pack;
     if (typeof localStorage !== 'undefined') {
@@ -2051,6 +2193,14 @@ YourPack = (function(superClass) {
       } else {
         return null;
       }
+    }
+  };
+
+  YourPack.prototype.removePackFromLocalstorage = function() {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('customPack');
+      $(window).trigger("Product::removeAllFromPack");
+      return this.initBar();
     }
   };
 
