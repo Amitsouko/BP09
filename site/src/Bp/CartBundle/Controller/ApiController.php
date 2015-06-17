@@ -262,7 +262,7 @@ class ApiController extends Controller
         $jsonContent = $serializer->serialize($customPack, 'json',SerializationContext::create()->enableMaxDepthChecks());
        
 
-        $response = new Response($jsonContent);
+        $response = new Response(json_encode(array("status"=>"success", "data" => json_decode($jsonContent)) ) );
 
         $response->headers->set('Content-Type', 'application/json');
         return $response;
@@ -290,9 +290,6 @@ class ApiController extends Controller
         $productArray = array();
         $photo = new Photo();
         $serializer = $serializer = $this->container->get('jms_serializer');
-        $jsonContent = $serializer->serialize($products, 'json',SerializationContext::create()->enableMaxDepthChecks());
-        
-
         foreach($products as $p)
         {
             if($p["path"])
@@ -301,10 +298,11 @@ class ApiController extends Controller
             }
             $productArray[] = $p;
         }
+        $jsonContent = $serializer->serialize($productArray, 'json',SerializationContext::create()->enableMaxDepthChecks());
         $response = new Response(json_encode(
                 array(  
                         "status" =>"success", 
-                        "data" => array ("products" => $productArray, "offset" => $offset, "limit" =>$limit)
+                        "data" => array ("products" => json_decode($jsonContent), "offset" => $offset, "limit" =>$limit)
                     )
                 ));
 
