@@ -145,6 +145,20 @@ class Product implements ItemInterface
     private $brand;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Product", mappedBy="crossSelling")
+     **/
+    private $reversedCrossSelling;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Product", inversedBy="reversedCrossSelling")
+     * @ORM\JoinTable(name="crossSelling",
+     *      joinColumns={@ORM\JoinColumn(name="parent_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="reversed_id", referencedColumnName="id")}
+     *      )
+     **/
+    private $crossSelling;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Category", inversedBy="products",cascade={"persist"})
      * @ORM\JoinTable(name="product_category")
      **/
@@ -159,6 +173,8 @@ class Product implements ItemInterface
         $this->customPacks = new ArrayCollection();
         $this->contracts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->crossSelling = new ArrayCollection();
+        $this->reversedCrossSelling = new ArrayCollection();
         $this->taxe = 0;
     }
   
@@ -697,5 +713,71 @@ class Product implements ItemInterface
     public function getBrand()
     {
         return $this->brand;
+    }
+
+    /**
+     * Add reversedCrossSelling
+     *
+     * @param \Bp\ProductBundle\Entity\Product $reversedCrossSelling
+     * @return Product
+     */
+    public function addReversedCrossSelling(\Bp\ProductBundle\Entity\Product $reversedCrossSelling)
+    {
+        $this->reversedCrossSelling[] = $reversedCrossSelling;
+
+        return $this;
+    }
+
+    /**
+     * Remove reversedCrossSelling
+     *
+     * @param \Bp\ProductBundle\Entity\Product $reversedCrossSelling
+     */
+    public function removeReversedCrossSelling(\Bp\ProductBundle\Entity\Product $reversedCrossSelling)
+    {
+        $this->reversedCrossSelling->removeElement($reversedCrossSelling);
+    }
+
+    /**
+     * Get reversedCrossSelling
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getReversedCrossSelling()
+    {
+        return $this->reversedCrossSelling;
+    }
+
+    /**
+     * Add crossSelling
+     *
+     * @param \Bp\ProductBundle\Entity\Product $crossSelling
+     * @return Product
+     */
+    public function addCrossSelling(\Bp\ProductBundle\Entity\Product $crossSelling)
+    {
+        $this->crossSelling[] = $crossSelling;
+
+        return $this;
+    }
+
+    /**
+     * Remove crossSelling
+     *
+     * @param \Bp\ProductBundle\Entity\Product $crossSelling
+     */
+    public function removeCrossSelling(\Bp\ProductBundle\Entity\Product $crossSelling)
+    {
+        $this->crossSelling->removeElement($crossSelling);
+    }
+
+    /**
+     * Get crossSelling
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCrossSelling()
+    {
+        return $this->crossSelling;
     }
 }

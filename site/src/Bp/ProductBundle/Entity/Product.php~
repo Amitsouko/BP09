@@ -5,6 +5,10 @@ namespace Bp\ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Bp\CartBundle\Interfaces\ItemInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * Product
@@ -88,27 +92,31 @@ class Product implements ItemInterface
 
     /**
      * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Object", mappedBy="product",cascade={"all"})
+     * @Exclude
      **/
     private $objects;
 
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Pack", mappedBy="products")
+     * @Exclude
      **/
     private $packs;
 
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\CustomPack", mappedBy="products")
+     * @Exclude
      **/
     private $customPacks;
 
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Contract", mappedBy="products")
+     * @Exclude
      **/
     private $contracts;
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Type", inversedBy="types",cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Type", inversedBy="products",cascade={"persist"})
      * @ORM\JoinTable(name="type_product")
      **/
     private $types;
@@ -126,6 +134,7 @@ class Product implements ItemInterface
 
     /**
      * @ORM\OneToMany(targetEntity="Bp\ProfileBundle\Entity\Comment", mappedBy="product",cascade={"all"})
+     * @Exclude
      **/
     private $comments;
 
@@ -134,6 +143,20 @@ class Product implements ItemInterface
      * @ORM\JoinColumn(name="brand_id", referencedColumnName="id")
      **/
     private $brand;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Product", mappedBy="crossSelling")
+     **/
+    private $reversedCrossSelling;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Product", inversedBy="reversedCrossSelling")
+     * @ORM\JoinTable(name="crossSelling",
+     *      joinColumns={@ORM\JoinColumn(name="parent_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="reversed_id", referencedColumnName="id")}
+     *      )
+     **/
+    private $crossSelling;
 
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Category", inversedBy="products",cascade={"persist"})
@@ -150,6 +173,8 @@ class Product implements ItemInterface
         $this->customPacks = new ArrayCollection();
         $this->contracts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->crossSelling = new ArrayCollection();
+        $this->reversedCrossSelling = new ArrayCollection();
         $this->taxe = 0;
     }
   

@@ -26,6 +26,7 @@ class ProductType extends AbstractType
             ->add('packs')
             ->add('types')
             ->add('categories')
+            ->add('crossSelling')
         ;
     }
     
