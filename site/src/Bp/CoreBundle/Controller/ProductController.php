@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-
 class ProductController extends Controller
 {
     /**
@@ -29,8 +28,7 @@ class ProductController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $product = $em->getRepository("BpProductBundle:Product")->findOneById($id);
-        $products = $em->getRepository("BpProductBundle:Product")->findOnHome();
 
-        return array("product" => $product,'products' => $products,'page'=>"product-page");
+        return array("product" => $product,'page'=>"product-page");
     }
 }

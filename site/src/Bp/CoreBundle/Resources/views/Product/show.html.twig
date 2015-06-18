@@ -24,7 +24,7 @@
         <div class="container">
             <div class="product-container">
 
-                {% for productConnexe in products %}
+                {% for productConnexe in product.crossSelling %}
 
                 {% set productConnexe = {'product':productConnexe} %}
                 {% include 'BpCoreBundle:components:block_product.html.twig' with productConnexe %}
@@ -52,54 +52,5 @@
 
         </div>
     </div>
-
-
-
-
-
-
-
-
-{# 
-<h1>{{ product.name }}</h1>
-
-<h2>Description</h2>
-<div>
-    {{ product.description }}
-</div>
-<h2>Spécificités</h2>
-<div>
-    {{ product.specificite|raw }}
-</div>
-<h2>Types</h2>
-<div>
-    <ul>
-    {% for type in product.types %}
-    <li>{{ type.name }}</li>
-    {% endfor %}
-    </ul>
-</div>
-<h2>Prix</h2>
-<div>
-    {{ product.price|price }}
-</div>
-
-<h2>Photo princpale</h2>
-{% if product.mainPhoto %}
-<img src="{{ product.mainPhoto.webPath | imagine_filter("type_medium") }}">
-{% endif %}
-<h2>Photos</h2>
-{% for photo in product.photos %}
-<img src="{{ photo.webPath|imagine_filter("type_medium") }}">
-{% endfor %}
-<h2>Commentaires ({{ product.comments|length }}) - note : {{ product.comments|averageNote }}</h2>
-<ul>
-    {% for comment in product.comments %}
-    <li>{{ comment.user.username }} : {{ comment.text }} ({{ comment.date|date }}) - note {{ comment.note }}</li>
-    {% endfor %}
-</ul>
-
-<h3>Poster un commentaire</h3>
-{{ render(controller('BpProfileBundle:Comment:index', {id: product.id, type: product|class})) }} #}
 
 {% endblock body %}

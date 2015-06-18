@@ -12,7 +12,7 @@
 					</div>
 				</div>
 				<ul>
-					{% for photo in product.photos %}
+					{% for photo in product|gallery  %}
 					<li class="active"><img src="{{ photo.webPath|imagine_filter("small") }}" alt=""></li>
 					{% endfor %}
 				</ul>
