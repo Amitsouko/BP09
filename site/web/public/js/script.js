@@ -1024,6 +1024,7 @@ Menu = (function(superClass) {
     this.openMiniCartMenu = bind(this.openMiniCartMenu, this);
     this.checkMiniCartMenu = bind(this.checkMiniCartMenu, this);
     this.clickMiniCartMenu = bind(this.clickMiniCartMenu, this);
+    this.cartPriceUpdate = bind(this.cartPriceUpdate, this);
     this.resize = bind(this.resize, this);
     this._initEvents = bind(this._initEvents, this);
     this._initContent = bind(this._initContent, this);
@@ -1052,11 +1053,16 @@ Menu = (function(superClass) {
     this.submenuShopBtn.on(Event.CLICK, this.clickShopSubmenu);
     this.accountBtn.on(Event.CLICK, this.clickAccountBtn);
     this.closeAccountMenuBtn.on(Event.CLICK, this.clickCloseAccountMenu);
-    return this.miniCartBtn.on(Event.CLICK, this.clickMiniCartMenu);
+    this.miniCartBtn.on(Event.CLICK, this.clickMiniCartMenu);
+    return $(window).on('Cart::priceUpdate', this.cartPriceUpdate);
   };
 
   Menu.prototype.resize = function() {
     return Menu.__super__.resize.apply(this, arguments);
+  };
+
+  Menu.prototype.cartPriceUpdate = function(e, price) {
+    return this.miniCartBtn.find('span span').html(price);
   };
 
   Menu.prototype.clickMiniCartMenu = function(e) {
@@ -1162,6 +1168,8 @@ MiniCart = (function(superClass) {
   extend(MiniCart, superClass);
 
   function MiniCart(options) {
+    this.getCustomPack = bind(this.getCustomPack, this);
+    this.addCustomPackToCart = bind(this.addCustomPackToCart, this);
     this.addToCart = bind(this.addToCart, this);
     this._initEvents = bind(this._initEvents, this);
     this._initContent = bind(this._initContent, this);
@@ -1186,26 +1194,14 @@ MiniCart = (function(superClass) {
 
   MiniCart.prototype._initEvents = function() {
     MiniCart.__super__._initEvents.apply(this, arguments);
-    $(window).on('EmbedCart:addToCart', this.addToCart);
-    return console.log('item deja', this.shopCart.find('.item'));
+    return $(window).on('EmbedCart:addCustomPackToCart', this.addCustomPackToCart);
   };
 
-  MiniCart.prototype.addToCart = function(e, product) {
-    var html;
-    console.log('mini-cart', e, product);
+  MiniCart.prototype.addToCart = function(product) {
+    var html, newCartPrice;
     html = '<div class="item">';
     html += '<div class="img-container">';
-    if (product.image != null) {
-      html += '<img src="' + Routing.generate('photo_url', {
-        filter: 'small',
-        id: 1
-      }) + '" alt="">';
-    } else {
-      html += '<img src="' + Routing.generate('photo_url', {
-        filter: 'small',
-        id: 1
-      }) + '" alt="">';
-    }
+    html += '<img src="' + product.img + '" alt="">';
     html += '</div>';
     html += '<div class="info-container">';
     html += '<h6>' + product.name + '</h6>';
@@ -1214,11 +1210,47 @@ MiniCart = (function(superClass) {
     html += '</div>';
     if (this.shopCart.find('.item').length > 0) {
       console.log('item deja', this.shopCart.find('.item:last-of-type'));
-      return this.shopCart.find('.item').last().after(html);
+      this.shopCart.find('.item').last().after(html);
     } else {
       console.log('item non deja');
-      return this.shopCart.find('h3').after(html);
+      this.shopCart.find('h3').after(html);
     }
+    newCartPrice = (parseInt(this.shopCart.find('.total span').html()) + parseInt(product.price)).toFixed(2) + ' &euro;';
+    this.shopCart.find('.total span').html(newCartPrice);
+    return $(window).trigger('Cart::priceUpdate', [newCartPrice]);
+  };
+
+  MiniCart.prototype.addCustomPackToCart = function(e, data) {
+    e.preventDefault();
+    return this.getCustomPack(data.id);
+  };
+
+  MiniCart.prototype.getCustomPack = function(id) {
+    return $.ajax({
+      method: "GET",
+      url: Routing.generate('bp_cart_api_custompack', true) + '?id=' + id
+    }).done((function(_this) {
+      return function(data) {
+        console.log(data);
+        if (data.galery != null) {
+          if (data.galery[0] != null) {
+            data.img = Routing.generate('photo_url', {
+              filter: 'small',
+              id: 1
+            });
+          } else {
+            data.img = '/public/img/default-product-pack.png';
+          }
+        } else {
+          data.img = window.Global.img["default"];
+        }
+        if (data.name == null) {
+          data.name = data.reference;
+        }
+        data.price = (data.price * 1.2).toFixed(2) + ' &euro;';
+        return _this.addToCart(data);
+      };
+    })(this));
   };
 
   return MiniCart;
@@ -1358,7 +1390,7 @@ Popin = (function(superClass) {
     }).done((function(_this) {
       return function(data, err) {
         console.log('err : ', err, 'data : ', data);
-        $(window).trigger('EmbedCart:addToCart', [data.data]);
+        $(window).trigger('EmbedCart:addCustomPackToCart', [data.data]);
         $(window).trigger("CustomPack::removePack");
         return _this.closePopin();
       };

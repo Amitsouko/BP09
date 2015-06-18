@@ -29,5 +29,11 @@
 {# {% include  "BpCoreBundle::tawkto.html.twig" %} #}
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
-
+<script>
+	window.Global = {
+		img : {
+			default : "{{  asset('public/img/default-product-pack.png') }}"
+		}
+	}
+</script>
 <script type="text/javascript" src="{{ asset('public/js/script.js') }}"></script>

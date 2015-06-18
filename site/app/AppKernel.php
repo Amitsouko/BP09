@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new PaymentSuite\StripeBundle\StripeBundle(),
             new Bp\AdminBundle\BpAdminBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
         );
 

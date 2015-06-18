@@ -7,7 +7,7 @@
         <div class="container">
             <div class="holder">
                 <h5>Envie d'un objet connecté mais peur de sauter le pas ? Avec Wygiwyt tester 4 objets pendant une semaine. Et repartez avec <br/>10 euros de réduction sur votre prochain achat.</h5>
-                <a href="#" class="button">Découvrir wygiwyt en vidéo</a>
+                <a href="#" class="button not-active">Découvrir wygiwyt en vidéo</a>
             </div>
         </div>
     </div>
@@ -83,7 +83,7 @@
                 {% endif %}
                 <div>
                     <h1>{{ pack.name }}</h1>
-                    <h5>{{ pack.description }}</h5>
+                    <h5>{{ pack.description|slice(0,70) }} ... <br/>En savoir plus</h5>
                     <a href="{{ path("bp_core_pack_show", { id:pack.id }) }}" class="button transparent">Découvrir</a>
                 </div>
             </div>

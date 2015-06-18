@@ -1,2 +1,6 @@
 {{ icons('cart-ic')|raw }}
+{% if cart.price > 0 %}
 <span><span>{{ cart.priceTtc|price }}</span>{#  - Eur #}</span>
+{% else %}
+<span><span></span></span>
+{% endif %}
