@@ -2183,48 +2183,48 @@ p {
           left: 90px; }
         .product-detail .reviews-container .score-container .score-circle .circle:nth-child(5) {
           left: 120px; }
-  #part-home .band {
+  #page-home .band {
     width: 925px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left;
     margin: 70px 0; }
-  #part-home .highlight .container .holder {
+  #page-home .highlight .container .holder {
     width: 505px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left;
     margin-left: calc( 210px + 10px); }
-  #part-home .how .container .steps .step {
+  #page-home .how .container .steps .step {
     width: 242.5px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left;
     padding-right: calc( 52.5px);
     margin-left: calc( 52.5px + 10px); }
-  #part-product-page .product-highlight .product-container {
+  #page-product-page .product-highlight .product-container {
     width: 925px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left; }
-    #part-product-page .product-highlight .product-container .block-product:first-of-type {
+    #page-product-page .product-highlight .product-container .block-product:first-of-type {
       margin-left: 0; }
-    #part-product-page .product-highlight .product-container .block-product:nth-child(2) {
+    #page-product-page .product-highlight .product-container .block-product:nth-child(2) {
       margin-right: 0; }
-    #part-product-page .product-highlight .product-container .block-product:nth-child(4) {
+    #page-product-page .product-highlight .product-container .block-product:nth-child(4) {
       display: none; }
-  #part-list-product .list-products .product-container, #part-pack-editor .list-products .product-container {
+  #page-list-product .list-products .product-container, #page-pack-editor .list-products .product-container {
     width: 610px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left; }
-    #part-list-product .list-products .product-container .block-product:nth-child(3n+1), #part-pack-editor .list-products .product-container .block-product:nth-child(3n+1) {
+    #page-list-product .list-products .product-container .block-product:nth-child(3n+1), #page-pack-editor .list-products .product-container .block-product:nth-child(3n+1) {
       margin-left: 10px; }
-    #part-list-product .list-products .product-container .block-product:nth-child(3n+3), #part-pack-editor .list-products .product-container .block-product:nth-child(3n+3) {
+    #page-list-product .list-products .product-container .block-product:nth-child(3n+3), #page-pack-editor .list-products .product-container .block-product:nth-child(3n+3) {
       margin-right: 10px; }
-    #part-list-product .list-products .product-container .block-product:nth-child(2n+1), #part-pack-editor .list-products .product-container .block-product:nth-child(2n+1) {
+    #page-list-product .list-products .product-container .block-product:nth-child(2n+1), #page-pack-editor .list-products .product-container .block-product:nth-child(2n+1) {
       margin-left: 0px; }
-    #part-list-product .list-products .product-container .block-product:nth-child(2n+2), #part-pack-editor .list-products .product-container .block-product:nth-child(2n+2) {
+    #page-list-product .list-products .product-container .block-product:nth-child(2n+2), #page-pack-editor .list-products .product-container .block-product:nth-child(2n+2) {
       margin-right: 0px; } }
 
 @media screen and (max-width: 768px) {
@@ -2267,21 +2267,21 @@ p {
       margin-top: 20px;
       transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
       overflow: hidden; }
-  #part-home .band {
+  #page-home .band {
     width: 610px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left;
     margin: 70px 0; }
-  #part-home .highlight .container .holder {
+  #page-home .highlight .container .holder {
     width: 610px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left;
     margin-left: calc( 0px + 10px); }
-  #part-home .how .container .exergue {
+  #page-home .how .container .exergue {
     margin-bottom: 100px; }
-  #part-home .how .container .steps .step {
+  #page-home .how .container .steps .step {
     width: 505px;
     margin: 0 10px;
     box-sizing: border-box;
@@ -2289,113 +2289,113 @@ p {
     padding-right: calc( 26.25px);
     margin-left: calc( 78.75px + 10px);
     margin-bottom: 40px; }
-    #part-home .how .container .steps .step:nth-child(1) {
+    #page-home .how .container .steps .step:nth-child(1) {
       padding-top: 0px; }
-    #part-home .how .container .steps .step:nth-child(3) {
+    #page-home .how .container .steps .step:nth-child(3) {
       padding-top: 0px; }
-  #part-product-page .top-header .slider-product ul {
+  #page-product-page .top-header .slider-product ul {
     width: 400px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left;
     margin-left: calc( 105px + 10px); }
-    #part-product-page .top-header .slider-product ul li {
+    #page-product-page .top-header .slider-product ul li {
       width: 85px;
       height: 85px;
       margin: 10px;
       float: left; }
-  #part-product-page .top-header .slider-product .slides-container {
+  #page-product-page .top-header .slider-product .slides-container {
     width: 400px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left;
     margin-left: calc( 105px + 10px); }
-  #part-product-page .top-header .product-info {
+  #page-product-page .top-header .product-info {
     width: 610px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left;
     text-align: center; }
-    #part-product-page .top-header .product-info a:not(.button) {
+    #page-product-page .top-header .product-info a:not(.button) {
       float: none;
       display: inline-block; }
-    #part-product-page .top-header .product-info .color {
+    #page-product-page .top-header .product-info .color {
       margin: 5px;
       transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1); }
-    #part-product-page .top-header .product-info .size {
+    #page-product-page .top-header .product-info .size {
       margin: 5px; }
-    #part-product-page .top-header .product-info .action-container div {
+    #page-product-page .top-header .product-info .action-container div {
       margin: auto;
       display: inline-block; }
-    #part-product-page .top-header .product-info .action-container .favorites {
+    #page-product-page .top-header .product-info .action-container .favorites {
       float: left; }
-  #part-product-page .product-highlight .container {
+  #page-product-page .product-highlight .container {
     overflow: hidden; }
-    #part-product-page .product-highlight .container .product-container {
+    #page-product-page .product-highlight .container .product-container {
       width: 1240px;
       margin: 0 10px;
       box-sizing: border-box;
       float: left; }
-      #part-product-page .product-highlight .container .product-container .block-product:first-of-type {
+      #page-product-page .product-highlight .container .product-container .block-product:first-of-type {
         margin-left: 0; }
-      #part-product-page .product-highlight .container .product-container .block-product.after {
+      #page-product-page .product-highlight .container .product-container .block-product.after {
         display: none; }
-  #part-product-page .reviews-container .container h1 ~ .score-container {
+  #page-product-page .reviews-container .container h1 ~ .score-container {
     right: 60px; }
-  #part-product-page .reviews-container .reviews h3 {
+  #page-product-page .reviews-container .reviews h3 {
     width: 190px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left; }
-  #part-product-page .reviews-container .reviews > div {
+  #page-product-page .reviews-container .reviews > div {
     width: 400px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left; }
-    #part-product-page .reviews-container .reviews > div p {
+    #page-product-page .reviews-container .reviews > div p {
       width: 400px;
       margin: 0 10px;
       box-sizing: border-box;
       float: left;
       margin-left: 0; }
-  #part-product-page .category-container {
+  #page-product-page .category-container {
     background-color: #58c4d9;
     padding: 30px 0; }
-  #part-list-pack .top-content {
+  #page-list-pack .top-content {
     display: none; }
-  #part-list-product .top-content {
+  #page-list-product .top-content {
     display: none; }
-  #part-list-product .list-products .product-container {
+  #page-list-product .list-products .product-container {
     width: 610px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left; }
-    #part-list-product .list-products .product-container .block-product:nth-child(3n+1) {
+    #page-list-product .list-products .product-container .block-product:nth-child(3n+1) {
       margin-left: 0; }
-    #part-list-product .list-products .product-container .block-product:nth-child(3n+3) {
+    #page-list-product .list-products .product-container .block-product:nth-child(3n+3) {
       margin-left: 0; }
-    #part-list-product .list-products .product-container .block-product:nth-child(2n+1) {
+    #page-list-product .list-products .product-container .block-product:nth-child(2n+1) {
       margin-left: 0; }
-    #part-list-product .list-products .product-container .block-product:nth-child(2n+2) {
+    #page-list-product .list-products .product-container .block-product:nth-child(2n+2) {
       margin-left: 0; }
-  #part-pack-editor .top-content {
+  #page-pack-editor .top-content {
     padding-bottom: 50px; }
-    #part-pack-editor .top-content > img {
+    #page-pack-editor .top-content > img {
       display: none; }
-    #part-pack-editor .top-content .breadcrumb {
+    #page-pack-editor .top-content .breadcrumb {
       margin-bottom: 30px; }
-  #part-pack-editor .list-products .product-container {
+  #page-pack-editor .list-products .product-container {
     width: 610px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left; }
-    #part-pack-editor .list-products .product-container .block-product:nth-child(3n+1) {
+    #page-pack-editor .list-products .product-container .block-product:nth-child(3n+1) {
       margin-left: 0; }
-    #part-pack-editor .list-products .product-container .block-product:nth-child(3n+3) {
+    #page-pack-editor .list-products .product-container .block-product:nth-child(3n+3) {
       margin-left: 0; }
-    #part-pack-editor .list-products .product-container .block-product:nth-child(2n+1) {
+    #page-pack-editor .list-products .product-container .block-product:nth-child(2n+1) {
       margin-left: 0; }
-    #part-pack-editor .list-products .product-container .block-product:nth-child(2n+2) {
+    #page-pack-editor .list-products .product-container .block-product:nth-child(2n+2) {
       margin-left: 0; }
   .main-header .holder .container nav {
     display: none; }
@@ -2450,25 +2450,25 @@ p {
     margin: 0 10px;
     box-sizing: border-box;
     float: left; }
-  #part-home p {
+  #page-home p {
     font-size: 28px; }
-  #part-home h1 {
+  #page-home h1 {
     font-size: 50px; }
-  #part-home .band {
+  #page-home .band {
     width: 295px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left;
     margin: 70px 10px; }
-  #part-home .highlight .container .holder {
+  #page-home .highlight .container .holder {
     width: 295px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left;
     margin-left: calc( 0px + 10px); }
-  #part-home .how .container .exergue {
+  #page-home .how .container .exergue {
     margin-bottom: 100px; }
-  #part-home .how .container .steps .step {
+  #page-home .how .container .steps .step {
     width: 242.5px;
     margin: 0 10px;
     box-sizing: border-box;
@@ -2476,101 +2476,101 @@ p {
     padding-right: calc( 0px);
     margin-left: calc( 52.5px + 10px);
     margin-bottom: 40px; }
-    #part-home .how .container .steps .step:nth-child(1) {
+    #page-home .how .container .steps .step:nth-child(1) {
       padding-top: 0px; }
-    #part-home .how .container .steps .step:nth-child(3) {
+    #page-home .how .container .steps .step:nth-child(3) {
       padding-top: 0px; }
-    #part-home .how .container .steps .step h3 {
+    #page-home .how .container .steps .step h3 {
       font-size: 25px; }
-    #part-home .how .container .steps .step p {
+    #page-home .how .container .steps .step p {
       font-size: 25px; }
-  #part-home .features-packs .divide-container .half {
+  #page-home .features-packs .divide-container .half {
     width: 100%; }
-    #part-home .features-packs .divide-container .half div .button {
+    #page-home .features-packs .divide-container .half div .button {
       position: relative;
       margin-top: 30px; }
-  #part-product-page .top-header .slider-product ul {
+  #page-product-page .top-header .slider-product ul {
     display: none; }
-  #part-product-page .top-header .slider-product .slides-container {
+  #page-product-page .top-header .slider-product .slides-container {
     width: 295px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left;
     margin-left: calc( 0px + 10px); }
-  #part-product-page .top-header .product-info {
+  #page-product-page .top-header .product-info {
     width: 295px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left; }
-    #part-product-page .top-header .product-info .action-container .favorites {
+    #page-product-page .top-header .product-info .action-container .favorites {
       float: none;
       margin-top: -20px; }
-  #part-product-page .product-highlight .container .product-container {
+  #page-product-page .product-highlight .container .product-container {
     width: 295px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left; }
-  #part-product-page .more-info .fonctionnality-container .fonctionnality {
+  #page-product-page .more-info .fonctionnality-container .fonctionnality {
     width: 85px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left; }
-  #part-product-page .reviews-container .container h1 {
+  #page-product-page .reviews-container .container h1 {
     margin-bottom: 0px; }
-    #part-product-page .reviews-container .container h1 ~ .score-container {
+    #page-product-page .reviews-container .container h1 ~ .score-container {
       position: relative;
       right: initial;
       left: 0;
       margin: 0 10px;
       margin-bottom: 30px; }
-  #part-product-page .reviews-container .reviews h3 {
+  #page-product-page .reviews-container .reviews h3 {
     width: 295px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left; }
-  #part-product-page .reviews-container .reviews > div {
+  #page-product-page .reviews-container .reviews > div {
     width: 295px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left;
     margin-right: 0px; }
-    #part-product-page .reviews-container .reviews > div p {
+    #page-product-page .reviews-container .reviews > div p {
       width: 295px;
       margin: 0 10px;
       box-sizing: border-box;
       float: left;
       margin-left: 0; }
-  #part-list-product .list-products .product-container {
+  #page-list-product .list-products .product-container {
     width: 295px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left; }
-  #part-pack-editor .top-content .pack-highlight .info {
+  #page-pack-editor .top-content .pack-highlight .info {
     width: 295px;
     margin: 0 10px;
     box-sizing: border-box;
     float: left;
     margin: 0; }
-    #part-pack-editor .top-content .pack-highlight .info .your-pack-container:not(.sticky) {
+    #page-pack-editor .top-content .pack-highlight .info .your-pack-container:not(.sticky) {
       max-width: 230px;
       margin: 0 50px; }
-      #part-pack-editor .top-content .pack-highlight .info .your-pack-container:not(.sticky) .product-choice {
+      #page-pack-editor .top-content .pack-highlight .info .your-pack-container:not(.sticky) .product-choice {
         width: 90px;
         height: 90px; }
-        #part-pack-editor .top-content .pack-highlight .info .your-pack-container:not(.sticky) .product-choice:nth-child(2) {
+        #page-pack-editor .top-content .pack-highlight .info .your-pack-container:not(.sticky) .product-choice:nth-child(2) {
           margin-left: 14px; }
-        #part-pack-editor .top-content .pack-highlight .info .your-pack-container:not(.sticky) .product-choice:nth-child(4) {
+        #page-pack-editor .top-content .pack-highlight .info .your-pack-container:not(.sticky) .product-choice:nth-child(4) {
           margin-left: 14px; }
-        #part-pack-editor .top-content .pack-highlight .info .your-pack-container:not(.sticky) .product-choice:nth-child(3) {
+        #page-pack-editor .top-content .pack-highlight .info .your-pack-container:not(.sticky) .product-choice:nth-child(3) {
           margin-right: 0; }
-    #part-pack-editor .top-content .pack-highlight .info .your-pack-container.sticky {
+    #page-pack-editor .top-content .pack-highlight .info .your-pack-container.sticky {
       text-align: center; }
-      #part-pack-editor .top-content .pack-highlight .info .your-pack-container.sticky .title {
+      #page-pack-editor .top-content .pack-highlight .info .your-pack-container.sticky .title {
         display: none; }
-      #part-pack-editor .top-content .pack-highlight .info .your-pack-container.sticky .button {
+      #page-pack-editor .top-content .pack-highlight .info .your-pack-container.sticky .button {
         position: relative;
         margin-top: 20px; }
-  #part-pack-editor .list-products .product-container {
+  #page-pack-editor .list-products .product-container {
     width: 295px;
     margin: 0 10px;
     box-sizing: border-box;
