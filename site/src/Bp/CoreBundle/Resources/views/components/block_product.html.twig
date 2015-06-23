@@ -1,7 +1,7 @@
 <div class="block-product {{page}}" id="{{ product.id }}">
 	<div class="image-container">
 		{% if product.mainPhoto %}
-		<img src="{{ product.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="">
+		<img src="{{ product.mainPhoto.webPath|imagine_filter("medium") }}" alt="">
 		{% else %}
 		<img src="{{ asset('public/img/default-product-pack.png')}}" alt="">
 		{% endif %}

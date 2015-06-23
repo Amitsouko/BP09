@@ -31,7 +31,7 @@ if (!window.requestAnimationFrame) {
     })();
 }
 
-var App, AppCore, BlockProduct, ComponentsBase, Event, FilterProduct, Highlight, Home, ListPack, ListProduct, Loader, Menu, MiniCart, Normalize, PackDetail, PackEditor, Page, ProductDetail, ProductPage, ProductSlider, Router, Slider, SocialSharing, Transitions, Utils, W, YourPack,
+var App, AppCore, BlockProduct, ComponentsBase, Event, FilterProduct, Highlight, Home, ListPack, ListProduct, Loader, Menu, MiniCart, Normalize, PackDetail, PackEditor, Page, Popin, ProductDetail, ProductPage, ProductSlider, Router, Slider, SocialSharing, Transitions, Utils, W, YourPack,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -720,9 +720,13 @@ BlockProduct = (function(superClass) {
 
   function BlockProduct(options) {
     this.getValues = bind(this.getValues, this);
+    this.removeAllFromPack = bind(this.removeAllFromPack, this);
+    this.removeFromPack = bind(this.removeFromPack, this);
     this.addToPack = bind(this.addToPack, this);
+    this.openPopin = bind(this.openPopin, this);
     this.addToCart = bind(this.addToCart, this);
     this.addToFavorite = bind(this.addToFavorite, this);
+    this.editClick = bind(this.editClick, this);
     this.addToCartClick = bind(this.addToCartClick, this);
     this.addToPackClick = bind(this.addToPackClick, this);
     this.favoritesClick = bind(this.favoritesClick, this);
@@ -739,8 +743,7 @@ BlockProduct = (function(superClass) {
     this.addToCartBtn = this.actionContainer.find('.add-to-cart');
     this.addToPackBtn = this.actionContainer.find('.add-to-pack');
     this.values = {};
-    this.getValues();
-    return console.log(this);
+    return this.getValues();
   };
 
   BlockProduct.prototype._initEvents = function() {
@@ -748,7 +751,10 @@ BlockProduct = (function(superClass) {
     this.favoritesBtn.on(Event.CLICK, this.favoritesClick);
     this.editBtn.on(Event.CLICK, this.editClick);
     this.addToCartBtn.on(Event.CLICK, this.addToCartClick);
-    return this.addToPackBtn.on(Event.CLICK, this.addToPackClick);
+    this.addToPackBtn.on(Event.CLICK, this.addToPackClick);
+    $(window).on('Product::addToPack', this.addToPack);
+    $(window).on('Product::removeFromPack', this.removeFromPack);
+    return $(window).on('Product::removeAllFromPack', this.removeAllFromPack);
   };
 
   BlockProduct.prototype.favoritesClick = function(e) {
@@ -758,12 +764,17 @@ BlockProduct = (function(superClass) {
 
   BlockProduct.prototype.addToPackClick = function(e) {
     e.preventDefault();
-    return this.addToPack();
+    return this.openPopin();
   };
 
   BlockProduct.prototype.addToCartClick = function(e) {
     e.preventDefault();
     return this.addToCart();
+  };
+
+  BlockProduct.prototype.editClick = function(e) {
+    e.preventDefault();
+    return this.openPopin();
   };
 
   BlockProduct.prototype.addToFavorite = function() {
@@ -789,9 +800,25 @@ BlockProduct = (function(superClass) {
     })(this));
   };
 
-  BlockProduct.prototype.addToPack = function() {
-    this.container.addClass('added');
-    return $(window).trigger("Pack::addToPack", [this.values]);
+  BlockProduct.prototype.openPopin = function() {
+    return $(window).trigger("Popin::openPopin", [this.values]);
+  };
+
+  BlockProduct.prototype.addToPack = function(e, product) {
+    if (product.id === this.values.id) {
+      return this.container.addClass('added');
+    }
+  };
+
+  BlockProduct.prototype.removeFromPack = function(e, product) {
+    if (product.id === this.values.id) {
+      return this.container.removeClass('added');
+    }
+  };
+
+  BlockProduct.prototype.removeAllFromPack = function(e) {
+    e.preventDefault();
+    return this.container.removeClass('added');
   };
 
   BlockProduct.prototype.getValues = function() {
@@ -997,6 +1024,7 @@ Menu = (function(superClass) {
     this.openMiniCartMenu = bind(this.openMiniCartMenu, this);
     this.checkMiniCartMenu = bind(this.checkMiniCartMenu, this);
     this.clickMiniCartMenu = bind(this.clickMiniCartMenu, this);
+    this.cartPriceUpdate = bind(this.cartPriceUpdate, this);
     this.resize = bind(this.resize, this);
     this._initEvents = bind(this._initEvents, this);
     this._initContent = bind(this._initContent, this);
@@ -1025,11 +1053,16 @@ Menu = (function(superClass) {
     this.submenuShopBtn.on(Event.CLICK, this.clickShopSubmenu);
     this.accountBtn.on(Event.CLICK, this.clickAccountBtn);
     this.closeAccountMenuBtn.on(Event.CLICK, this.clickCloseAccountMenu);
-    return this.miniCartBtn.on(Event.CLICK, this.clickMiniCartMenu);
+    this.miniCartBtn.on(Event.CLICK, this.clickMiniCartMenu);
+    return $(window).on('Cart::priceUpdate', this.cartPriceUpdate);
   };
 
   Menu.prototype.resize = function() {
     return Menu.__super__.resize.apply(this, arguments);
+  };
+
+  Menu.prototype.cartPriceUpdate = function(e, price) {
+    return this.miniCartBtn.find('span span').html(price);
   };
 
   Menu.prototype.clickMiniCartMenu = function(e) {
@@ -1135,33 +1168,477 @@ MiniCart = (function(superClass) {
   extend(MiniCart, superClass);
 
   function MiniCart(options) {
+    this.getCustomPack = bind(this.getCustomPack, this);
+    this.addCustomPackToCart = bind(this.addCustomPackToCart, this);
+    this.addToCart = bind(this.addToCart, this);
     this._initEvents = bind(this._initEvents, this);
     this._initContent = bind(this._initContent, this);
     MiniCart.__super__.constructor.apply(this, arguments);
   }
 
   MiniCart.prototype._initContent = function() {
-    var i, imgContainer, len, ref, results;
+    var i, imgContainer, len, ref;
     MiniCart.__super__._initContent.apply(this, arguments);
     new Loader({
       container: this.container
     });
     ref = this.container.find('.img-container');
-    results = [];
     for (i = 0, len = ref.length; i < len; i++) {
       imgContainer = ref[i];
-      results.push(new Highlight({
+      new Highlight({
         container: $(imgContainer)
-      }));
+      });
     }
-    return results;
+    return this.shopCart = this.container.find('.shop-cart');
   };
 
   MiniCart.prototype._initEvents = function() {
-    return MiniCart.__super__._initEvents.apply(this, arguments);
+    MiniCart.__super__._initEvents.apply(this, arguments);
+    return $(window).on('EmbedCart:addCustomPackToCart', this.addCustomPackToCart);
+  };
+
+  MiniCart.prototype.addToCart = function(product) {
+    var html, newCartPrice;
+    html = '<div class="item">';
+    html += '<div class="img-container">';
+    html += '<img src="' + product.img + '" alt="">';
+    html += '</div>';
+    html += '<div class="info-container">';
+    html += '<h6>' + product.name + '</h6>';
+    html += '<p class="price">' + product.price + '</p>';
+    html += '</div>';
+    html += '</div>';
+    if (this.shopCart.find('.item').length > 0) {
+      console.log('item deja', this.shopCart.find('.item:last-of-type'));
+      this.shopCart.find('.item').last().after(html);
+    } else {
+      console.log('item non deja');
+      this.shopCart.find('h3').after(html);
+    }
+    newCartPrice = (parseInt(this.shopCart.find('.total span').html()) + parseInt(product.price)).toFixed(2) + ' &euro;';
+    this.shopCart.find('.total span').html(newCartPrice);
+    return $(window).trigger('Cart::priceUpdate', [newCartPrice]);
+  };
+
+  MiniCart.prototype.addCustomPackToCart = function(e, data) {
+    e.preventDefault();
+    return this.getCustomPack(data.id);
+  };
+
+  MiniCart.prototype.getCustomPack = function(id) {
+    return $.ajax({
+      method: "GET",
+      url: Routing.generate('bp_cart_api_custompack', true) + '?id=' + id
+    }).done((function(_this) {
+      return function(data) {
+        console.log(data);
+        if (data.galery != null) {
+          if (data.galery[0] != null) {
+            data.img = Routing.generate('photo_url', {
+              filter: 'small',
+              id: 1
+            });
+          } else {
+            data.img = '/public/img/default-product-pack.png';
+          }
+        } else {
+          data.img = window.Global.img["default"];
+        }
+        if (data.name == null) {
+          data.name = data.reference;
+        }
+        data.price = (data.price * 1.2).toFixed(2) + ' &euro;';
+        return _this.addToCart(data);
+      };
+    })(this));
   };
 
   return MiniCart;
+
+})(ComponentsBase);
+
+Popin = (function(superClass) {
+  extend(Popin, superClass);
+
+  function Popin(options) {
+    this.getPackIds = bind(this.getPackIds, this);
+    this.getPackFromLocalstorage = bind(this.getPackFromLocalstorage, this);
+    this.isPackFull = bind(this.isPackFull, this);
+    this.isInPack = bind(this.isInPack, this);
+    this.checkFavorites = bind(this.checkFavorites, this);
+    this.favoritesBtnClick = bind(this.favoritesBtnClick, this);
+    this.changeSize = bind(this.changeSize, this);
+    this.sizeBtnClick = bind(this.sizeBtnClick, this);
+    this.changeColor = bind(this.changeColor, this);
+    this.colorBtnClick = bind(this.colorBtnClick, this);
+    this.addToPack = bind(this.addToPack, this);
+    this.addToPackClick = bind(this.addToPackClick, this);
+    this.removeFromPack = bind(this.removeFromPack, this);
+    this.removeFromPackClick = bind(this.removeFromPackClick, this);
+    this.editFromPack = bind(this.editFromPack, this);
+    this.editFromPackClick = bind(this.editFromPackClick, this);
+    this.initAfterLoaded = bind(this.initAfterLoaded, this);
+    this.addActionContainer = bind(this.addActionContainer, this);
+    this.addDisponibility = bind(this.addDisponibility, this);
+    this.addSize = bind(this.addSize, this);
+    this.addColors = bind(this.addColors, this);
+    this.addProductInfo = bind(this.addProductInfo, this);
+    this.addNavSlider = bind(this.addNavSlider, this);
+    this.addImgsSlider = bind(this.addImgsSlider, this);
+    this.initContentLoaded = bind(this.initContentLoaded, this);
+    this.getContent = bind(this.getContent, this);
+    this.addCustomPackToCart = bind(this.addCustomPackToCart, this);
+    this.addCustomPackToCartClick = bind(this.addCustomPackToCartClick, this);
+    this.initValidateEvent = bind(this.initValidateEvent, this);
+    this.initValidatePopin = bind(this.initValidatePopin, this);
+    this.closePopin = bind(this.closePopin, this);
+    this.closeClick = bind(this.closeClick, this);
+    this.openPopin = bind(this.openPopin, this);
+    this._initEvents = bind(this._initEvents, this);
+    this._initContent = bind(this._initContent, this);
+    Popin.__super__.constructor.apply(this, arguments);
+  }
+
+  Popin.prototype._initContent = function() {
+    Popin.__super__._initContent.apply(this, arguments);
+    this.slidesContainer = this.container.find('.slider-product');
+    this.productInfo = this.container.find('.product-info');
+    this.popin = this.container.find('.top-header');
+    this.actionContainer = this.popin.find('.action-container');
+    this.validate = this.container.find('.validate');
+    this.close = this.container.find('.close svg');
+    this.customPack = {};
+    this.customPack.full = false;
+    return this.product = null;
+  };
+
+  Popin.prototype._initEvents = function() {
+    Popin.__super__._initEvents.apply(this, arguments);
+    $(window).on("Popin::openPopin", this.openPopin);
+    return this.close.on(Event.CLICK, this.closeClick);
+  };
+
+  Popin.prototype.openPopin = function(e, product) {
+    if (product.validate != null) {
+      this.container.addClass('open');
+      this.popin.css({
+        'display': 'none'
+      });
+      this.validate.css({
+        'display': 'block',
+        'margin-left': (W.ww - this.popin.outerWidth()) / 2,
+        'margin-top': (W.wh - this.popin.outerHeight() + 94) / 2
+      });
+      return this.initValidatePopin();
+    } else {
+      this.getContent(product.id);
+      this.container.addClass('open');
+      this.validate.css({
+        'display': 'none'
+      });
+      return this.popin.css({
+        'display': 'block',
+        'margin-left': (W.ww - this.popin.outerWidth()) / 2,
+        'margin-top': (W.wh - this.popin.outerHeight() + 94) / 2
+      });
+    }
+  };
+
+  Popin.prototype.closeClick = function(e) {
+    e.preventDefault();
+    return this.closePopin();
+  };
+
+  Popin.prototype.closePopin = function() {
+    return this.container.removeClass('open');
+  };
+
+  Popin.prototype.initValidatePopin = function() {
+    var i, item, key, len, pack, product;
+    product = this.validate.find('.product');
+    pack = this.getPackFromLocalstorage();
+    for (key = i = 0, len = pack.length; i < len; key = ++i) {
+      item = pack[key];
+      if (item.img !== '') {
+        $(product[key]).find('img')[0].src = item.img;
+      }
+      $(product[key]).find('h6').html(item.brand);
+      $(product[key]).find('h3').html(item.name);
+    }
+    return this.initValidateEvent();
+  };
+
+  Popin.prototype.initValidateEvent = function() {
+    this.validate.find('.edit-btn').on(Event.CLICK, this.closeClick);
+    return this.validate.find('.price-container .button').on(Event.CLICK, this.addCustomPackToCartClick);
+  };
+
+  Popin.prototype.addCustomPackToCartClick = function(e) {
+    e.preventDefault();
+    return this.addCustomPackToCart();
+  };
+
+  Popin.prototype.addCustomPackToCart = function() {
+    var data;
+    data = this.getPackIds();
+    return $.ajax({
+      method: "POST",
+      url: Routing.generate('bp_cart_api_createpack', true),
+      data: {
+        'ids': data
+      }
+    }).done((function(_this) {
+      return function(data, err) {
+        console.log('err : ', err, 'data : ', data);
+        $(window).trigger('EmbedCart:addCustomPackToCart', [data.data]);
+        $(window).trigger("CustomPack::removePack");
+        return _this.closePopin();
+      };
+    })(this));
+  };
+
+  Popin.prototype.getContent = function(productId) {
+    return $.ajax({
+      method: "GET",
+      url: Routing.generate('bp_cart_api_product', true) + '?id=' + productId
+    }).done((function(_this) {
+      return function(data) {
+        _this.product = data.data;
+        _this.product.color = 'default';
+        _this.product.size = 'default';
+        return _this.initContentLoaded();
+      };
+    })(this));
+  };
+
+  Popin.prototype.initContentLoaded = function() {
+    this.slidesContainer.find('.slides').html(this.addImgsSlider());
+    this.slidesContainer.find('ul').html(this.addNavSlider());
+    this.addProductInfo();
+    return this.initAfterLoaded();
+  };
+
+  Popin.prototype.addImgsSlider = function() {
+    var html, i, key, len, photo, ref;
+    html = '';
+    ref = this.product.galery;
+    for (key = i = 0, len = ref.length; i < len; key = ++i) {
+      photo = ref[key];
+      if (key === 0) {
+        html += '<div class="slide active">';
+      } else {
+        html += '<div class="slide">';
+      }
+      html += '<img src="' + photo.large + '" alt="">';
+      html += '</div>';
+    }
+    return html;
+  };
+
+  Popin.prototype.addNavSlider = function() {
+    var html, i, key, len, photo, ref;
+    html = '';
+    ref = this.product.galery;
+    for (key = i = 0, len = ref.length; i < len; key = ++i) {
+      photo = ref[key];
+      if (key === 0) {
+        html += '<li class="active"><img src="' + photo.small + '" alt=""></li>';
+      } else {
+        html += '<li><img src="' + photo.small + '" alt=""></li>';
+      }
+    }
+    return html;
+  };
+
+  Popin.prototype.addProductInfo = function() {
+    this.productInfo.find('h1').html(this.product.name);
+    this.productInfo.find('h2').html(this.product.brand);
+    if (this.product.sizes != null) {
+      this.productInfo.find('h2').after(this.addSize());
+    }
+    if (this.product.colors != null) {
+      this.productInfo.find('h2').after(this.addColors());
+    }
+    this.addDisponibility();
+    return this.actionContainer.html(this.addActionContainer());
+  };
+
+  Popin.prototype.addColors = function() {
+    var color, html, i, len, ref;
+    html = '<h3>Couleur</h3>';
+    html = '<div class="color-container">';
+    ref = this.product.colors;
+    for (i = 0, len = ref.length; i < len; i++) {
+      color = ref[i];
+      html += '<a href="#" class="color" style="background-color:' + color + '"></a>';
+    }
+    html += '</div>';
+    return html;
+  };
+
+  Popin.prototype.addSize = function() {
+    var html, i, len, ref, size;
+    html = '<h3>Taille</h3>';
+    html = '<div class="size-container">';
+    ref = this.product.sizes;
+    for (i = 0, len = ref.length; i < len; i++) {
+      size = ref[i];
+      html += '<a href="#" class="size">' + size + '</a>';
+    }
+    html += '</div>';
+    return html;
+  };
+
+  Popin.prototype.addDisponibility = function() {
+    if (this.product.quantity > 0) {
+      return this.productInfo.find('.disponibility').html('En stock');
+    } else {
+      return this.productInfo.find('.disponibility').html('En rupture');
+    }
+  };
+
+  Popin.prototype.addActionContainer = function() {
+    var html;
+    html = '<div>';
+    html += '<div class="price-container">';
+    if (this.isInPack(this.product.id)) {
+      html += '<a href="#" class="button edit">Valider</a>';
+      html += '<a href="#" class="button delete">Suprimer</a>';
+    } else {
+      html += '<a href="#" class="button add">Ajouter à mon pack</a>';
+    }
+    html += '</div>';
+    return html += '</div>';
+  };
+
+  Popin.prototype.initAfterLoaded = function() {
+    this.colorBtn = this.container.find('.color');
+    this.sizeBtn = this.container.find('.size');
+    this.favoritesBtn = this.container.find('.favorites');
+    new ProductSlider({
+      container: this.container.find('.slider-product')
+    });
+    this.actionContainer.find('.add').on(Event.CLICK, this.addToPackClick);
+    this.actionContainer.find('.edit').on(Event.CLICK, this.editFromPackClick);
+    return this.actionContainer.find('.delete').on(Event.CLICK, this.removeFromPackClick);
+  };
+
+  Popin.prototype.editFromPackClick = function(e) {
+    e.preventDefault();
+    return this.editFromPack();
+  };
+
+  Popin.prototype.editFromPack = function() {
+    $(window).trigger("CustomPack::editFromPack", [this.product]);
+    return this.closePopin();
+  };
+
+  Popin.prototype.removeFromPackClick = function(e) {
+    e.preventDefault();
+    return this.removeFromPack();
+  };
+
+  Popin.prototype.removeFromPack = function() {
+    $(window).trigger("CustomPack::removeFromPack", [this.product]);
+    $(window).trigger("Product::removeFromPack", [this.product]);
+    return this.closePopin();
+  };
+
+  Popin.prototype.addToPackClick = function(e) {
+    e.preventDefault();
+    return this.addToPack();
+  };
+
+  Popin.prototype.addToPack = function() {
+    $(window).trigger("CustomPack::addToPack", [this.product]);
+    $(window).trigger("Product::addToPack", [this.product]);
+    return this.closePopin();
+  };
+
+  Popin.prototype.colorBtnClick = function(e) {
+    var target;
+    e.preventDefault();
+    target = $(e.currentTarget);
+    return this.changeColor(target);
+  };
+
+  Popin.prototype.changeColor = function(target) {
+    this.colorBtn.removeClass('active');
+    return target.addClass('active');
+  };
+
+  Popin.prototype.sizeBtnClick = function(e) {
+    var target;
+    e.preventDefault();
+    target = $(e.currentTarget);
+    return this.changeSize(target);
+  };
+
+  Popin.prototype.changeSize = function(target) {
+    this.sizeBtn.removeClass('active');
+    return target.addClass('active');
+  };
+
+  Popin.prototype.favoritesBtnClick = function(e) {
+    e.preventDefault();
+    return this.checkFavorites();
+  };
+
+  Popin.prototype.checkFavorites = function() {
+    if (!this.favoritesBtn.hasClass('active')) {
+      return this.favoritesBtn.addClass('active');
+    } else {
+      return this.favoritesBtn.removeClass('active');
+    }
+  };
+
+  Popin.prototype.isInPack = function(id) {
+    var i, item, key, len, pack;
+    pack = this.getPackFromLocalstorage();
+    if (pack !== null) {
+      for (key = i = 0, len = pack.length; i < len; key = ++i) {
+        item = pack[key];
+        if (item.id === id) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  Popin.prototype.isPackFull = function() {
+    var pack;
+    pack = this.getPackFromLocalstorage();
+    if (pack.length >= 4) {
+      return true;
+    }
+    return false;
+  };
+
+  Popin.prototype.getPackFromLocalstorage = function() {
+    var pack;
+    if (typeof localStorage !== 'undefined') {
+      pack = JSON.parse(localStorage.getItem('customPack'));
+      if (pack !== null) {
+        return pack;
+      } else {
+        return null;
+      }
+    }
+  };
+
+  Popin.prototype.getPackIds = function() {
+    var data, i, item, key, len, pack;
+    data = [];
+    pack = this.getPackFromLocalstorage();
+    for (key = i = 0, len = pack.length; i < len; key = ++i) {
+      item = pack[key];
+      data.push(item.id);
+    }
+    return data;
+  };
+
+  return Popin;
 
 })(ComponentsBase);
 
@@ -1413,8 +1890,7 @@ ProductSlider = (function(superClass) {
   ProductSlider.prototype._initContent = function() {
     ProductSlider.__super__._initContent.apply(this, arguments);
     this.slides = this.container.find('.slide');
-    this.navItem = this.container.find('ul li');
-    return console.log(this);
+    return this.navItem = this.container.find('ul li');
   };
 
   ProductSlider.prototype._initEvents = function() {
@@ -1448,7 +1924,24 @@ YourPack = (function(superClass) {
   extend(YourPack, superClass);
 
   function YourPack(options) {
+    this.removePackFromLocalstorage = bind(this.removePackFromLocalstorage, this);
+    this.getPackFromLocalstorage = bind(this.getPackFromLocalstorage, this);
+    this.editFromLocalstorage = bind(this.editFromLocalstorage, this);
+    this.removeFromLocalstorage = bind(this.removeFromLocalstorage, this);
+    this.addToLocalstorage = bind(this.addToLocalstorage, this);
+    this.isInPack = bind(this.isInPack, this);
+    this.removePack = bind(this.removePack, this);
+    this.refreshPackBar = bind(this.refreshPackBar, this);
+    this.initBar = bind(this.initBar, this);
+    this.removeFromPack = bind(this.removeFromPack, this);
+    this.editFromPack = bind(this.editFromPack, this);
+    this.validateCheck = bind(this.validateCheck, this);
+    this.validateClick = bind(this.validateClick, this);
+    this.unvalidatePack = bind(this.unvalidatePack, this);
+    this.validatePack = bind(this.validatePack, this);
+    this.validateBtnCheck = bind(this.validateBtnCheck, this);
     this.addToPack = bind(this.addToPack, this);
+    this.editClick = bind(this.editClick, this);
     this._onLoaderComplete = bind(this._onLoaderComplete, this);
     this.resize = bind(this.resize, this);
     this.wheelEvent = bind(this.wheelEvent, this);
@@ -1476,13 +1969,21 @@ YourPack = (function(superClass) {
     });
     this["break"] = {};
     this["break"].point = this.fixContainer.offset().top + this.fixContainer.outerHeight();
-    return this["break"].breaked = false;
+    this["break"].breaked = false;
+    this.btnValidate = this.container.find('.button');
+    this.editBtn = this.container.find('.edit-container');
+    return this.initBar();
   };
 
   YourPack.prototype._initEvents = function() {
     YourPack.__super__._initEvents.apply(this, arguments);
-    $(window).on('Pack::addToPack', this.addToPack);
-    return $(window).on(Event.WHEEL, this.wheelEvent);
+    $(window).on('CustomPack::addToPack', this.addToPack);
+    $(window).on('CustomPack::removeFromPack', this.removeFromPack);
+    $(window).on('CustomPack::editFromPack', this.editFromPack);
+    $(window).on('CustomPack::removePack', this.removePack);
+    $(window).on(Event.WHEEL, this.wheelEvent);
+    this.btnValidate.on(Event.CLICK, this.validateClick);
+    return this.editBtn.on(Event.CLICK, this.editClick);
   };
 
   YourPack.prototype.wheelEvent = function(e) {
@@ -1521,12 +2022,217 @@ YourPack = (function(superClass) {
     return results;
   };
 
+  YourPack.prototype.editClick = function(e) {
+    var id;
+    e.preventDefault();
+    id = $(e.currentTarget).parent().parent()[0].classList[2];
+    return $(window).trigger("Popin::openPopin", [
+      {
+        'id': id
+      }
+    ]);
+  };
+
   YourPack.prototype.addToPack = function(e, values) {
     var index;
     index = this.container.find('.product-choice.added').length;
     if (index < 4) {
-      this.productChoice[index].el.find('img').attr('src', values.img);
-      return this.productChoice[index].el.addClass('added');
+      if (values.galery[0] != null) {
+        this.productChoice[index].el.find('img').attr('src', values.galery[0].small);
+      }
+      this.productChoice[index].el.addClass('added ' + values.id);
+      this.addToLocalstorage(values);
+    }
+    return this.initBar();
+  };
+
+  YourPack.prototype.validateBtnCheck = function() {
+    var index;
+    index = this.container.find('.product-choice.added').length;
+    if (index === 4) {
+      return this.validatePack();
+    } else {
+      return this.unvalidatePack();
+    }
+  };
+
+  YourPack.prototype.validatePack = function() {
+    this.btnValidate.addClass('green');
+    return this.btnValidate.html('Ajouter au panier');
+  };
+
+  YourPack.prototype.unvalidatePack = function() {
+    this.btnValidate.removeClass('green');
+    return this.btnValidate.html('Choisissez vos produits');
+  };
+
+  YourPack.prototype.validateClick = function(e) {
+    e.preventDefault();
+    return this.validateCheck();
+  };
+
+  YourPack.prototype.validateCheck = function() {
+    if (this.btnValidate.hasClass('green')) {
+      return $(window).trigger("Popin::openPopin", [
+        {
+          'validate': true
+        }
+      ]);
+    }
+  };
+
+  YourPack.prototype.editFromPack = function(e, values) {
+    return this.editFromLocalstorage(values);
+  };
+
+  YourPack.prototype.removeFromPack = function(e, values) {
+    var element;
+    element = this.container.find('.product-choice.added.' + values.id);
+    element.removeClass(values.id);
+    this.removeFromLocalstorage(values.id);
+    return this.initBar();
+  };
+
+  YourPack.prototype.initBar = function() {
+    var i, item, j, key, len, len1, pack, productChoice, productChoices, ref, results;
+    ref = this.container.find('.product-choice');
+    for (i = 0, len = ref.length; i < len; i++) {
+      productChoice = ref[i];
+      $(productChoice).find('img').attr('src', $(productChoice).find('img').attr('data-src'));
+    }
+    productChoices = this.container.find('.product-choice').removeAttr('class');
+    productChoices.addClass('product-choice');
+    pack = this.getPackFromLocalstorage();
+    if (pack !== null) {
+      results = [];
+      for (key = j = 0, len1 = pack.length; j < len1; key = ++j) {
+        item = pack[key];
+        results.push(this.refreshPackBar(item.id, key));
+      }
+      return results;
+    }
+  };
+
+  YourPack.prototype.refreshPackBar = function(id, key) {
+    $('#' + id).addClass('added');
+    this.productChoice[key].el.find('img').attr('src', $('#' + id).find('img').attr('src'));
+    this.productChoice[key].el.addClass('added ' + id);
+    return this.validateBtnCheck();
+  };
+
+  YourPack.prototype.removePack = function(e) {
+    e.preventDefault();
+    return this.removePackFromLocalstorage();
+  };
+
+  YourPack.prototype.isInPack = function(id) {
+    var i, item, len, pack;
+    pack = this.getPackFromLocalstorage();
+    if (pack !== null) {
+      for (i = 0, len = pack.length; i < len; i++) {
+        item = pack[i];
+        if (item === id) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+  };
+
+  YourPack.prototype.addToLocalstorage = function(values) {
+    var item, pack;
+    if (typeof localStorage !== 'undefined') {
+      pack = JSON.parse(localStorage.getItem('customPack'));
+      if (pack === null) {
+        pack = new Array();
+      }
+      item = {
+        'id': values.id,
+        'color': values.color,
+        'size': values.size,
+        'name': values.name,
+        'brand': values.brand,
+        'taxe': values.taxe
+      };
+      if (values.galery[0] != null) {
+        item.img = values.galery[0].medium;
+      } else {
+        item.img = '';
+      }
+      pack.push(item);
+      pack = JSON.stringify(pack);
+      return localStorage.setItem('customPack', pack);
+    }
+  };
+
+  YourPack.prototype.removeFromLocalstorage = function(id) {
+    var i, item, key, len, pack;
+    if (typeof localStorage !== 'undefined') {
+      pack = JSON.parse(localStorage.getItem('customPack'));
+      if (pack !== null) {
+        for (key = i = 0, len = pack.length; i < len; key = ++i) {
+          item = pack[key];
+          if ((item != null) && item.id === id) {
+            pack.splice(key, 1);
+          }
+        }
+      }
+      pack = JSON.stringify(pack);
+      return localStorage.setItem('customPack', pack);
+    }
+  };
+
+  YourPack.prototype.editFromLocalstorage = function(values) {
+    var i, item, itemTemp, key, len, pack, packTemp;
+    if (typeof localStorage !== 'undefined') {
+      pack = JSON.parse(localStorage.getItem('customPack'));
+      packTemp = [];
+      if (pack !== null) {
+        for (key = i = 0, len = pack.length; i < len; key = ++i) {
+          item = pack[key];
+          if (item.id === values.id) {
+            itemTemp = {
+              'id': values.id,
+              'color': values.color,
+              'size': values.size,
+              'name': values.name,
+              'brand': values.brand,
+              'taxe': values.taxe
+            };
+            if (values.galery[0] != null) {
+              itemTemp.img = values.galery[0].medium;
+            } else {
+              itemTemp.img = '';
+            }
+            packTemp.push(itemTemp);
+          } else {
+            packTemp.push(item);
+          }
+        }
+      }
+      packTemp = JSON.stringify(packTemp);
+      return localStorage.setItem('customPack', packTemp);
+    }
+  };
+
+  YourPack.prototype.getPackFromLocalstorage = function() {
+    var pack;
+    if (typeof localStorage !== 'undefined') {
+      pack = JSON.parse(localStorage.getItem('customPack'));
+      if (pack !== null) {
+        return pack;
+      } else {
+        return null;
+      }
+    }
+  };
+
+  YourPack.prototype.removePackFromLocalstorage = function() {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('customPack');
+      $(window).trigger("Product::removeAllFromPack");
+      return this.initBar();
     }
   };
 
@@ -1736,6 +2442,9 @@ PackEditor = (function(superClass) {
     new YourPack({
       fixContainer: this.container.find('.top-content'),
       container: this.container.find('.your-pack-container')
+    });
+    new Popin({
+      container: this.container.find('.popin-container')
     });
     this.product = [];
     ref = this.container.find('.block-product');

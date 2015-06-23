@@ -203,8 +203,10 @@ class ApiController extends Controller
         $em->flush();
         $cart->addObject($customPack, 1);
 
+        $data = array( 'id' => $customPack->getId() );
+
         $response = new Response(json_encode(
-                array("status" => "success", "data" => null)
+                array("status" => "success", "data" => $data)
                 ));
 
         $response->headers->set('Content-Type', 'application/json');
@@ -329,12 +331,14 @@ class ApiController extends Controller
         $galery = array();
         foreach($product->getPhotos() as $f)
         {
-            $thumbnail = $liip_imagine->getBrowserPath($f->getWebPath(), $filter);
-            $galery[] = array("id" =>$f->getId(), "path"=> $f->getWebPath(), "thumbnail" =>$thumbnail,"description" => $f->getDescription(),"alt" => $f->getAlt());
-
+            $medium = $liip_imagine->getBrowserPath($f->getWebPath(), 'medium');
+            $large = $liip_imagine->getBrowserPath($f->getWebPath(), 'large');
+            $small = $liip_imagine->getBrowserPath($f->getWebPath(), 'small');
+            $galery[] = array("id" =>$f->getId(), "path"=> $f->getWebPath(), "small" =>$small, "medium" =>$medium, "large" =>$large,"description" => $f->getDescription(),"alt" => $f->getAlt());
         }
         $path = ($product->getMainPhoto()) ? $product->getMainPhoto()->getWebPath() : "";
         $array = array(
+                "id" => $product->getId(),
                 "name" => $product->getName(),
                 "path" =>  $path,
                 "description" => $product->getDescription() ,
@@ -344,6 +348,7 @@ class ApiController extends Controller
                 "brand" => ($product->getBrand()) ? $product->getBrand()->getName() : null ,
                 "specificite" => $product->getSpecificite(),
                 "onHome" => $product->getOnHome(),
+                "quantity" => $product->getQuantity(),
                 "galery" => $galery,
             );
 

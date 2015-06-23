@@ -124,4 +124,16 @@ liip_imagine:
         type_medium:
             quality: 80
             filters:
-                thumbnail: { size: [120, 120], mode: outbound }
+                thumbnail: { size: [54, 54], mode: outbound }
+        small:
+            quality: 80
+            filters:
+                thumbnail: { size: [85, 85], mode: outbound }
+        medium:
+            quality: 80
+            filters:
+                thumbnail: { size: [295, 295], mode: outbound }
+        large:
+            quality: 80
+            filters:
+                thumbnail: { size: [410, 410], mode: outbound }

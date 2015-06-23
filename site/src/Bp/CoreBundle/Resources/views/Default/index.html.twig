@@ -7,7 +7,7 @@
         <div class="container">
             <div class="holder">
                 <h5>Envie d'un objet connecté mais peur de sauter le pas ? Avec Wygiwyt tester 4 objets pendant une semaine. Et repartez avec <br/>10 euros de réduction sur votre prochain achat.</h5>
-                <a href="#" class="button">Découvrir wygiwyt en vidéo</a>
+                <a href="#" class="button not-active">Découvrir wygiwyt en vidéo</a>
             </div>
         </div>
     </div>
@@ -48,10 +48,12 @@
             <div class="product-container">
                 
                 {% for product in products %}
+                    {% if loop.index < 5 %}
 
-                {% set data = {'product':product,'page':'home'} %}
-                {% include 'BpCoreBundle:components:block_product.html.twig' with data %}
-                
+                        {% set data = {'product':product,'page':'home'} %}
+                        {% include 'BpCoreBundle:components:block_product.html.twig' with data %}
+
+                    {% endif %}
                 {% endfor %}
 
             </div>
@@ -74,20 +76,20 @@
         <div class="divide-container">
             
             {% for pack in packs %}
-
-            <div class="half pack-{{ loop.index }}">
-                {% if pack.mainPhoto %}
-                <img src="{{ pack.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="{{ pack.mainPhoto.alt }}" title="{{ pack.mainPhoto.description }}">
-                {% else %}
-                <img src="{{ asset('public/img/home-pack-' ~ loop.index ~ '.png') }}" alt="">
+                {% if loop.index < 3 %}
+                    <div class="half pack-{{ loop.index }}">
+                        {% if pack.mainPhoto %}
+                        <img src="{{ pack.mainPhoto.webPath|imagine_filter("large") }}" alt="{{ pack.mainPhoto.alt }}" title="{{ pack.mainPhoto.description }}">
+                        {% else %}
+                        <img src="{{ asset('public/img/home-pack-' ~ loop.index ~ '.png') }}" alt="">
+                        {% endif %}
+                        <div>
+                            <h1>{{ pack.name }}</h1>
+                            <h5>{{ pack.description|slice(0,70) }} ... <br/>En savoir plus</h5>
+                            <a href="{{ path("bp_core_pack_show", { id:pack.id }) }}" class="button transparent">Découvrir</a>
+                        </div>
+                    </div>
                 {% endif %}
-                <div>
-                    <h1>{{ pack.name }}</h1>
-                    <h5>{{ pack.description }}</h5>
-                    <a href="{{ path("bp_core_pack_show", { id:pack.id }) }}" class="button transparent">Découvrir</a>
-                </div>
-            </div>
-            
             {% endfor %}
             
             <div class="clear"></div>

@@ -18,14 +18,14 @@ class PackEditorController extends Controller
      */
     public function indexAction()
     {
-        // $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
-        // //get products and pack with "onHome" = true
-        // $products = $em->getRepository("BpProductBundle:Product")->findOnHome();
+        // get products and pack with "onHome" = true
+        $products = $em->getRepository("BpProductBundle:Product")->findAll();
         // $packs = $em->getRepository("BpProductBundle:Pack")->findOnHome();
         // // $cart = $em->getRepository("BpCartBundle:Service")->getCart();
 
-        return array();
+        return array('page'=>'pack-editor','products'=>$products);
     }
 
 }

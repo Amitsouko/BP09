@@ -1,5 +1,48 @@
 {% extends "BpCoreBundle::mainlayout.html.twig" %}
 
 {% block body %}
-test
+
+	<div class="top-content">
+		<img src="{{ asset('public/img/highlight-make-u-r-pack.png') }}" alt="">
+		<div class="container">
+			<div class="breadcrumb">
+				<a href="{{ path('bp_core_default_index') }}">Accueil</a>
+				<a href="{{ path('bp_core_packeditor_index') }}">Créer son pack</a>
+			</div>
+			<div class="pack-highlight">
+				<div class="info">
+					<h1>Créer son pack</h1>
+					<p>Choisissez parmis 4 produits. Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cras mattis consectetur purus sit amet fermentum.</p>
+					<h3>À partir de </h3>
+					<p class="price">24<span>,99&euro;</span></p>
+					{% include 'BpCoreBundle:components:your-pack.html.twig' %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="list-products">
+		<div class="container">
+			
+			{% include 'BpCoreBundle:components:filter-product.html.twig' %}
+			
+			<div class="product-container">
+				
+				{% for product in products %}
+				{% set data = {'product':product} %}
+				{% include 'BpCoreBundle:components:block_product.html.twig' with data %}
+				{% endfor %}
+				
+				<div class="loader-container">
+					<div class="loader"></div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+	{% include 'BpCoreBundle:components:popin.html.twig' %}
+
+
 {% endblock body %}

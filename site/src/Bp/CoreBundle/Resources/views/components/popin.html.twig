@@ -1,0 +1,87 @@
+<div class="popin-container">
+	<div class="popin">
+		<div class="top-header">
+			<div class="close">
+				{{ icons('cross')|raw }}
+			</div>
+			<div class="container">
+				<div class="slider-product">
+					<div class="slides-container">
+						<div class="slides">
+						</div>
+					</div>
+					<ul>
+					</ul>
+				</div>
+				<div class="product-info">
+					<a href="#" class="icon-container favorites">
+						{{ icons('heart')|raw }}
+						<span>Favoris</span>
+					</a>
+					<h1>Name</h1>
+					<h2>Brand</h2>
+
+					<p class="disponibility">Disponibility</p>
+
+					<div class="action-container">
+						<div>
+							<div class="price-container">
+								<a href="#" class="button">Ajouter à mon pack</a>	
+								{% if page == 'list-product' and page is defined %}
+								<p class="price">{{ product.price|ttcPrice }}</p>
+								{% elseif  product.taxe is defined and product.taxe > 0 %}
+								<p class="price">+ {{ product.taxe }}</p>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="validate">
+			<div class="close">
+				{{ icons('cross')|raw }}
+			</div>
+            <div class="exergue">
+                {{ icons('logo_reduce')|raw }}
+                <h1>Confirmation de votre sélection</h1>
+                <h5>Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</h5>
+            </div>
+            <div class="products">
+            	<div class="product">
+            		<img src="" alt="">
+            		<h6></h6>
+            		<h3></h3>
+            		{# <h4></h4> #}
+            	</div>
+            	<div class="product">
+            		<img src="" alt="">
+            		<h6></h6>
+            		<h3></h3>
+            		{# <h4></h4> #}
+            	</div>
+            	<div class="product">
+            		<img src="" alt="">
+            		<h6></h6>
+            		<h3></h3>
+            		{# <h4></h4> #}
+            	</div>
+            	<div class="product">
+            		<img src="" alt="">
+            		<h6></h6>
+            		<h3></h3>
+            		{# <h4></h4> #}
+            	</div>
+            	<div class="clear"></div>
+            </div>
+            <div class="action-container">
+            	<a href="#" class="button edit-btn">{{ icons('edit')|raw }}Modifier</a>
+            	<div class="price-container">
+					<a href="#" class="button">Ajouter au panier</a>	
+					<p class="price">30,00 &euro;</p>
+				</div>
+				<div class="clear"></div>
+            </div>
+		</div>
+	</div>
+</div>
