@@ -24,8 +24,11 @@ class ProductType extends AbstractType
             ->add('active')
             ->add('onHome')
             ->add('packs')
+            ->add('brand')
             ->add('types')
             ->add('categories')
+            ->add('colors')
+            ->add('sizes')
             ->add('crossSelling')
         ;
     }

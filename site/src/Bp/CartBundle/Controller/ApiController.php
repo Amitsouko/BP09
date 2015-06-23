@@ -292,15 +292,16 @@ class ApiController extends Controller
         $productArray = array();
         $photo = new Photo();
         $serializer = $serializer = $this->container->get('jms_serializer');
-        foreach($products as $p)
-        {
-            if($p["path"])
-            {
-                $p["path"]  =   $photo->getUploadDir() . "/" . $p["path"];
-            }
-            $productArray[] = $p;
-        }
-        $jsonContent = $serializer->serialize($productArray, 'json',SerializationContext::create()->enableMaxDepthChecks());
+        // foreach($products as $p)
+        // {
+     
+        //     if($p["path"])
+        //     {
+        //         $p["path"]  =   $photo->getUploadDir() . "/" . $p["path"];
+        //     }
+        //     $productArray[] = $p;
+        // }
+        $jsonContent = $serializer->serialize($products, 'json',SerializationContext::create()->enableMaxDepthChecks());
         $response = new Response(json_encode(
                 array(  
                         "status" =>"success", 

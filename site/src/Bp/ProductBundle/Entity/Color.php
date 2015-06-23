@@ -3,14 +3,15 @@
 namespace Bp\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
- * Brand
+ * Color
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Bp\ProductBundle\Entity\BrandRepository")
+ * @ORM\Entity(repositoryClass="Bp\ProductBundle\Entity\ColorRepository")
  */
-class Brand
+class Color
 {
     /**
      * @var integer
@@ -31,14 +32,20 @@ class Brand
     /**
      * @var string
      *
-     * @ORM\Column(name="path", type="string", length=255, nullable=true)
+     * @ORM\Column(name="color", type="string", length=255)
      */
-    private $path;
+    private $color;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Product", mappedBy="brand")
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product", mappedBy="colors")
+     * @Exclude
      **/
     private $products;
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 
     /**
      * Get id
@@ -54,7 +61,7 @@ class Brand
      * Set name
      *
      * @param string $name
-     * @return Brand
+     * @return Color
      */
     public function setName($name)
     {
@@ -74,26 +81,26 @@ class Brand
     }
 
     /**
-     * Set path
+     * Set color
      *
-     * @param string $path
-     * @return Brand
+     * @param string $color
+     * @return Color
      */
-    public function setPath($path)
+    public function setColor($color)
     {
-        $this->path = $path;
+        $this->color = $color;
 
         return $this;
     }
 
     /**
-     * Get path
+     * Get color
      *
      * @return string 
      */
-    public function getPath()
+    public function getColor()
     {
-        return $this->path;
+        return $this->color;
     }
     /**
      * Constructor
@@ -106,10 +113,10 @@ class Brand
     /**
      * Add products
      *
-     * @param \Bp\ProductBundle\Entity\Brand $products
-     * @return Brand
+     * @param \Bp\ProductBundle\Entity\Product $products
+     * @return Color
      */
-    public function addProduct(\Bp\ProductBundle\Entity\Brand $products)
+    public function addProduct(\Bp\ProductBundle\Entity\Product $products)
     {
         $this->products[] = $products;
 
@@ -119,9 +126,9 @@ class Brand
     /**
      * Remove products
      *
-     * @param \Bp\ProductBundle\Entity\Brand $products
+     * @param \Bp\ProductBundle\Entity\Product $products
      */
-    public function removeProduct(\Bp\ProductBundle\Entity\Brand $products)
+    public function removeProduct(\Bp\ProductBundle\Entity\Product $products)
     {
         $this->products->removeElement($products);
     }
@@ -134,10 +141,5 @@ class Brand
     public function getProducts()
     {
         return $this->products;
-    }
-
-    public function __toString()
-    {
-        return $this->name;
     }
 }

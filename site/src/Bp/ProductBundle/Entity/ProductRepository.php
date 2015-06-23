@@ -16,7 +16,7 @@ class ProductRepository extends EntityRepository
   public function findPagination($offset = 0, $limit = 20, $category, $brand)
   {
     $qb = $this->createQueryBuilder("p");
-    $query = $qb->select("p.id, p.reference, p.name, p.description,p.specificite, f.path, p.price, p.taxe, b.name")
+    $query = $qb//->addSelect("b.name") //->select("p.id, p.reference, p.name, p.description,p.specificite ,f.path, p.price, p.taxe, b.name as brand")
         ->leftJoin("p.mainPhoto", "f")
         ->leftJoin("p.brand", "b")
         ->leftJoin("p.categories", "c")
@@ -42,7 +42,7 @@ class ProductRepository extends EntityRepository
         ->setFirstResult($offset)
         ->setMaxResults($limit);
 
-      return $query->getQuery()->getArrayResult();
+      return $query->getQuery()->getResult();
   }
 
  
