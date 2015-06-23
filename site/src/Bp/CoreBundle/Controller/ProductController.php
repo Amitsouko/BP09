@@ -21,7 +21,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/product/{id}")
+     * @Route("/product/{id}", options={"expose"=true})
      * @Template()
      */
     public function showAction($id)

@@ -31,7 +31,7 @@ if (!window.requestAnimationFrame) {
     })();
 }
 
-var App, AppCore, BlockProduct, ComponentsBase, Event, FilterProduct, Highlight, Home, ListPack, ListProduct, Loader, Menu, MiniCart, Normalize, PackDetail, PackEditor, Page, Popin, ProductDetail, ProductPage, ProductSlider, Router, Slider, SocialSharing, Transitions, Utils, W, YourPack,
+var App, AppCore, BlockProduct, ComponentsBase, Event, FilterProduct, Highlight, Home, LazyLoader, ListPack, ListProduct, Loader, Menu, MiniCart, Normalize, PackDetail, PackEditor, Page, Popin, ProductDetail, ProductPage, ProductSlider, Router, Slider, SocialSharing, Transitions, Utils, W, YourPack,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
@@ -743,7 +743,10 @@ BlockProduct = (function(superClass) {
     this.addToCartBtn = this.actionContainer.find('.add-to-cart');
     this.addToPackBtn = this.actionContainer.find('.add-to-pack');
     this.values = {};
-    return this.getValues();
+    this.getValues();
+    return new Highlight({
+      container: this.container.find('.image-container')
+    });
   };
 
   BlockProduct.prototype._initEvents = function() {
@@ -1004,6 +1007,173 @@ Highlight = (function(superClass) {
   };
 
   return Highlight;
+
+})(ComponentsBase);
+
+LazyLoader = (function(superClass) {
+  extend(LazyLoader, superClass);
+
+  function LazyLoader(options) {
+    this.addNewCard = bind(this.addNewCard, this);
+    this.loadPost = bind(this.loadPost, this);
+    this.trigger = bind(this.trigger, this);
+    this.whellEvent = bind(this.whellEvent, this);
+    this.setBrand = bind(this.setBrand, this);
+    this.setCategory = bind(this.setCategory, this);
+    this.initialize = bind(this.initialize, this);
+    this._initEvents = bind(this._initEvents, this);
+    this._initContent = bind(this._initContent, this);
+    LazyLoader.__super__.constructor.apply(this, arguments);
+    this.page = options.page;
+    this.breakpoint = this.container.offset().top;
+    this.url = options.url;
+    this.loading = false;
+    this.offset = 0;
+    this.limit = 4;
+    this.initialize();
+  }
+
+  LazyLoader.prototype._initContent = function() {
+    return LazyLoader.__super__._initContent.apply(this, arguments);
+  };
+
+  LazyLoader.prototype._initEvents = function() {
+    LazyLoader.__super__._initEvents.apply(this, arguments);
+    $(window).on(Event.WHEEL, this.whellEvent);
+    $(window).on('Filter::setCategory', this.setCategory);
+    return $(window).on('Filter::setBrand', this.setBrand);
+  };
+
+  LazyLoader.prototype.initialize = function() {
+    var html;
+    html = '<div class="loader-container"><div class="loader"></div></div>';
+    this.container.html(html);
+    this.limit = 8;
+    return this.loadPost();
+  };
+
+  LazyLoader.prototype.setCategory = function(e, value) {
+    return this.category = value;
+  };
+
+  LazyLoader.prototype.setBrand = function(e, value) {
+    return this.brand = value;
+  };
+
+  LazyLoader.prototype.whellEvent = function(e) {
+    if ($(window).scrollTop() > this.breakpoint) {
+      this.breakpoint += 315;
+      return this.trigger();
+    }
+  };
+
+  LazyLoader.prototype.trigger = function() {
+    console.log('trigger');
+    return this.loadPost();
+  };
+
+  LazyLoader.prototype.loadPost = function() {
+    if (!this.loading) {
+      this.loading = true;
+      return $.ajax({
+        method: "GET",
+        url: this.url,
+        data: {
+          'offset': this.offset,
+          'limit': this.limit
+        }
+      }).done((function(_this) {
+        return function(data) {
+          var i, len, product, ref, results;
+          if (data.status === "success") {
+            _this.offset += _this.limit;
+            _this.loading = false;
+            if (_this.limit > 4) {
+              _this.limit = 4;
+            }
+            ref = data.data.products;
+            results = [];
+            for (i = 0, len = ref.length; i < len; i++) {
+              product = ref[i];
+              console.log(product);
+              results.push(_this.addNewCard(product));
+            }
+            return results;
+          }
+        };
+      })(this));
+    }
+  };
+
+  LazyLoader.prototype.addNewCard = function(product) {
+    var html, temp;
+    html = '<div class="block-product ' + this.page + '" id="1' + product.id + '">';
+    html += '<div class="image-container">';
+    if (product.path != null) {
+      html += '<img src="' + window.Global.baseUrl + product.path + '" alt="">';
+    } else {
+      html += '<img src="' + window.Global.img["default"] + '" alt="">';
+    }
+    html += '<div class="action-container">';
+    html += '<div class="in-my-pack">';
+    html += '<p>Dans mon pack</p>';
+    html += '</div>';
+    html += '<a href="/pack-editor/?id=" class="icon-container add-to-pack">';
+    html += '<span>Ajouter à mon pack</span>';
+    html += '<svg class="icon add_box">';
+    html += '<use xlink:href="#add_box"></use>';
+    html += '</svg>';
+    html += '</a>';
+    html += '<a href="#" class="icon-container edit">';
+    html += '<span>Éditer</span>';
+    html += '<svg class="icon edit">';
+    html += '<use xlink:href="#edit"></use>';
+    html += '</svg>';
+    html += '</a>';
+    html += '<a href="#" class="icon-container add-to-cart">';
+    html += '<span>Ajouter à mon panier</span>';
+    html += '<svg class="icon add_cart">';
+    html += '<use xlink:href="#add_cart"></use>';
+    html += '</svg>';
+    html += '</a>';
+    html += '<a href="#" class="icon-container favorites">';
+    html += '<svg class="icon heart">';
+    html += '<use xlink:href="#heart"></use>';
+    html += '</svg>';
+    html += '<span>Favoris</span>';
+    html += '</a>';
+    html += '</div>';
+    html += '</div>';
+    html += '<div class="info-container">';
+    if ((this.page != null) && this.page === 'pack') {
+      html += '<a href="' + Routing.generate('bp_core_pack_show', {
+        id: product.id
+      }, true) + '">';
+    } else {
+      html += '<a href="' + Routing.generate('bp_core_product_show', {
+        id: product.id
+      }, true) + '">';
+    }
+    if (product.brandname != null) {
+      html += '<h6>' + product.brandname + '</h6>';
+    }
+    html += '<h3>' + product.name + '</h3>';
+    if ((product.taxe != null) && this.page !== "shop" && product.taxe > 0) {
+      html += '<p class="overprice">+ ' + product.taxe + '</p>';
+    }
+    if ((product.price != null) && (this.page === "shop" || this.page === "pack")) {
+      html += '<p class="price">' + product.price + '</p>';
+    }
+    html += '</a>';
+    html += '</div>';
+    html += '</div>';
+    this.container.find('.loader-container').before(html);
+    return temp = new BlockProduct({
+      container: $('#1' + product.id)
+    });
+  };
+
+  return LazyLoader;
 
 })(ComponentsBase);
 
@@ -2455,8 +2625,13 @@ PackEditor = (function(superClass) {
       });
       this.product.push(temp);
     }
-    return this.highlight = new Highlight({
+    this.highlight = new Highlight({
       container: this.container.find('.top-content')
+    });
+    return new LazyLoader({
+      container: this.container.find('.product-container'),
+      page: 'pack-editor',
+      url: Routing.generate('bp_cart_api_products', true)
     });
   };
 
