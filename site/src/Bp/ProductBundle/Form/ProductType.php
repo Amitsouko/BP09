@@ -27,6 +27,8 @@ class ProductType extends AbstractType
             ->add('brand')
             ->add('types')
             ->add('categories')
+            ->add('colors')
+            ->add('sizes')
             ->add('crossSelling')
         ;
     }

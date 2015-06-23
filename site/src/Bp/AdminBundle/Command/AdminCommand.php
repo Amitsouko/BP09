@@ -8,6 +8,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Parser;
 use Bp\ProductBundle\Entity\Product;
+use Bp\ProductBundle\Entity\Color;
+use Bp\ProductBundle\Entity\Size;
 use Bp\ProductBundle\Entity\Pack;
 use Bp\ProductBundle\Entity\Object;
 use Bp\ProductBundle\Entity\Brand;
@@ -132,6 +134,35 @@ class AdminCommand extends ContainerAwareCommand
             }
             $em->persist($category);
         }
+
+
+        $colors = array("rouge" => "#FF0000", "vert" => "#00FF00", "bleu" => "#0000FF");
+
+        foreach($colors as $key => $value)
+        {
+            $col = $em->getRepository("BpProductBundle:Color")->findOneByName($key);
+            if(!$col)
+            {
+                $col = new Color();
+                $col->setName($key);
+                $col->setColor($value);
+                $em->persist($col);
+            }
+        }
+
+        $size = array("s","m","l","xl","xxl");
+
+        foreach($size as $s)
+        {
+            $col = $em->getRepository("BpProductBundle:Size")->findOneByName($s);
+            if(!$col)
+            {
+                $col = new Size();
+                $col->setName($s);
+                $em->persist($col);
+            }
+        }
+
 
         $em->flush();
 

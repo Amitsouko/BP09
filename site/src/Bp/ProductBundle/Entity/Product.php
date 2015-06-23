@@ -103,6 +103,18 @@ class Product implements ItemInterface
     private $packs;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Color", inversedBy="products",cascade={"persist"})
+     * @ORM\JoinTable(name="products_colors")
+     **/
+    private $colors;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Size", inversedBy="products",cascade={"persist"})
+     * @ORM\JoinTable(name="products_sizes")
+     **/
+    private $sizes;
+
+    /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\CustomPack", mappedBy="products")
      * @Exclude
      **/
@@ -782,5 +794,71 @@ class Product implements ItemInterface
     public function getCrossSelling()
     {
         return $this->crossSelling;
+    }
+
+    /**
+     * Add colors
+     *
+     * @param \Bp\ProductBundle\Entity\Color $colors
+     * @return Product
+     */
+    public function addColor(\Bp\ProductBundle\Entity\Color $colors)
+    {
+        $this->colors[] = $colors;
+
+        return $this;
+    }
+
+    /**
+     * Remove colors
+     *
+     * @param \Bp\ProductBundle\Entity\Color $colors
+     */
+    public function removeColor(\Bp\ProductBundle\Entity\Color $colors)
+    {
+        $this->colors->removeElement($colors);
+    }
+
+    /**
+     * Get colors
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getColors()
+    {
+        return $this->colors;
+    }
+
+    /**
+     * Add sizes
+     *
+     * @param \Bp\ProductBundle\Entity\Size $sizes
+     * @return Product
+     */
+    public function addSize(\Bp\ProductBundle\Entity\Size $sizes)
+    {
+        $this->sizes[] = $sizes;
+
+        return $this;
+    }
+
+    /**
+     * Remove sizes
+     *
+     * @param \Bp\ProductBundle\Entity\Size $sizes
+     */
+    public function removeSize(\Bp\ProductBundle\Entity\Size $sizes)
+    {
+        $this->sizes->removeElement($sizes);
+    }
+
+    /**
+     * Get sizes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSizes()
+    {
+        return $this->sizes;
     }
 }
