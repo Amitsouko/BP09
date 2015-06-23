@@ -146,6 +146,7 @@ class Product implements ItemInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="Product", mappedBy="crossSelling")
+     * @Exclude
      **/
     private $reversedCrossSelling;
 
@@ -155,12 +156,14 @@ class Product implements ItemInterface
      *      joinColumns={@ORM\JoinColumn(name="parent_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="reversed_id", referencedColumnName="id")}
      *      )
+     * @MaxDepth(2)
      **/
     private $crossSelling;
 
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Category", inversedBy="products",cascade={"persist"})
      * @ORM\JoinTable(name="product_category")
+     * @MaxDepth(2)
      **/
     private $categories;
 
