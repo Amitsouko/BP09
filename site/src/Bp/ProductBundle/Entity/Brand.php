@@ -3,7 +3,7 @@
 namespace Bp\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use JMS\Serializer\Annotation\Exclude;
 /**
  * Brand
  *
@@ -37,6 +37,7 @@ class Brand
 
     /**
      * @ORM\OneToMany(targetEntity="Bp\ProductBundle\Entity\Product", mappedBy="brand")
+     * @Exclude
      **/
     private $products;
 

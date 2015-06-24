@@ -158,7 +158,7 @@ class Product implements ItemInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="Product", mappedBy="crossSelling")
-     * @Exclude
+     * @MaxDepth(4)
      **/
     private $reversedCrossSelling;
 

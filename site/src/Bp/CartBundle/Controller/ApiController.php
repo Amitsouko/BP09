@@ -104,6 +104,37 @@ class ApiController extends Controller
 
 
     /**
+     * @Route("/brands", options={"expose"=true})
+     * @Template()
+     * @Method("GET")
+     */
+    public function brandsAction(Request $request)
+    {
+        $this->checkAjax($request);   
+        $em = $this->getDoctrine()->getManager();
+        $brands = $em->getRepository("BpProductBundle:Brand")->findAll();
+
+        if(count($brands) == 0 ) return $this->returnError("0 marque renvoyé");
+
+    
+        $serializer = $serializer = $this->container->get('jms_serializer');
+
+        $jsonContent = $serializer->serialize($brands, 'json',SerializationContext::create()->enableMaxDepthChecks());
+        $response = new Response(json_encode(
+                array(  
+                        "status" =>"success", 
+                        "data" => array ("products" => json_decode($jsonContent))
+                    )
+                ));
+
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+        $cart->addObject($item, $quantity);
+
+        return $this->cartAction($request);
+    }
+
+    /**
      * @Route("/cart/remove", options={"expose"=true})
      * @Template()
      * @Method("GET")
