@@ -222,7 +222,7 @@ class ApiController extends Controller
         $customPack = new CustomPack();
         $customPack->setUser($this->getUser());
         $customPack->setReference($refGen->generateReference("customPack"));
-        $price = 35;
+        $price = 50;
         foreach($products as $p)
         {
             $price += $p->getTaxe();
