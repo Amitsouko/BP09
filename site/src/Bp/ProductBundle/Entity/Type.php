@@ -4,7 +4,7 @@ namespace Bp\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use JMS\Serializer\Annotation\Exclude;
 /**
  * Type
  *
@@ -46,12 +46,14 @@ class Type
 
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Product", mappedBy="types")
+     * @Exclude
      **/
     private $products;
 
 
     /**
      * @ORM\ManyToMany(targetEntity="Bp\ProductBundle\Entity\Pack", mappedBy="types")
+     * @Exclude
      **/
     private $packs;
 
@@ -59,6 +61,7 @@ class Type
      * @var string
      *
      * @ORM\Column(name="lastUpdate", type="datetime", nullable=true)
+     * @Exclude
      */
     private $lastUpdate;
 
