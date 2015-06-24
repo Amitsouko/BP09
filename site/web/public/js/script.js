@@ -1290,7 +1290,9 @@ Menu = (function(superClass) {
   extend(Menu, superClass);
 
   function Menu(options) {
+    this.whellEvent = bind(this.whellEvent, this);
     this.closeShopSubmenu = bind(this.closeShopSubmenu, this);
+    this.closeShopSubmenuClick = bind(this.closeShopSubmenuClick, this);
     this.openShopSubmenu = bind(this.openShopSubmenu, this);
     this.checkShopSubmenu = bind(this.checkShopSubmenu, this);
     this.clickShopSubmenu = bind(this.clickShopSubmenu, this);
@@ -1315,6 +1317,7 @@ Menu = (function(superClass) {
     this.nav = this.container.find('nav');
     this.submenuShopBtn = this.nav.find('.shop');
     this.submenuShopcontainer = this.container.find('.sub-menu');
+    this.subMenuCloseThatDope = this.submenuShopcontainer.find('.overlay');
     this.userContainer = this.container.find('.connection-container');
     this.accountInfo = this.container.find('.account-info');
     this.accountBtn = this.accountInfo.find('.my-account');
@@ -1322,14 +1325,16 @@ Menu = (function(superClass) {
     this.miniCartBtn = this.container.find('.cart');
     this.miniCartContainer = this.container.find('.cart-container');
     this.closeAccountMenuBtn = this.container.find('.close');
-    return this.miniCart = new MiniCart({
+    this.miniCart = new MiniCart({
       container: $('.mini-cart')
     });
+    return $(window).on(Event.WHEEL, this.whellEvent);
   };
 
   Menu.prototype._initEvents = function() {
     Menu.__super__._initEvents.apply(this, arguments);
     this.submenuShopBtn.on(Event.CLICK, this.clickShopSubmenu);
+    this.subMenuCloseThatDope.on(Event.CLICK, this.closeShopSubmenuClick);
     this.accountBtn.on(Event.CLICK, this.clickAccountBtn);
     this.closeAccountMenuBtn.on(Event.CLICK, this.clickCloseAccountMenu);
     this.miniCartBtn.on(Event.CLICK, this.clickMiniCartMenu);
@@ -1441,12 +1446,23 @@ Menu = (function(superClass) {
     });
   };
 
+  Menu.prototype.closeShopSubmenuClick = function() {
+    return this.closeShopSubmenu();
+  };
+
   Menu.prototype.closeShopSubmenu = function() {
     this.submenuShopcontainer.removeClass('open');
     this.submenuShopBtn.removeClass('active');
     return this.submenuShopcontainer.css({
       'height': 0
     });
+  };
+
+  Menu.prototype.whellEvent = function(e) {
+    if (this.submenuShopcontainer.hasClass('open')) {
+      e.preventDefault();
+      return false;
+    }
   };
 
   return Menu;
