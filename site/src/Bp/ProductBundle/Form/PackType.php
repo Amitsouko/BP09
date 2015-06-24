@@ -18,6 +18,7 @@ class PackType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('reference')
+            ->add('specificite')
             ->add('price')
             ->add('quantity')
             ->add('active')

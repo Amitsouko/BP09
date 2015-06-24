@@ -32,6 +32,13 @@ class Pack implements ItemInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="specificite", type="text")
+     */
+    private $specificite;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="description", type="text")
      */
     private $description;
@@ -548,5 +555,28 @@ class Pack implements ItemInterface
     public function getOnHome()
     {
         return $this->onHome;
+    }
+
+    /**
+     * Set specificite
+     *
+     * @param string $specificite
+     * @return Pack
+     */
+    public function setSpecificite($specificite)
+    {
+        $this->specificite = $specificite;
+
+        return $this;
+    }
+
+    /**
+     * Get specificite
+     *
+     * @return string 
+     */
+    public function getSpecificite()
+    {
+        return $this->specificite;
     }
 }

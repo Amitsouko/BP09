@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ProductType extends AbstractType
+class ColorType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -16,21 +16,8 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('description')
-            ->add('specificite')
-            ->add('reference')
-            ->add('price')
-            ->add('taxe')
-            ->add('quantity')
-            ->add('active')
-            ->add('onHome')
-            ->add('packs')
-            ->add('brand')
-            ->add('types')
-            ->add('categories')
-            ->add('colors')
-            ->add('sizes')
-            ->add('crossSelling')
+            ->add('color')
+            ->add('products')
         ;
     }
     
@@ -40,7 +27,7 @@ class ProductType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Bp\ProductBundle\Entity\Product'
+            'data_class' => 'Bp\ProductBundle\Entity\Color'
         ));
     }
 
@@ -49,6 +36,6 @@ class ProductType extends AbstractType
      */
     public function getName()
     {
-        return 'bp_productbundle_product';
+        return 'bp_productbundle_color';
     }
 }
