@@ -104,6 +104,37 @@ class ApiController extends Controller
 
 
     /**
+     * @Route("/brands", options={"expose"=true})
+     * @Template()
+     * @Method("GET")
+     */
+    public function brandsAction(Request $request)
+    {
+        $this->checkAjax($request);   
+        $em = $this->getDoctrine()->getManager();
+        $brands = $em->getRepository("BpProductBundle:Brand")->findAll();
+
+        if(count($brands) == 0 ) return $this->returnError("0 marque renvoyé");
+
+    
+        $serializer = $serializer = $this->container->get('jms_serializer');
+
+        $jsonContent = $serializer->serialize($brands, 'json',SerializationContext::create()->enableMaxDepthChecks());
+        $response = new Response(json_encode(
+                array(  
+                        "status" =>"success", 
+                        "data" => array ("products" => json_decode($jsonContent))
+                    )
+                ));
+
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+        $cart->addObject($item, $quantity);
+
+        return $this->cartAction($request);
+    }
+
+    /**
      * @Route("/cart/remove", options={"expose"=true})
      * @Template()
      * @Method("GET")
@@ -191,7 +222,7 @@ class ApiController extends Controller
         $customPack = new CustomPack();
         $customPack->setUser($this->getUser());
         $customPack->setReference($refGen->generateReference("customPack"));
-        $price = 35;
+        $price = 50;
         foreach($products as $p)
         {
             $price += $p->getTaxe();
@@ -281,31 +312,26 @@ class ApiController extends Controller
     {
         $limit = $request->get("limit");
         $offset = $request->get("offset");
-        $category = $request->get("category");
-        $brand = $request->get("brand");
+        $category =  $request->get("category") ;
+        $brand = $request->get("brand") ;
+
+
         $this->checkAjax($request);  
         $em = $this->getDoctrine()->getEntityManager();
         $products = $em->getRepository("BpProductBundle:Product")->findPagination($offset,$limit, $category, $brand);
-
+        $number = $em->getRepository("BpProductBundle:Product")->findAll();
+        $number = count($number);
         if(count($products) == 0 ) return $this->returnError("0 produits renvoyé");
 
         $productArray = array();
         $photo = new Photo();
         $serializer = $serializer = $this->container->get('jms_serializer');
-        // foreach($products as $p)
-        // {
-     
-        //     if($p["path"])
-        //     {
-        //         $p["path"]  =   $photo->getUploadDir() . "/" . $p["path"];
-        //     }
-        //     $productArray[] = $p;
-        // }
+  
         $jsonContent = $serializer->serialize($products, 'json',SerializationContext::create()->enableMaxDepthChecks());
         $response = new Response(json_encode(
                 array(  
                         "status" =>"success", 
-                        "data" => array ("products" => json_decode($jsonContent), "offset" => $offset, "limit" =>$limit)
+                        "data" => array ("products" => json_decode($jsonContent), "offset" => $offset, "limit" =>$limit, "total" =>$number)
                     )
                 ));
 

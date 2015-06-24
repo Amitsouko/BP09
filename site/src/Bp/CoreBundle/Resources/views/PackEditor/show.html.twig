@@ -1,0 +1,56 @@
+{% extends "BpCoreBundle::mainlayout.html.twig" %}
+
+{% block body %}
+{# this is Pack-Editor page for product #}
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="#">Accueil</a>
+            <a href="#">Créer son pack</a>
+            <a href="#">Fitbit Surge</a>
+        </div>
+    </div>
+    {% include 'BpCoreBundle:components:product-detail.html.twig' with {'product':product} %}
+
+
+
+    <div class="product-highlight">
+        <div class="container">
+            <div class="exergue">
+                {{ icons('logo_reduce')|raw }}
+                <h1>Featured products</h1>
+            </div>
+        </div>
+        <div class="container">
+            <div class="product-container">
+
+                {% for productConnexe in product.crossSelling %}
+
+                {% set productConnexe = {'product':productConnexe} %}
+                {% include 'BpCoreBundle:components:block_product.html.twig' with productConnexe %}
+                
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+    <div class="category-container">
+        <div class="container">
+            
+            {% set category = {'title':'Sport','icon':'bracelet','link':path("bp_core_product_index") } %}
+            {% include 'BpCoreBundle:components:category.html.twig' with category  %}
+
+            {% set category = {'title':'Smartwatch','icon':'smartwatch','link':path("bp_core_product_index")} %}
+            {% include 'BpCoreBundle:components:category.html.twig' with category  %}
+
+            {% set category = {'title':'Santé','icon':'sante','link':path("bp_core_product_index")} %}
+            {% include 'BpCoreBundle:components:category.html.twig' with category  %}
+
+            {% set category = {'title':'Maison','icon':'home','link':path("bp_core_product_index")} %}
+            {% include 'BpCoreBundle:components:category.html.twig' with category  %}
+
+        </div>
+    </div>
+
+{% endblock body %}
