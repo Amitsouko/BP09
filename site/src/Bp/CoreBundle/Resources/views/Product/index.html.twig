@@ -3,11 +3,11 @@
 {% block body %}
 
 	<div class="top-content">
-		{% if productHighlight.mainPhoto %}
-		<img src="{{ productHighlight.mainPhoto.webPath|imagine_filter("large") }}" alt="">
-		{% else %}
+		{# {% if productHighlight.mainPhoto %} #}
+		{# <img src="{{ productHighlight.mainPhoto.webPath|imagine_filter("large") }}" alt=""> #}
+		{# {% else %} #}
 		<img src="{{ asset('public/img/highlight-list-product.png')}}" alt="">
-		{% endif %}
+		{# {% endif %} #}
 		<div class="container">
 			<div class="breadcrumb">
 				<a href="{{ path('bp_core_default_index') }}">Accueil</a>
