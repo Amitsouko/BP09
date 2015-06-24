@@ -1,10 +1,12 @@
 <div class="block-product {{page}}" id="{{ product.id }}">
-	<div class="image-container">
+	<div class="top-image">
 		{% if product.mainPhoto %}
 		<img src="{{ product.mainPhoto.webPath|imagine_filter("medium") }}" alt="">
 		{% else %}
 		<img src="{{ asset('public/img/default-product-pack.png')}}" alt="">
 		{% endif %}
+	</div>
+	<div class="image-container">
 		<div class="action-container">
 			<div class="in-my-pack">
 				<p>Dans mon pack</p>

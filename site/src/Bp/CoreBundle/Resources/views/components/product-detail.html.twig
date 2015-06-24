@@ -4,8 +4,12 @@
 			<div class="slider-product">
 				<div class="slides-container">
 					<div class="slides">
-						{% for photo in product.photos %}
+						{% for photo in product|gallery %}
+							{% if loop.index == 1 %}
 						<div class="slide active">
+							{% else %}
+						<div class="slide">
+							{% endif %}
 							<img src="{{ photo.webPath|imagine_filter("large") }}" alt="">
 						</div>
 						{% endfor %}
@@ -13,7 +17,11 @@
 				</div>
 				<ul>
 					{% for photo in product|gallery  %}
+							{% if loop.index == 1 %}
 					<li class="active"><img src="{{ photo.webPath|imagine_filter("small") }}" alt=""></li>
+							{% else %}
+					<li><img src="{{ photo.webPath|imagine_filter("small") }}" alt=""></li>
+							{% endif %}
 					{% endfor %}
 				</ul>
 			</div>
