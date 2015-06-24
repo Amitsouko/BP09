@@ -745,7 +745,7 @@ BlockProduct = (function(superClass) {
     this.values = {};
     this.getValues();
     return new Highlight({
-      container: this.container.find('.image-container')
+      container: this.container.find('.top-image')
     });
   };
 
@@ -841,8 +841,13 @@ FilterProduct = (function(superClass) {
   extend(FilterProduct, superClass);
 
   function FilterProduct(options) {
+    this.unStickIt = bind(this.unStickIt, this);
+    this.stickIt = bind(this.stickIt, this);
+    this.whellEvent = bind(this.whellEvent, this);
     this.resize = bind(this.resize, this);
+    this.sendOptionsLazyLoader = bind(this.sendOptionsLazyLoader, this);
     this.removeFilters = bind(this.removeFilters, this);
+    this.removeFiltersClick = bind(this.removeFiltersClick, this);
     this.desactiveSearchCategorySubItem = bind(this.desactiveSearchCategorySubItem, this);
     this.activeSearchCategorySubItem = bind(this.activeSearchCategorySubItem, this);
     this.closeSearchCategory = bind(this.closeSearchCategory, this);
@@ -859,6 +864,7 @@ FilterProduct = (function(superClass) {
     this._initEvents = bind(this._initEvents, this);
     this._initContent = bind(this._initContent, this);
     FilterProduct.__super__.constructor.apply(this, arguments);
+    this.page = options.page;
   }
 
   FilterProduct.prototype._initContent = function() {
@@ -869,7 +875,9 @@ FilterProduct = (function(superClass) {
     this.searchCategoryitem.subItemBtn = this.container.find('.category-container .list-category a');
     this.searchCategoryitem.mobileBtn = this.container.find('.mobile-btn');
     this.searchCategoryitem.filterContainer = this.container.find('.container-filter');
-    return this.searchCategoryitem.resetBtn = this.container.find('.reset');
+    this.searchCategoryitem.resetBtn = this.container.find('.reset');
+    this.breakpoint = this.container.offset().top - 124;
+    return this.sticky = false;
   };
 
   FilterProduct.prototype._initEvents = function() {
@@ -877,7 +885,8 @@ FilterProduct = (function(superClass) {
     this.searchCategoryitem.btn.on(Event.CLICK, this.searchCategoryClick);
     this.searchCategoryitem.subItemBtn.on(Event.CLICK, this.searchCategorySubItemClick);
     this.searchCategoryitem.mobileBtn.on(Event.CLICK, this.searchFilterMobileClick);
-    return this.searchCategoryitem.resetBtn.on(Event.CLICK, this.removeFilters);
+    this.searchCategoryitem.resetBtn.on(Event.CLICK, this.removeFiltersClick);
+    return $(window).on(Event.WHEEL, this.whellEvent);
   };
 
   FilterProduct.prototype.searchFilterMobileClick = function(e) {
@@ -960,20 +969,75 @@ FilterProduct = (function(superClass) {
   };
 
   FilterProduct.prototype.activeSearchCategorySubItem = function(target) {
-    return target.addClass('active');
+    var parent;
+    this.removeFilters();
+    target.addClass('active');
+    parent = target.parent().parent().parent();
+    return this.sendOptionsLazyLoader(parent);
   };
 
   FilterProduct.prototype.desactiveSearchCategorySubItem = function(target) {
-    return target.removeClass('active');
+    var parent;
+    target.removeClass('active');
+    parent = target.parent().parent().parent();
+    return this.sendOptionsLazyLoader(parent);
   };
 
-  FilterProduct.prototype.removeFilters = function(e) {
+  FilterProduct.prototype.removeFiltersClick = function(e) {
     e.preventDefault();
+    return this.removeFilters();
+  };
+
+  FilterProduct.prototype.removeFilters = function() {
     return this.searchCategoryitem.subItemBtn.removeClass('active');
+  };
+
+  FilterProduct.prototype.sendOptionsLazyLoader = function(parent) {
+    var brand, i, item, j, len, len1, list, type;
+    if (parent.hasClass('type')) {
+      list = parent.find('.active');
+      type = [];
+      for (i = 0, len = list.length; i < len; i++) {
+        item = list[i];
+        type.push(item.classList[0]);
+      }
+      return $(window).trigger('Filter::setCategory', type[0]);
+    } else if (parent.hasClass('brand')) {
+      list = parent.find('.active');
+      brand = [];
+      for (j = 0, len1 = list.length; j < len1; j++) {
+        item = list[j];
+        brand.push(item.classList[0]);
+      }
+      return $(window).trigger('Filter::SetBrand', brand[0]);
+    }
   };
 
   FilterProduct.prototype.resize = function() {
     return FilterProduct.__super__.resize.apply(this, arguments);
+  };
+
+  FilterProduct.prototype.whellEvent = function(e) {
+    if ($(window).scrollTop() > this.breakpoint && !this.sticky) {
+      return this.stickIt();
+    } else if ($(window).scrollTop() < this.breakpoint && this.sticky) {
+      return this.unStickIt();
+    }
+  };
+
+  FilterProduct.prototype.stickIt = function() {
+    this.container.css({
+      'position': 'fixed',
+      'top': '104px'
+    });
+    $(window).trigger('Filter::StickIt');
+    return this.sticky = true;
+  };
+
+  FilterProduct.prototype.unStickIt = function() {
+    this.container.removeAttr('style');
+    this.sticky = false;
+    return $(window).trigger('Filter::UnStickIt');
   };
 
   return FilterProduct;
@@ -1015,11 +1079,14 @@ LazyLoader = (function(superClass) {
 
   function LazyLoader(options) {
     this.addNewCard = bind(this.addNewCard, this);
+    this.nothingToLoad = bind(this.nothingToLoad, this);
     this.loadPost = bind(this.loadPost, this);
     this.trigger = bind(this.trigger, this);
     this.whellEvent = bind(this.whellEvent, this);
     this.setBrand = bind(this.setBrand, this);
     this.setCategory = bind(this.setCategory, this);
+    this.unStickFilter = bind(this.unStickFilter, this);
+    this.stickFilter = bind(this.stickFilter, this);
     this.initialize = bind(this.initialize, this);
     this._initEvents = bind(this._initEvents, this);
     this._initContent = bind(this._initContent, this);
@@ -1030,6 +1097,8 @@ LazyLoader = (function(superClass) {
     this.loading = false;
     this.offset = 0;
     this.limit = 4;
+    this.category = null;
+    this.brand = null;
     this.initialize();
   }
 
@@ -1041,23 +1110,46 @@ LazyLoader = (function(superClass) {
     LazyLoader.__super__._initEvents.apply(this, arguments);
     $(window).on(Event.WHEEL, this.whellEvent);
     $(window).on('Filter::setCategory', this.setCategory);
-    return $(window).on('Filter::setBrand', this.setBrand);
+    $(window).on('Filter::SetBrand', this.setBrand);
+    $(window).on('Filter::StickIt', this.stickFilter);
+    return $(window).on('Filter::UnStickIt', this.unStickFilter);
   };
 
   LazyLoader.prototype.initialize = function() {
     var html;
     html = '<div class="loader-container"><div class="loader"></div></div>';
     this.container.html(html);
+    this.offset = 0;
     this.limit = 8;
     return this.loadPost();
   };
 
+  LazyLoader.prototype.stickFilter = function() {
+    return this.container.css({
+      'margin-left': '315px'
+    });
+  };
+
+  LazyLoader.prototype.unStickFilter = function() {
+    return this.container.removeAttr('style');
+  };
+
   LazyLoader.prototype.setCategory = function(e, value) {
-    return this.category = value;
+    if (value !== '' && (value != null)) {
+      this.category = value;
+    } else {
+      this.category = null;
+    }
+    return this.initialize();
   };
 
   LazyLoader.prototype.setBrand = function(e, value) {
-    return this.brand = value;
+    if (value !== '' && (value != null)) {
+      this.brand = value;
+    } else {
+      this.brand = null;
+    }
+    return this.initialize();
   };
 
   LazyLoader.prototype.whellEvent = function(e) {
@@ -1068,23 +1160,30 @@ LazyLoader = (function(superClass) {
   };
 
   LazyLoader.prototype.trigger = function() {
-    console.log('trigger');
     return this.loadPost();
   };
 
   LazyLoader.prototype.loadPost = function() {
+    var data;
     if (!this.loading) {
+      data = {
+        'offset': this.offset,
+        'limit': this.limit
+      };
+      if (this.category != null) {
+        data.category = this.category;
+      }
+      if (this.brand != null) {
+        data.brand = this.brand;
+      }
       this.loading = true;
       return $.ajax({
         method: "GET",
         url: this.url,
-        data: {
-          'offset': this.offset,
-          'limit': this.limit
-        }
+        data: data
       }).done((function(_this) {
         return function(data) {
-          var i, len, product, ref, results;
+          var i, len, product, ref;
           if (data.status === "success") {
             _this.offset += _this.limit;
             _this.loading = false;
@@ -1092,28 +1191,38 @@ LazyLoader = (function(superClass) {
               _this.limit = 4;
             }
             ref = data.data.products;
-            results = [];
             for (i = 0, len = ref.length; i < len; i++) {
               product = ref[i];
-              console.log(product);
-              results.push(_this.addNewCard(product));
+              _this.addNewCard(product);
             }
-            return results;
+          }
+          if (data.status === "error") {
+            _this.loading = false;
+            return _this.nothingToLoad();
           }
         };
       })(this));
     }
   };
 
+  LazyLoader.prototype.nothingToLoad = function() {
+    return console.log('nothing to load');
+  };
+
   LazyLoader.prototype.addNewCard = function(product) {
     var html, temp;
-    html = '<div class="block-product ' + this.page + '" id="1' + product.id + '">';
-    html += '<div class="image-container">';
-    if (product.path != null) {
-      html += '<img src="' + window.Global.baseUrl + product.path + '" alt="">';
+    html = '<div class="block-product ' + this.page + '" id="' + product.id + '">';
+    html += '<div class="top-image">';
+    if ((product.photos != null) && (product.photos[0] != null)) {
+      html += '<img src="' + Routing.generate('photo_url', {
+        id: product.id,
+        filter: 'medium'
+      }, true) + '" alt="">';
     } else {
       html += '<img src="' + window.Global.img["default"] + '" alt="">';
     }
+    html += '</div>';
+    html += '<div class="image-container">';
     html += '<div class="action-container">';
     html += '<div class="in-my-pack">';
     html += '<p>Dans mon pack</p>';
@@ -1169,7 +1278,7 @@ LazyLoader = (function(superClass) {
     html += '</div>';
     this.container.find('.loader-container').before(html);
     return temp = new BlockProduct({
-      container: $('#1' + product.id)
+      container: $('#' + product.id)
     });
   };
 
@@ -1316,9 +1425,19 @@ Menu = (function(superClass) {
 
   Menu.prototype.openShopSubmenu = function() {
     this.submenuShopcontainer.addClass('open');
+    this.submenuShopcontainer.find('.overlay').css({
+      'display': 'block'
+    });
+    this.submenuShopcontainer.find('.sub-menu-container').css({
+      'display': 'block'
+    });
+    this.submenuShopcontainer[0].offsetTop;
     this.submenuShopBtn.addClass('active');
-    return this.submenuShopcontainer.css({
+    this.submenuShopcontainer.css({
       'height': this.submenuShopcontainer.find('.container').outerHeight()
+    });
+    return this.submenuShopcontainer.find('.overlay').css({
+      'height': $(window).height()
     });
   };
 
@@ -1431,6 +1550,7 @@ Popin = (function(superClass) {
   extend(Popin, superClass);
 
   function Popin(options) {
+    this.resize = bind(this.resize, this);
     this.getPackIds = bind(this.getPackIds, this);
     this.getPackFromLocalstorage = bind(this.getPackFromLocalstorage, this);
     this.isPackFull = bind(this.isPackFull, this);
@@ -1479,7 +1599,8 @@ Popin = (function(superClass) {
     this.close = this.container.find('.close svg');
     this.customPack = {};
     this.customPack.full = false;
-    return this.product = null;
+    this.product = null;
+    return this.isValidation = false;
   };
 
   Popin.prototype._initEvents = function() {
@@ -1490,6 +1611,7 @@ Popin = (function(superClass) {
 
   Popin.prototype.openPopin = function(e, product) {
     if (product.validate != null) {
+      this.isValidation = true;
       this.container.addClass('open');
       this.popin.css({
         'display': 'none'
@@ -1501,6 +1623,7 @@ Popin = (function(superClass) {
       });
       return this.initValidatePopin();
     } else {
+      this.isValidation = false;
       this.getContent(product.id);
       this.container.addClass('open');
       this.validate.css({
@@ -1589,7 +1712,7 @@ Popin = (function(superClass) {
   };
 
   Popin.prototype.addImgsSlider = function() {
-    var html, i, key, len, photo, ref;
+    var html, i, img, key, len, photo, ref;
     html = '';
     ref = this.product.galery;
     for (key = i = 0, len = ref.length; i < len; key = ++i) {
@@ -1599,22 +1722,34 @@ Popin = (function(superClass) {
       } else {
         html += '<div class="slide">';
       }
-      html += '<img src="' + photo.large + '" alt="">';
+      img = Routing.generate('photo_url', {
+        id: photo.id,
+        filter: 'large'
+      }, true);
+      html += '<img src="' + img + '" alt="">';
       html += '</div>';
     }
     return html;
   };
 
   Popin.prototype.addNavSlider = function() {
-    var html, i, key, len, photo, ref;
+    var html, i, img, key, len, photo, ref;
     html = '';
     ref = this.product.galery;
     for (key = i = 0, len = ref.length; i < len; key = ++i) {
       photo = ref[key];
       if (key === 0) {
-        html += '<li class="active"><img src="' + photo.small + '" alt=""></li>';
+        img = Routing.generate('photo_url', {
+          id: photo.id,
+          filter: 'small'
+        }, true);
+        html += '<li class="active"><img src="' + img + '" alt=""></li>';
       } else {
-        html += '<li><img src="' + photo.small + '" alt=""></li>';
+        img = Routing.generate('photo_url', {
+          id: photo.id,
+          filter: 'small'
+        }, true);
+        html += '<li><img src="' + img + '" alt=""></li>';
       }
     }
     return html;
@@ -1806,6 +1941,22 @@ Popin = (function(superClass) {
       data.push(item.id);
     }
     return data;
+  };
+
+  Popin.prototype.resize = function() {
+    if (this.isValidation) {
+      return this.validate.css({
+        'display': 'block',
+        'margin-left': (W.ww - this.popin.outerWidth()) / 2,
+        'margin-top': (W.wh - this.popin.outerHeight() + 94) / 2
+      });
+    } else {
+      return this.popin.css({
+        'display': 'block',
+        'margin-left': (W.ww - this.popin.outerWidth()) / 2,
+        'margin-top': (W.wh - this.popin.outerHeight() + 94) / 2
+      });
+    }
   };
 
   return Popin;
@@ -2607,7 +2758,8 @@ PackEditor = (function(superClass) {
     var i, len, product, ref, temp;
     PackEditor.__super__._initContent.apply(this, arguments);
     this.filterProduct = new FilterProduct({
-      container: this.container.find('.search-container')
+      container: this.container.find('.search-container'),
+      page: 'pack-editor'
     });
     new YourPack({
       fixContainer: this.container.find('.top-content'),
