@@ -28,4 +28,16 @@ class PackEditorController extends Controller
         return array('page'=>'pack-editor','products'=>$products);
     }
 
+    /**
+     * @Route("/product/{id}")
+     * @Template()
+     */
+    public function showAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository("BpProductBundle:Product")->findOneById($id);
+
+        return array("product" => $product,'page'=>"product-page");
+    }
+
 }

@@ -25,15 +25,15 @@ class ProductRepository extends EntityRepository
         ->setFirstResult($offset)
         ->setMaxResults($limit);
 
-      if($category)
+      if($category && count($category) > 0)
       {
-        $query->andWhere("c.name = :cat")
+        $query->andWhere("c.name IN (:cat)")
         ->setParameter("cat", $category);
       }
 
-      if($brand)
+      if($brand && count($brand) > 0 )
       {
-        $query->andWhere("b.name = :brandName")
+        $query->andWhere("b.name IN (:brandName)")
         ->setParameter("brandName", $brand);
       }
 
