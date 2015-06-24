@@ -327,36 +327,36 @@ class ApiController extends Controller
         $product = $em->getRepository("BpProductBundle:Product")->findOneById($id);
 
         if(!$product) return $this->returnError("Pas de produit pour cet id");
-
-        $galery = array();
-        foreach($product->getPhotos() as $f)
-        {
-            $medium = $liip_imagine->getBrowserPath($f->getWebPath(), 'medium');
-            $large = $liip_imagine->getBrowserPath($f->getWebPath(), 'large');
-            $small = $liip_imagine->getBrowserPath($f->getWebPath(), 'small');
-            $galery[] = array("id" =>$f->getId(), "path"=> $f->getWebPath(), "small" =>$small, "medium" =>$medium, "large" =>$large,"description" => $f->getDescription(),"alt" => $f->getAlt());
-        }
-        $path = ($product->getMainPhoto()) ? $product->getMainPhoto()->getWebPath() : "";
-        $array = array(
-                "id" => $product->getId(),
-                "name" => $product->getName(),
-                "path" =>  $path,
-                "description" => $product->getDescription() ,
-                "price" => $product->getPrice() ,
-                "taxe" => $product->getTaxe() ,
-                "reference" => $product->getReference() ,
-                "brand" => ($product->getBrand()) ? $product->getBrand()->getName() : null ,
-                "specificite" => $product->getSpecificite(),
-                "onHome" => $product->getOnHome(),
-                "quantity" => $product->getQuantity(),
-                "galery" => $galery,
-            );
-
+        $serializer = $serializer = $this->container->get('jms_serializer');
+        // $galery = array();
+        // foreach($product->getPhotos() as $f)
+        // {
+        //     $medium = $liip_imagine->getBrowserPath($f->getWebPath(), 'medium');
+        //     $large = $liip_imagine->getBrowserPath($f->getWebPath(), 'large');
+        //     $small = $liip_imagine->getBrowserPath($f->getWebPath(), 'small');
+        //     $galery[] = array("id" =>$f->getId(), "path"=> $f->getWebPath(), "small" =>$small, "medium" =>$medium, "large" =>$large,"description" => $f->getDescription(),"alt" => $f->getAlt());
+        // }
+        // $path = ($product->getMainPhoto()) ? $product->getMainPhoto()->getWebPath() : "";
+        // $array = array(
+        //         "id" => $product->getId(),
+        //         "name" => $product->getName(),
+        //         "path" =>  $path,
+        //         "description" => $product->getDescription() ,
+        //         "price" => $product->getPrice() ,
+        //         "taxe" => $product->getTaxe() ,
+        //         "reference" => $product->getReference() ,
+        //         "brand" => ($product->getBrand()) ? $product->getBrand()->getName() : null ,
+        //         "specificite" => $product->getSpecificite(),
+        //         "onHome" => $product->getOnHome(),
+        //         "quantity" => $product->getQuantity(),
+        //         "galery" => $galery,
+        //     );
+        $jsonContent = $serializer->serialize($product, 'json',SerializationContext::create()->enableMaxDepthChecks());
 
         $response = new Response(json_encode(
                 array(  
                         "status" =>"success", 
-                        "data" => $array
+                        "data" => json_decode($jsonContent)
                     )
                 ));
         $response->headers->set('Content-Type', 'application/json');

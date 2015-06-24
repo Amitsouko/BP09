@@ -168,7 +168,7 @@ class Product implements ItemInterface
      *      joinColumns={@ORM\JoinColumn(name="parent_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="reversed_id", referencedColumnName="id")}
      *      )
-     * @MaxDepth(2)
+     * @MaxDepth(4)
      **/
     private $crossSelling;
 
