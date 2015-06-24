@@ -556,4 +556,27 @@ class Pack implements ItemInterface
     {
         return $this->onHome;
     }
+
+    /**
+     * Set specificite
+     *
+     * @param string $specificite
+     * @return Pack
+     */
+    public function setSpecificite($specificite)
+    {
+        $this->specificite = $specificite;
+
+        return $this;
+    }
+
+    /**
+     * Get specificite
+     *
+     * @return string 
+     */
+    public function getSpecificite()
+    {
+        return $this->specificite;
+    }
 }

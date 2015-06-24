@@ -828,4 +828,37 @@ class Product implements ItemInterface
     {
         return $this->colors;
     }
+
+    /**
+     * Add sizes
+     *
+     * @param \Bp\ProductBundle\Entity\Size $sizes
+     * @return Product
+     */
+    public function addSize(\Bp\ProductBundle\Entity\Size $sizes)
+    {
+        $this->sizes[] = $sizes;
+
+        return $this;
+    }
+
+    /**
+     * Remove sizes
+     *
+     * @param \Bp\ProductBundle\Entity\Size $sizes
+     */
+    public function removeSize(\Bp\ProductBundle\Entity\Size $sizes)
+    {
+        $this->sizes->removeElement($sizes);
+    }
+
+    /**
+     * Get sizes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSizes()
+    {
+        return $this->sizes;
+    }
 }

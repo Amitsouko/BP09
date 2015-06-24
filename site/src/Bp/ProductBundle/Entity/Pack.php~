@@ -32,6 +32,13 @@ class Pack implements ItemInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="specificite", type="text")
+     */
+    private $specificite;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="description", type="text")
      */
     private $description;
