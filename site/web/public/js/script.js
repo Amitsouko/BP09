@@ -2868,10 +2868,22 @@ ListPack = (function(superClass) {
   }
 
   ListPack.prototype._initContent = function() {
+    var i, item, len, product, productBlocks, results;
     ListPack.__super__._initContent.apply(this, arguments);
-    return new Highlight({
+    new Highlight({
       container: this.container.find('.top-content')
     });
+    productBlocks = this.container.find('.list-packs');
+    this.products = new Array();
+    results = [];
+    for (i = 0, len = productBlocks.length; i < len; i++) {
+      product = productBlocks[i];
+      item = new BlockProduct({
+        container: $(product)
+      });
+      results.push(this.products.push(item));
+    }
+    return results;
   };
 
   ListPack.prototype._initEvents = function() {

@@ -3,11 +3,11 @@
 {% block body %}
 
 	<div class="top-content">
-		{% if packHighlight.mainPhoto %}
-		<img src="{{ packHighlight.mainPhoto.webPath|imagine_filter("type_medium") }}" alt="">
-		{% else %}
+		{# {% if packHighlight.mainPhoto %} #}
+		{# <img src="{{ packHighlight.mainPhoto.webPath|imagine_filter("type_medium") }}" alt=""> #}
+		{# {% else %} #}
 		<img src="{{ asset('public/img/withings-activity.png')}}" alt="">
-		{% endif %}
+		{# {% endif %} #}
 		<div class="container">
 			<div class="breadcrumb">
 				<a href="{{ path('bp_core_default_index') }}">Accueil</a>
