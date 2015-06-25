@@ -45,6 +45,35 @@ class ProductRepository extends EntityRepository
       return $query->getQuery()->getResult();
   }
 
+  public function findTotal($category, $brand)
+  {
+    $qb = $this->createQueryBuilder("p");
+    $query = $qb//->addSelect("b.name") //->select("p.id, p.reference, p.name, p.description,p.specificite ,f.path, p.price, p.taxe, b.name as brand")
+        ->leftJoin("p.mainPhoto", "f")
+        ->leftJoin("p.brand", "b")
+        ->leftJoin("p.categories", "c")
+        ->where("p.active = :active");
+        
+
+      if($category && count($category) > 0)
+      {
+        $query->andWhere("c.name IN (:cat)")
+        ->setParameter("cat", $category);
+      }
+
+      if($brand && count($brand) > 0 )
+      {
+        $query->andWhere("b.name IN (:brandName)")
+        ->setParameter("brandName", $brand);
+      }
+
+      $query
+        ->setParameter('active' , true);
+
+      $result =  $query->getQuery()->getResult();
+      return count($result);
+  }
+
  
     public function findOneActiveById($id)
      {
