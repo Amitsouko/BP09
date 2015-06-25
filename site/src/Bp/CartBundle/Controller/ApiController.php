@@ -76,7 +76,7 @@ class ApiController extends Controller
     /**
      * @Route("/cart/set-quantity", options={"expose"=true})
      * @Template()
-     * @Method("GET")
+     * @Method("POST")
      */
     public function addToCartAction(Request $request)
     {
