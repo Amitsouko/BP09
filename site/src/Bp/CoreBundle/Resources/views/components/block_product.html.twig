@@ -32,8 +32,10 @@
 	<div class="info-container">
 		{% if page is defined and page == 'pack' %}
 		<a href="{{ path("bp_core_pack_show", { id:product.id }) }}">
-		{% else %}
+		{% elseif page is defined and page == 'shop' %}
 		<a href="{{ path("bp_core_product_show", { id:product.id }) }}">
+		{% else %}
+		<a href="{{ path("bp_core_packeditor_show", { id:product.id }) }}">
 		{% endif %}
 			{% if product.brand.name is defined %}
 			<h6>{{ product.brand.name }}</h6>

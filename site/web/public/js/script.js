@@ -863,8 +863,8 @@ FilterProduct = (function(superClass) {
     this.searchFilterMobileClick = bind(this.searchFilterMobileClick, this);
     this._initEvents = bind(this._initEvents, this);
     this._initContent = bind(this._initContent, this);
-    FilterProduct.__super__.constructor.apply(this, arguments);
     this.page = options.page;
+    FilterProduct.__super__.constructor.apply(this, arguments);
   }
 
   FilterProduct.prototype._initContent = function() {
@@ -876,7 +876,11 @@ FilterProduct = (function(superClass) {
     this.searchCategoryitem.mobileBtn = this.container.find('.mobile-btn');
     this.searchCategoryitem.filterContainer = this.container.find('.container-filter');
     this.searchCategoryitem.resetBtn = this.container.find('.reset');
-    this.breakpoint = this.container.offset().top - 124;
+    if (this.page === "shop") {
+      this.breakpoint = this.container.offset().top - 18;
+    } else {
+      this.breakpoint = this.container.offset().top - 124;
+    }
     return this.sticky = false;
   };
 
@@ -1026,10 +1030,17 @@ FilterProduct = (function(superClass) {
   };
 
   FilterProduct.prototype.stickIt = function() {
-    this.container.css({
-      'position': 'fixed',
-      'top': '104px'
-    });
+    if (this.page === "shop") {
+      this.container.css({
+        'position': 'fixed',
+        'top': '10px'
+      });
+    } else {
+      this.container.css({
+        'position': 'fixed',
+        'top': '104px'
+      });
+    }
     $(window).trigger('Filter::StickIt');
     return this.sticky = true;
   };
@@ -1195,6 +1206,7 @@ LazyLoader = (function(superClass) {
               product = ref[i];
               _this.addNewCard(product);
             }
+            $(window).trigger('CustomPack::initBar');
           }
           if (data.status === "error") {
             _this.loading = false;
@@ -1258,8 +1270,12 @@ LazyLoader = (function(superClass) {
       html += '<a href="' + Routing.generate('bp_core_pack_show', {
         id: product.id
       }, true) + '">';
-    } else {
+    } else if ((this.page != null) && this.page === 'shop') {
       html += '<a href="' + Routing.generate('bp_core_product_show', {
+        id: product.id
+      }, true) + '">';
+    } else {
+      html += '<a href="' + Routing.generate('bp_core_packeditor_show', {
         id: product.id
       }, true) + '">';
     }
@@ -1586,7 +1602,9 @@ Popin = (function(superClass) {
     this.initAfterLoaded = bind(this.initAfterLoaded, this);
     this.addActionContainer = bind(this.addActionContainer, this);
     this.addDisponibility = bind(this.addDisponibility, this);
-    this.addSize = bind(this.addSize, this);
+    this.removeSizes = bind(this.removeSizes, this);
+    this.addSizes = bind(this.addSizes, this);
+    this.removeColors = bind(this.removeColors, this);
     this.addColors = bind(this.addColors, this);
     this.addProductInfo = bind(this.addProductInfo, this);
     this.addNavSlider = bind(this.addNavSlider, this);
@@ -1626,6 +1644,7 @@ Popin = (function(superClass) {
   };
 
   Popin.prototype.openPopin = function(e, product) {
+    console.log('Popin openPopin', e);
     if (product.validate != null) {
       this.isValidation = true;
       this.container.addClass('open');
@@ -1659,7 +1678,13 @@ Popin = (function(superClass) {
   };
 
   Popin.prototype.closePopin = function() {
-    return this.container.removeClass('open');
+    this.container.removeClass('open');
+    if ($('.colors').length > 0) {
+      this.removeColors();
+    }
+    if ($('.sizes').length > 0) {
+      return this.removeSizes();
+    }
   };
 
   Popin.prototype.initValidatePopin = function() {
@@ -1723,14 +1748,13 @@ Popin = (function(superClass) {
   Popin.prototype.initContentLoaded = function() {
     this.slidesContainer.find('.slides').html(this.addImgsSlider());
     this.slidesContainer.find('ul').html(this.addNavSlider());
-    this.addProductInfo();
-    return this.initAfterLoaded();
+    return this.addProductInfo();
   };
 
   Popin.prototype.addImgsSlider = function() {
     var html, i, img, key, len, photo, ref;
     html = '';
-    ref = this.product.galery;
+    ref = this.product.photos;
     for (key = i = 0, len = ref.length; i < len; key = ++i) {
       photo = ref[key];
       if (key === 0) {
@@ -1751,7 +1775,7 @@ Popin = (function(superClass) {
   Popin.prototype.addNavSlider = function() {
     var html, i, img, key, len, photo, ref;
     html = '';
-    ref = this.product.galery;
+    ref = this.product.photos;
     for (key = i = 0, len = ref.length; i < len; key = ++i) {
       photo = ref[key];
       if (key === 0) {
@@ -1774,40 +1798,57 @@ Popin = (function(superClass) {
   Popin.prototype.addProductInfo = function() {
     this.productInfo.find('h1').html(this.product.name);
     this.productInfo.find('h2').html(this.product.brand);
-    if (this.product.sizes != null) {
-      this.productInfo.find('h2').after(this.addSize());
+    if (this.product.sizes.length > 0) {
+      this.productInfo.find('h2').after(this.addSizes());
     }
-    if (this.product.colors != null) {
+    if (this.product.colors.length > 0) {
       this.productInfo.find('h2').after(this.addColors());
     }
     this.addDisponibility();
-    return this.actionContainer.html(this.addActionContainer());
+    this.actionContainer.html(this.addActionContainer());
+    return this.initAfterLoaded();
   };
 
   Popin.prototype.addColors = function() {
     var color, html, i, len, ref;
-    html = '<h3>Couleur</h3>';
-    html = '<div class="color-container">';
-    ref = this.product.colors;
-    for (i = 0, len = ref.length; i < len; i++) {
-      color = ref[i];
-      html += '<a href="#" class="color" style="background-color:' + color + '"></a>';
+    if ($('.colors').length === 0) {
+      html = '<div class="colors">';
+      html += '<h3>Couleur</h3>';
+      html += '<div class="color-container">';
+      ref = this.product.colors;
+      for (i = 0, len = ref.length; i < len; i++) {
+        color = ref[i];
+        html += '<a href="#" class="color" style="background-color:' + color.color + '"></a>';
+      }
+      html += '</div>';
+      html += '</div>';
+      return html;
     }
-    html += '</div>';
-    return html;
   };
 
-  Popin.prototype.addSize = function() {
+  Popin.prototype.removeColors = function() {
+    return $('.colors').remove();
+  };
+
+  Popin.prototype.addSizes = function() {
     var html, i, len, ref, size;
-    html = '<h3>Taille</h3>';
-    html = '<div class="size-container">';
-    ref = this.product.sizes;
-    for (i = 0, len = ref.length; i < len; i++) {
-      size = ref[i];
-      html += '<a href="#" class="size">' + size + '</a>';
+    if ($('.sizes').length === 0) {
+      html = '<div class="sizes">';
+      html += '<h3>Taille</h3>';
+      html += '<div class="size-container">';
+      ref = this.product.sizes;
+      for (i = 0, len = ref.length; i < len; i++) {
+        size = ref[i];
+        html += '<a href="#" class="size">' + size.name + '</a>';
+      }
+      html += '</div>';
+      html += '</div>';
+      return html;
     }
-    html += '</div>';
-    return html;
+  };
+
+  Popin.prototype.removeSizes = function() {
+    return $('.sizes').remove();
   };
 
   Popin.prototype.addDisponibility = function() {
@@ -1825,6 +1866,8 @@ Popin = (function(superClass) {
     if (this.isInPack(this.product.id)) {
       html += '<a href="#" class="button edit">Valider</a>';
       html += '<a href="#" class="button delete">Suprimer</a>';
+    } else if (this.isPackFull()) {
+      html += '<a style="background-color:#e0e0e0;" class="button">Votre pack est complet</a>';
     } else {
       html += '<a href="#" class="button add">Ajouter à mon pack</a>';
     }
@@ -1841,7 +1884,9 @@ Popin = (function(superClass) {
     });
     this.actionContainer.find('.add').on(Event.CLICK, this.addToPackClick);
     this.actionContainer.find('.edit').on(Event.CLICK, this.editFromPackClick);
-    return this.actionContainer.find('.delete').on(Event.CLICK, this.removeFromPackClick);
+    this.actionContainer.find('.delete').on(Event.CLICK, this.removeFromPackClick);
+    this.colorBtn.on(Event.CLICK, this.colorBtnClick);
+    return this.sizeBtn.on(Event.CLICK, this.sizeBtnClick);
   };
 
   Popin.prototype.editFromPackClick = function(e) {
@@ -1993,8 +2038,18 @@ ProductDetail = (function(superClass) {
     this.openMoreInfo = bind(this.openMoreInfo, this);
     this.checkMoreInfo = bind(this.checkMoreInfo, this);
     this.moreInfoClick = bind(this.moreInfoClick, this);
+    this.loadData = bind(this.loadData, this);
+    this.addToPack = bind(this.addToPack, this);
+    this.addToPackClick = bind(this.addToPackClick, this);
+    this.getPackFromLocalstorage = bind(this.getPackFromLocalstorage, this);
+    this.isInPack = bind(this.isInPack, this);
+    this.addToCart = bind(this.addToCart, this);
+    this.addToCartClick = bind(this.addToCartClick, this);
     this._initEvents = bind(this._initEvents, this);
     this._initContent = bind(this._initContent, this);
+    if (options.page != null) {
+      this.page = options.page;
+    }
     ProductDetail.__super__.constructor.apply(this, arguments);
   }
 
@@ -2007,7 +2062,13 @@ ProductDetail = (function(superClass) {
     this.sizeBtn = this.container.find('.size');
     this.favoritesBtn = this.container.find('.favorites');
     this.moreInfoBtn = this.container.find('.more-detail a');
-    return this.moreInfoContainer = this.container.find('.more-info-container');
+    this.moreInfoContainer = this.container.find('.more-info-container');
+    if ((this.page != null) && this.page === "pack") {
+      return console.log('pack');
+    } else {
+      this.loadData();
+      return this.isInPack();
+    }
   };
 
   ProductDetail.prototype._initEvents = function() {
@@ -2015,7 +2076,121 @@ ProductDetail = (function(superClass) {
     this.colorBtn.on(Event.CLICK, this.colorBtnClick);
     this.sizeBtn.on(Event.CLICK, this.sizeBtnClick);
     this.favoritesBtn.on(Event.CLICK, this.favoritesBtnClick);
-    return this.moreInfoBtn.on(Event.CLICK, this.moreInfoClick);
+    this.moreInfoBtn.on(Event.CLICK, this.moreInfoClick);
+    console.log(this.container.find('.add-to-pack'));
+    if (this.container.find('.add-to-pack').length > 0) {
+      if (!this.isInPack()) {
+        this.container.find('.add-to-pack').on(Event.CLICK, this.addToPackClick);
+      } else {
+        this.container.find('.add-to-pack').css({
+          'background-color': '#e0e0e0'
+        });
+        this.container.find('.add-to-pack').html('Déja dans mon pack');
+        this.container.find('.add-to-pack ~ .price').css({
+          'display': 'none'
+        });
+        this.container.find('.add-to-pack').removeAttr('href');
+      }
+    }
+    if (this.container.find('.add-to-cart').length > 0) {
+      return this.container.find('.add-to-cart').on(Event.CLICK, this.addToCartClick);
+    }
+  };
+
+  ProductDetail.prototype.addToCartClick = function(e) {
+    e.preventDefault();
+    return this.addToCart();
+  };
+
+  ProductDetail.prototype.addToCart = function() {
+    return $.ajax({
+      method: "POST",
+      url: Routing.generate('bp_cart_api_addtocart', true),
+      data: {
+        'type': 'product',
+        'id': ProductId,
+        'quantity': 1
+      }
+    }).done((function(_this) {
+      return function(data, err) {
+        console.log('err : ', err, 'data : ', data);
+        $(window).trigger('EmbedCart:addCustomPackToCart', [data.data]);
+        $(window).trigger("CustomPack::removePack");
+        return _this.closePopin();
+      };
+    })(this));
+  };
+
+  ProductDetail.prototype.isInPack = function(id) {
+    var i, item, key, len, pack;
+    pack = this.getPackFromLocalstorage();
+    if (pack !== null) {
+      for (key = i = 0, len = pack.length; i < len; key = ++i) {
+        item = pack[key];
+        if (item.id === ProductId) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  ProductDetail.prototype.getPackFromLocalstorage = function() {
+    var pack;
+    if (typeof localStorage !== 'undefined') {
+      pack = JSON.parse(localStorage.getItem('customPack'));
+      if (pack !== null) {
+        return pack;
+      } else {
+        return null;
+      }
+    }
+  };
+
+  ProductDetail.prototype.addToPackClick = function(e) {
+    e.preventDefault();
+    return this.addToPack();
+  };
+
+  ProductDetail.prototype.addToPack = function() {
+    var item, pack;
+    if (typeof localStorage !== 'undefined') {
+      pack = JSON.parse(localStorage.getItem('customPack'));
+      if (pack === null) {
+        pack = new Array();
+      }
+      item = {
+        'id': this.product.id,
+        'color': this.product.color,
+        'size': this.product.size,
+        'name': this.product.name,
+        'brand': this.product.brand,
+        'taxe': this.product.taxe
+      };
+      if (this.product.photos[0] != null) {
+        item.img = Routing.generate('photo_url', {
+          filter: 'medium',
+          id: this.product.photos[0].id
+        }, true);
+      } else {
+        item.img = '';
+      }
+      pack.push(item);
+      pack = JSON.stringify(pack);
+      localStorage.setItem('customPack', pack);
+    }
+    return window.location = Routing.generate('bp_core_packeditor_index', true);
+  };
+
+  ProductDetail.prototype.loadData = function() {
+    return $.ajax({
+      method: "GET",
+      url: Routing.generate('bp_cart_api_product', true) + '?id=' + ProductId
+    }).done((function(_this) {
+      return function(data) {
+        return _this.product = data.data;
+      };
+    })(this));
   };
 
   ProductDetail.prototype.moreInfoClick = function(e) {
@@ -2033,7 +2208,12 @@ ProductDetail = (function(superClass) {
 
   ProductDetail.prototype.openMoreInfo = function() {
     var height;
-    height = this.moreInfoContainer.find('.more-info').outerHeight() + this.moreInfoContainer.find('.reviews-container').outerHeight();
+    height = this.moreInfoContainer.find('.more-info').outerHeight();
+    if (this.moreInfoContainer.find('.reviews-container') < 0) {
+      height += this.moreInfoContainer.find('.reviews-container').outerHeight();
+    } else {
+      height += 100;
+    }
     this.moreInfoContainer.css({
       'height': height
     });
@@ -2309,6 +2489,7 @@ YourPack = (function(superClass) {
     this["break"].breaked = false;
     this.btnValidate = this.container.find('.button');
     this.editBtn = this.container.find('.edit-container');
+    this.price = 50;
     return this.initBar();
   };
 
@@ -2318,6 +2499,7 @@ YourPack = (function(superClass) {
     $(window).on('CustomPack::removeFromPack', this.removeFromPack);
     $(window).on('CustomPack::editFromPack', this.editFromPack);
     $(window).on('CustomPack::removePack', this.removePack);
+    $(window).on('CustomPack::initBar', this.initBar);
     $(window).on(Event.WHEEL, this.wheelEvent);
     this.btnValidate.on(Event.CLICK, this.validateClick);
     return this.editBtn.on(Event.CLICK, this.editClick);
@@ -2374,8 +2556,11 @@ YourPack = (function(superClass) {
     var index;
     index = this.container.find('.product-choice.added').length;
     if (index < 4) {
-      if (values.galery[0] != null) {
-        this.productChoice[index].el.find('img').attr('src', values.galery[0].small);
+      if (values.photos[0] != null) {
+        this.productChoice[index].el.find('img').attr('src', Routing.generate('photo_url', {
+          filter: 'small',
+          id: values.photos[0].id
+        }, true));
       }
       this.productChoice[index].el.addClass('added ' + values.id);
       this.addToLocalstorage(values);
@@ -2395,7 +2580,7 @@ YourPack = (function(superClass) {
 
   YourPack.prototype.validatePack = function() {
     this.btnValidate.addClass('green');
-    return this.btnValidate.html('Ajouter au panier');
+    return this.btnValidate.html('Ajouter au panier<p class="price">+ ' + this.price + '&euro;</p>');
   };
 
   YourPack.prototype.unvalidatePack = function() {
@@ -2444,6 +2629,9 @@ YourPack = (function(superClass) {
       results = [];
       for (key = j = 0, len1 = pack.length; j < len1; key = ++j) {
         item = pack[key];
+        if (item.taxe > 0) {
+          this.price += item.taxe;
+        }
         results.push(this.refreshPackBar(item.id, key));
       }
       return results;
@@ -2492,8 +2680,11 @@ YourPack = (function(superClass) {
         'brand': values.brand,
         'taxe': values.taxe
       };
-      if (values.galery[0] != null) {
-        item.img = values.galery[0].medium;
+      if (values.photos[0] != null) {
+        item.img = Routing.generate('photo_url', {
+          filter: 'medium',
+          id: values.photos[0].id
+        }, true);
       } else {
         item.img = '';
       }
@@ -2537,8 +2728,11 @@ YourPack = (function(superClass) {
               'brand': values.brand,
               'taxe': values.taxe
             };
-            if (values.galery[0] != null) {
-              itemTemp.img = values.galery[0].medium;
+            if (values.photos[0] != null) {
+              item.img = Routing.generate('photo_url', {
+                filter: 'medium',
+                id: values.photos[0].id
+              }, true);
             } else {
               itemTemp.img = '';
             }
@@ -2678,25 +2872,29 @@ ListProduct = (function(superClass) {
   }
 
   ListProduct.prototype._initContent = function() {
-    var i, item, len, product, productBlocks, results;
+    var i, item, len, product, productBlocks;
     ListProduct.__super__._initContent.apply(this, arguments);
     this.highligth = new Highlight({
       container: this.container.find('.top-content')
     });
     this.filterProduct = new FilterProduct({
+      page: 'shop',
       container: this.container.find('.search-container')
     });
     productBlocks = this.container.find('.block-product');
     this.products = new Array();
-    results = [];
     for (i = 0, len = productBlocks.length; i < len; i++) {
       product = productBlocks[i];
       item = new BlockProduct({
         container: $(product)
       });
-      results.push(this.products.push(item));
+      this.products.push(item);
     }
-    return results;
+    return new LazyLoader({
+      container: this.container.find('.product-container'),
+      page: 'shop',
+      url: Routing.generate('bp_cart_api_products', true)
+    });
   };
 
   ListProduct.prototype._initEvents = function() {
@@ -2745,7 +2943,8 @@ PackDetail = (function(superClass) {
       results.push(this.productsDetail.push({
         el: productDetail,
         productDetail: new ProductDetail({
-          container: $(productDetail)
+          container: $(productDetail),
+          page: 'pack'
         })
       }));
     }

@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class PackEditorController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/", options={"expose"=true})
      * @Template()
      */
     public function indexAction()
@@ -29,7 +29,7 @@ class PackEditorController extends Controller
     }
 
     /**
-     * @Route("/product/{id}")
+     * @Route("/product/{id}", options={"expose"=true})
      * @Template()
      */
     public function showAction($id)

@@ -5,9 +5,9 @@
 
     <div class="container">
         <div class="breadcrumb">
-            <a href="#">Accueil</a>
-            <a href="#">Créer son pack</a>
-            <a href="#">Fitbit Surge</a>
+            <a href="{{ path("bp_core_default_index") }}">Accueil</a>
+            <a href="{{ path("bp_core_packeditor_index") }}">Créer son pack</a>
+            <a href="{{ path("bp_core_packeditor_show", { id:product.id }) }}">Fitbit Surge</a>
         </div>
     </div>
     {% include 'BpCoreBundle:components:product-detail.html.twig' with {'product':product} %}
@@ -53,4 +53,8 @@
         </div>
     </div>
 
+    <script>
+        var ProductId = {{ product.id }};
+    </script>
+    
 {% endblock body %}

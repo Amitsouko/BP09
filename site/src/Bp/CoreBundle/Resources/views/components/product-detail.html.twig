@@ -32,18 +32,17 @@
 				{% if product.colors is defined %}
 				<h3>Couleur</h3>
 				<div class="color-container">
-					<a href="#" class="color"></a>
-					<a href="#" class="color"></a>
-					<a href="#" class="color"></a>
-					<a href="#" class="color"></a>
+					{% for color in product.colors %}
+					<a href="#" class="color" style="background-color:{{ color }}"></a>
+					{% endfor %}
 				</div>
 				{% endif %}
-				{% if product.size is defined %}
+				{% if product.sizes is defined %}
 				<h3>Taille</h3>
 				<div class="size-container">
-					<a href="#" class="size">s</a>
-					<a href="#" class="size">m</a>
-					<a href="#" class="size">l</a>
+					{% for size in product.sizes %}
+					<a href="#" class="size">{{size.name}}</a>
+					{% endfor %}
 				</div>
 				{% endif %}
 				{% if product.quantity > 0 %}
@@ -53,14 +52,20 @@
 				{% endif %}
 				<div class="action-container">
 					<div>
+						{% if page is defined and page != "pack-list"%}
 						<div class="price-container">
-							<a href="#" class="button">Ajouter à mon pack</a>	
-							{% if page == 'list-product' and page is defined %}
-							<p class="price">{{ product.price|ttcPrice }}</p>
+							{% if page == 'shop' and page is defined %}
+							<a href="#" class="button green add-to-cart">Ajouter à mon panier</a>	
+							{% elseif  product.taxe is defined and product.taxe > 0 %}
+							<a href="#" class="button add-to-pack">Ajouter à mon pack</a>	
+							{% endif %}
+							{% if page == 'shop' and page is defined %}
+							<p class="price green">{{ product.price|ttcPrice }}</p>
 							{% elseif  product.taxe is defined and product.taxe > 0 %}
 							<p class="price">+ {{ product.taxe }}</p>
 							{% endif %}
 						</div>
+						{% endif %}
 						<a href="#" class="icon-container favorites">
 							{{ icons('heart')|raw }}
 							<span>Favoris</span>
@@ -93,9 +98,9 @@
 			{% if product.specificite is defined %}
 			<div class="container spec">
 				<h1>Spécifications</h1>
-				<ul>
+				{# <ul> #}
 					{{ product.specificite|raw }}
-				</ul>
+				{# </ul> #}
 			</div>
 			{% endif %}
 		</div>
