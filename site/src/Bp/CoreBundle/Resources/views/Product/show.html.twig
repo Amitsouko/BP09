@@ -7,7 +7,7 @@
         <div class="breadcrumb">
             <a href="{{ path("bp_core_default_index") }}">Accueil</a>
             <a href="{{ path("bp_core_product_index") }}">Boutique</a>
-            <a href="{{ path("bp_core_product_show", { id:product.id }) }}">Fitbit Surge</a>
+            <a href="{{ path("bp_core_product_show", { id:product.id }) }}">{{ product.name }}</a>
         </div>
     </div>
     {% include 'BpCoreBundle:components:product-detail.html.twig' with {'product':product,'page':'shop'} %}

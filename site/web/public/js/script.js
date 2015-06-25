@@ -841,6 +841,7 @@ FilterProduct = (function(superClass) {
   extend(FilterProduct, superClass);
 
   function FilterProduct(options) {
+    this.fixBottom = bind(this.fixBottom, this);
     this.unStickIt = bind(this.unStickIt, this);
     this.stickIt = bind(this.stickIt, this);
     this.whellEvent = bind(this.whellEvent, this);
@@ -859,6 +860,7 @@ FilterProduct = (function(superClass) {
     this.closeSearchFilterMobile = bind(this.closeSearchFilterMobile, this);
     this.resizeSearchFilterMobile = bind(this.resizeSearchFilterMobile, this);
     this.openSearchFilterMobile = bind(this.openSearchFilterMobile, this);
+    this.setNumberResults = bind(this.setNumberResults, this);
     this.checkSearchFilterMobile = bind(this.checkSearchFilterMobile, this);
     this.searchFilterMobileClick = bind(this.searchFilterMobileClick, this);
     this._initEvents = bind(this._initEvents, this);
@@ -876,6 +878,7 @@ FilterProduct = (function(superClass) {
     this.searchCategoryitem.mobileBtn = this.container.find('.mobile-btn');
     this.searchCategoryitem.filterContainer = this.container.find('.container-filter');
     this.searchCategoryitem.resetBtn = this.container.find('.reset');
+    this.filterNumberResults = this.container.find('h3 > span');
     if (this.page === "shop") {
       this.breakpoint = this.container.offset().top - 18;
     } else {
@@ -890,6 +893,7 @@ FilterProduct = (function(superClass) {
     this.searchCategoryitem.subItemBtn.on(Event.CLICK, this.searchCategorySubItemClick);
     this.searchCategoryitem.mobileBtn.on(Event.CLICK, this.searchFilterMobileClick);
     this.searchCategoryitem.resetBtn.on(Event.CLICK, this.removeFiltersClick);
+    $(window).on('Filter::setResultNumber', this.setNumberResults);
     return $(window).on(Event.WHEEL, this.whellEvent);
   };
 
@@ -904,6 +908,10 @@ FilterProduct = (function(superClass) {
     } else {
       return this.closeSearchFilterMobile();
     }
+  };
+
+  FilterProduct.prototype.setNumberResults = function(e, value) {
+    return this.filterNumberResults.html(value);
   };
 
   FilterProduct.prototype.openSearchFilterMobile = function() {
@@ -1022,10 +1030,14 @@ FilterProduct = (function(superClass) {
   };
 
   FilterProduct.prototype.whellEvent = function(e) {
-    if ($(window).scrollTop() > this.breakpoint && !this.sticky) {
-      return this.stickIt();
+    var bottom;
+    bottom = $(window).scrollTop() > $(document).height() - ($(window).height() - (this.container.outerHeight() + parseInt(this.container.css('margin-top')))) - 540;
+    if (bottom && this.sticky) {
+      return this.fixBottom();
     } else if ($(window).scrollTop() < this.breakpoint && this.sticky) {
       return this.unStickIt();
+    } else if ($(window).scrollTop() > this.breakpoint && !this.sticky) {
+      return this.stickIt();
     }
   };
 
@@ -1049,6 +1061,15 @@ FilterProduct = (function(superClass) {
     this.container.removeAttr('style');
     this.sticky = false;
     return $(window).trigger('Filter::UnStickIt');
+  };
+
+  FilterProduct.prototype.fixBottom = function() {
+    this.container.removeAttr('style');
+    this.sticky = false;
+    return this.container.css({
+      'position': 'absolute',
+      'bottom': '0px'
+    });
   };
 
   return FilterProduct;
@@ -1207,6 +1228,7 @@ LazyLoader = (function(superClass) {
               _this.addNewCard(product);
             }
             $(window).trigger('CustomPack::initBar');
+            $(window).trigger('Filter::setResultNumber', [data.data.total]);
           }
           if (data.status === "error") {
             _this.loading = false;
@@ -3023,10 +3045,22 @@ ProductPage = (function(superClass) {
   }
 
   ProductPage.prototype._initContent = function() {
+    var i, item, len, product, productBlocks, results;
     ProductPage.__super__._initContent.apply(this, arguments);
-    return new ProductDetail({
+    new ProductDetail({
       container: this.container.find('.product-detail')
     });
+    productBlocks = this.container.find('.product-container');
+    this.products = new Array();
+    results = [];
+    for (i = 0, len = productBlocks.length; i < len; i++) {
+      product = productBlocks[i];
+      item = new BlockProduct({
+        container: $(product)
+      });
+      results.push(this.products.push(item));
+    }
+    return results;
   };
 
   ProductPage.prototype._initEvents = function() {

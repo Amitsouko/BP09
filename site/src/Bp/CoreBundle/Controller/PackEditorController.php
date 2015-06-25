@@ -22,10 +22,11 @@ class PackEditorController extends Controller
 
         // get products and pack with "onHome" = true
         $products = $em->getRepository("BpProductBundle:Product")->findAll();
+        $brands = $em->getRepository("BpProductBundle:Brand")->findAll();
         // $packs = $em->getRepository("BpProductBundle:Pack")->findOnHome();
         // // $cart = $em->getRepository("BpCartBundle:Service")->getCart();
 
-        return array('page'=>'pack-editor','products'=>$products);
+        return array('page'=>'pack-editor','products'=>$products,'brands'=>$brands);
     }
 
     /**

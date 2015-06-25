@@ -7,10 +7,10 @@
         <div class="breadcrumb">
             <a href="{{ path("bp_core_default_index") }}">Accueil</a>
             <a href="{{ path("bp_core_packeditor_index") }}">Créer son pack</a>
-            <a href="{{ path("bp_core_packeditor_show", { id:product.id }) }}">Fitbit Surge</a>
+            <a href="{{ path("bp_core_packeditor_show", { id:product.id }) }}">{{ product.name }}</a>
         </div>
     </div>
-    {% include 'BpCoreBundle:components:product-detail.html.twig' with {'product':product} %}
+    {% include 'BpCoreBundle:components:product-detail.html.twig' with {'product':product,'page':'pack-editor'} %}
 
 
 

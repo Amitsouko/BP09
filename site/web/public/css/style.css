@@ -1081,17 +1081,19 @@ p {
     font-size: 16px;
     color: #86888b;
     min-height: 3em; }
-.product-detail .more-info .spec li {
-  font-size: 17px;
-  color: #2a2a2c;
-  line-height: 2.4em; }
-  .product-detail .more-info .spec li:before {
-    content: '';
-    float: left;
-    margin: 17px 10px;
-    padding: 3px;
-    border-radius: 50%;
-    background-color: #58c4d9; }
+.product-detail .more-info .spec {
+  padding-bottom: 60px; }
+  .product-detail .more-info .spec li {
+    font-size: 17px;
+    color: #2a2a2c;
+    line-height: 2.4em; }
+    .product-detail .more-info .spec li:before {
+      content: '';
+      float: left;
+      margin: 17px 10px;
+      padding: 3px;
+      border-radius: 50%;
+      background-color: #58c4d9; }
 .product-detail .reviews-container {
   padding: 90px 0; }
   .product-detail .reviews-container .container h1 {

@@ -4,7 +4,7 @@
 			<div class="slider-product">
 				<div class="slides-container">
 					<div class="slides">
-						{% for photo in product|gallery %}
+						{% for photo in product.photos %}
 							{% if loop.index == 1 %}
 						<div class="slide active">
 							{% else %}
@@ -16,7 +16,7 @@
 					</div>
 				</div>
 				<ul>
-					{% for photo in product|gallery  %}
+					{% for photo in product  %}
 							{% if loop.index == 1 %}
 					<li class="active"><img src="{{ photo.webPath|imagine_filter("small") }}" alt=""></li>
 							{% else %}

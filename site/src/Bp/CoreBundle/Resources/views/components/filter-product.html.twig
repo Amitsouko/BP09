@@ -36,12 +36,9 @@
 				<a href="#">Marque{{ icons('triangle')|raw }}</a>
 				<div class="list-category brand">
 					<ul>
-						<li><a href="#" class="marque">Type{{ icons('cross')|raw }}r</a></li>
-						<li><a href="#" class="marque">Type{{ icons('cross')|raw }}r</a></li>
-						<li><a href="#" class="marque">Type{{ icons('cross')|raw }}r</a></li>
-						<li><a href="#" class="marque">Type{{ icons('cross')|raw }}r</a></li>
-						<li><a href="#" class="marque">Type{{ icons('cross')|raw }}r</a></li>
-						<li><a href="#" class="marque">Type{{ icons('cross')|raw }}r</a></li>
+						{% for brand in brands %}
+						<li><a href="#" class="marque">{{ brand.name }}{{ icons('cross')|raw }}r</a></li>
+						{% endfor %}
 					</ul>
 				</div>
 			</div>
