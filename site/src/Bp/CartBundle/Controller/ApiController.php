@@ -319,8 +319,8 @@ class ApiController extends Controller
         $this->checkAjax($request);  
         $em = $this->getDoctrine()->getEntityManager();
         $products = $em->getRepository("BpProductBundle:Product")->findPagination($offset,$limit, $category, $brand);
-        $number = $em->getRepository("BpProductBundle:Product")->findAll();
-        $number = count($number);
+        $number = $em->getRepository("BpProductBundle:Product")->findTotal( $category, $brand);
+
         if(count($products) == 0 ) return $this->returnError("0 produits renvoyé");
 
         $productArray = array();
