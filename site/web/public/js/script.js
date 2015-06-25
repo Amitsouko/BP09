@@ -1279,8 +1279,8 @@ LazyLoader = (function(superClass) {
         id: product.id
       }, true) + '">';
     }
-    if (product.brandname != null) {
-      html += '<h6>' + product.brandname + '</h6>';
+    if (product.brand != null) {
+      html += '<h6>' + product.brand.name + '</h6>';
     }
     html += '<h3>' + product.name + '</h3>';
     if ((product.taxe != null) && this.page !== "shop" && product.taxe > 0) {
