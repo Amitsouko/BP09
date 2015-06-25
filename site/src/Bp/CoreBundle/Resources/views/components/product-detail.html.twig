@@ -33,7 +33,7 @@
 				<h3>Couleur</h3>
 				<div class="color-container">
 					{% for color in product.colors %}
-					<a href="#" class="color" style="background-color:{{ color.name }}"></a>
+					<a href="#" class="color" style="background-color:{{ color.color }}"></a>
 					{% endfor %}
 				</div>
 				{% endif %}
@@ -62,7 +62,7 @@
 							{% if page == 'shop' and page is defined %}
 							<p class="price green">{{ product.price }} &euro;</p>
 							{% elseif  product.taxe is defined and product.taxe > 0 %}
-							<p class="price">+ {{ product.taxe }}&euro;</p>
+							<p class="price">+ {{ product.taxe }} &euro;</p>
 							{% endif %}
 						</div>
 						{% endif %}
