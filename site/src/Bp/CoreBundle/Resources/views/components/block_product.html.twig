@@ -45,7 +45,7 @@
 			<p class="overprice">+ {{ product.taxe }}</p>
 			{% endif %}
 			{% if product.price is defined and ( page == "shop" or page == "pack") %}
-			<p class="price">{{ product.price }}</p>
+			<p class="price">{{ product.price }} &euro;</p>
 			{% endif %}
 		</a>
 	</div>
