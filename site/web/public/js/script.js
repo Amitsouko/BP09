@@ -719,6 +719,7 @@ BlockProduct = (function(superClass) {
   extend(BlockProduct, superClass);
 
   function BlockProduct(options) {
+    this.resize = bind(this.resize, this);
     this.getValues = bind(this.getValues, this);
     this.removeAllFromPack = bind(this.removeAllFromPack, this);
     this.removeFromPack = bind(this.removeFromPack, this);
@@ -744,7 +745,7 @@ BlockProduct = (function(superClass) {
     this.addToPackBtn = this.actionContainer.find('.add-to-pack');
     this.values = {};
     this.getValues();
-    return new Highlight({
+    return this.highlight = new Highlight({
       container: this.container.find('.top-image')
     });
   };
@@ -831,6 +832,10 @@ BlockProduct = (function(superClass) {
     this.values.name = this.container.find('h3').html();
     this.values.overprice = this.container.find('.overprice').html();
     return this.values.price = this.container.find('.price').html();
+  };
+
+  BlockProduct.prototype.resize = function() {
+    return this.highlight.resize();
   };
 
   return BlockProduct;
@@ -3063,7 +3068,7 @@ ProductPage = (function(superClass) {
     new ProductDetail({
       container: this.container.find('.product-detail')
     });
-    productBlocks = this.container.find('.product-container');
+    productBlocks = this.container.find('.block-product');
     this.products = new Array();
     results = [];
     for (i = 0, len = productBlocks.length; i < len; i++) {
@@ -3081,23 +3086,18 @@ ProductPage = (function(superClass) {
   };
 
   ProductPage.prototype._onLoaderEach = function(img) {
-    var i, len, product, ref;
+    var i, len, product, ref, results;
     ref = this.products;
+    results = [];
     for (i = 0, len = ref.length; i < len; i++) {
       product = ref[i];
-      if (img === product.pic) {
-        product.resize();
+      if (img === product.highlight.pic[0]) {
+        results.push(product.resize());
+      } else {
+        results.push(void 0);
       }
     }
-    if (img === this.highlight.pic) {
-      this.highlight.resize();
-    }
-    if (img === this.highlight.pic) {
-      this.highlightPack1.resize();
-    }
-    if (img === this.highlight.pic) {
-      return this.highlightPack2.resize();
-    }
+    return results;
   };
 
   return ProductPage;
