@@ -3080,7 +3080,25 @@ ProductPage = (function(superClass) {
     return ProductPage.__super__._initEvents.apply(this, arguments);
   };
 
-  ProductPage.prototype._onLoaderEach = function(img) {};
+  ProductPage.prototype._onLoaderEach = function(img) {
+    var i, len, product, ref;
+    ref = this.products;
+    for (i = 0, len = ref.length; i < len; i++) {
+      product = ref[i];
+      if (img === product.pic) {
+        product.resize();
+      }
+    }
+    if (img === this.highlight.pic) {
+      this.highlight.resize();
+    }
+    if (img === this.highlight.pic) {
+      this.highlightPack1.resize();
+    }
+    if (img === this.highlight.pic) {
+      return this.highlightPack2.resize();
+    }
+  };
 
   return ProductPage;
 
