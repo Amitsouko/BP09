@@ -1036,7 +1036,8 @@ FilterProduct = (function(superClass) {
 
   FilterProduct.prototype.whellEvent = function(e) {
     var bottom;
-    bottom = $(window).scrollTop() > $(document).height() - ($(window).height() - (this.container.outerHeight() + parseInt(this.container.css('margin-top')))) - 540;
+    bottom = $(window).scrollTop() > (this.breakpoint + $('.product-container').outerHeight() - this.container.outerHeight());
+    console.log(bottom);
     if (bottom) {
       return this.fixBottom();
     } else if ($(window).scrollTop() < this.breakpoint && this.sticky) {
@@ -2608,7 +2609,7 @@ YourPack = (function(superClass) {
 
   YourPack.prototype.validatePack = function() {
     this.btnValidate.addClass('green');
-    return this.btnValidate.html('Ajouter au panier<p class="price">+ ' + this.price + '&euro;</p>');
+    return this.btnValidate.html('Ajouter au panier<p class="price">' + this.price + ' &euro;</p>');
   };
 
   YourPack.prototype.unvalidatePack = function() {
@@ -2980,7 +2981,6 @@ PackDetail = (function(superClass) {
   extend(PackDetail, superClass);
 
   function PackDetail() {
-    this._onLoaderEach = bind(this._onLoaderEach, this);
     this._initEvents = bind(this._initEvents, this);
     this._initContent = bind(this._initContent, this);
     PackDetail.__super__.constructor.apply(this, arguments);
@@ -2990,7 +2990,7 @@ PackDetail = (function(superClass) {
     var i, len, productDetail, ref, results;
     PackDetail.__super__._initContent.apply(this, arguments);
     this.productsDetail = [];
-    ref = this.container.find('.block-product');
+    ref = this.container.find('.product-detail');
     results = [];
     for (i = 0, len = ref.length; i < len; i++) {
       productDetail = ref[i];
@@ -3007,21 +3007,6 @@ PackDetail = (function(superClass) {
 
   PackDetail.prototype._initEvents = function() {
     return PackDetail.__super__._initEvents.apply(this, arguments);
-  };
-
-  PackDetail.prototype._onLoaderEach = function(img) {
-    var i, len, product, ref, results;
-    ref = this.productsDetail;
-    results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      product = ref[i];
-      if (img === product.highlight.pic[0]) {
-        results.push(product.resize());
-      } else {
-        results.push(void 0);
-      }
-    }
-    return results;
   };
 
   return PackDetail;

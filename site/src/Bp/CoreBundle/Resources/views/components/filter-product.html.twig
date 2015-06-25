@@ -37,7 +37,7 @@
 				<div class="list-category brand">
 					<ul>
 						{% for brand in brands %}
-						<li><a href="#" class="marque">{{ brand.name }}{{ icons('cross')|raw }}</a></li>
+						<li><a href="#" class="{{ brand.name|lower }}">{{ brand.name }}{{ icons('cross')|raw }}</a></li>
 						{% endfor %}
 					</ul>
 				</div>

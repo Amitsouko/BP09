@@ -79,11 +79,11 @@
             {% for pack in packs %}
                 {% if loop.index < 3 %}
                     <div class="half pack-{{ loop.index }}">
-                        {% if pack.mainPhoto %}
-                        <img src="{{ pack.mainPhoto.webPath|imagine_filter("large") }}" alt="{{ pack.mainPhoto.alt }}" title="{{ pack.mainPhoto.description }}">
-                        {% else %}
+                        {# {% if pack.mainPhoto %} #}
+                        {# <img src="{{ pack.mainPhoto.webPath|imagine_filter("large") }}" alt="{{ pack.mainPhoto.alt }}" title="{{ pack.mainPhoto.description }}"> #}
+                        {# {% else %} #}
                         <img src="{{ asset('public/img/home-pack-' ~ loop.index ~ '.png') }}" alt="">
-                        {% endif %}
+                        {# {% endif %} #}
                         <div>
                             <h1>{{ pack.name }}</h1>
                             <h5>{{ pack.description|slice(0,70) }} ... <br/>En savoir plus</h5>
