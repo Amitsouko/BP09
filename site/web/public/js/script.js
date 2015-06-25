@@ -1032,7 +1032,7 @@ FilterProduct = (function(superClass) {
   FilterProduct.prototype.whellEvent = function(e) {
     var bottom;
     bottom = $(window).scrollTop() > $(document).height() - ($(window).height() - (this.container.outerHeight() + parseInt(this.container.css('margin-top')))) - 540;
-    if (bottom && this.sticky) {
+    if (bottom) {
       return this.fixBottom();
     } else if ($(window).scrollTop() < this.breakpoint && this.sticky) {
       return this.unStickIt();
@@ -1042,6 +1042,7 @@ FilterProduct = (function(superClass) {
   };
 
   FilterProduct.prototype.stickIt = function() {
+    this.container.removeAttr('style');
     if (this.page === "shop") {
       this.container.css({
         'position': 'fixed',
