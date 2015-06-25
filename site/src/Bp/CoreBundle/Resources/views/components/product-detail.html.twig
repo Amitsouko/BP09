@@ -56,7 +56,7 @@
 						<div class="price-container">
 							{% if page == 'shop' and page is defined %}
 							<a href="#" class="button green add-to-cart">Ajouter à mon panier</a>	
-							{% elseif  product.taxe is defined and product.taxe > 0 %}
+							{% else %}
 							<a href="#" class="button add-to-pack">Ajouter à mon pack</a>	
 							{% endif %}
 							{% if page == 'shop' and page is defined %}
