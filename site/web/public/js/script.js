@@ -2669,7 +2669,10 @@ YourPack = (function(superClass) {
 
   YourPack.prototype.refreshPackBar = function(id, key) {
     $('#' + id).addClass('added');
-    this.productChoice[key].el.find('img').attr('src', $('#' + id).find('img').attr('src'));
+    this.productChoice[key].el.find('img').attr('src', Routing.generate('photo_url', {
+      filter: 'small',
+      id: id
+    }, true));
     this.productChoice[key].el.addClass('added ' + id);
     return this.validateBtnCheck();
   };
