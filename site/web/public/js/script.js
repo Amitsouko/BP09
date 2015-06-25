@@ -1227,7 +1227,7 @@ LazyLoader = (function(superClass) {
     html += '<div class="top-image">';
     if ((product.photos != null) && (product.photos[0] != null)) {
       html += '<img src="' + Routing.generate('photo_url', {
-        id: product.id,
+        id: product.photos[0].id,
         filter: 'medium'
       }, true) + '" alt="">';
     } else {
