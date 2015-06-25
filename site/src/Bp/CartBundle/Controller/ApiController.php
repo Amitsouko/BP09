@@ -481,7 +481,8 @@ class ApiController extends Controller
 
     private function checkAjax($request)
     {
-        if( $this->container->getParameter("kernel.environment") != "dev" && !$request->isXmlHttpRequest()) throw $this->createNotFoundException('Le produit n\'existe pas');
+        return true;
+        //if( $this->container->getParameter("kernel.environment") != "dev" && !$request->isXmlHttpRequest()) throw $this->createNotFoundException('Le produit n\'existe pas');
     }
 
     private function returnError($name)
