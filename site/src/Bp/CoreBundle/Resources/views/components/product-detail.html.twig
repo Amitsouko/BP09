@@ -33,7 +33,7 @@
 				<h3>Couleur</h3>
 				<div class="color-container">
 					{% for color in product.colors %}
-					<a href="#" class="color" style="background-color:{{ color }}"></a>
+					<a href="#" class="color" style="background-color:{{ color.name }}"></a>
 					{% endfor %}
 				</div>
 				{% endif %}
@@ -41,7 +41,7 @@
 				<h3>Taille</h3>
 				<div class="size-container">
 					{% for size in product.sizes %}
-					<a href="#" class="size">{{size.name}}</a>
+					<a href="#" class="size">{{ size.name }}</a>
 					{% endfor %}
 				</div>
 				{% endif %}
