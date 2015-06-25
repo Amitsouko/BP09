@@ -28,7 +28,7 @@
 							<div class="price-container">
 								<a href="#" class="button">Ajouter à mon pack</a>	
 								{% if page == 'list-product' and page is defined %}
-								<p class="price">{{ product.price|ttcPrice }}</p>
+								<p class="price">{{ product.price }}</p>
 								{% elseif  product.taxe is defined and product.taxe > 0 %}
 								<p class="price">+ {{ product.taxe }}</p>
 								{% endif %}
