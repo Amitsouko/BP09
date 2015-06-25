@@ -60,9 +60,9 @@
 							<a href="#" class="button add-to-pack">Ajouter à mon pack</a>	
 							{% endif %}
 							{% if page == 'shop' and page is defined %}
-							<p class="price green">{{ product.price|ttcPrice }}</p>
+							<p class="price green">{{ product.price }} &euro;</p>
 							{% elseif  product.taxe is defined and product.taxe > 0 %}
-							<p class="price">+ {{ product.taxe }}</p>
+							<p class="price">+ {{ product.taxe }}&euro;</p>
 							{% endif %}
 						</div>
 						{% endif %}

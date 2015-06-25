@@ -1307,10 +1307,10 @@ LazyLoader = (function(superClass) {
     }
     html += '<h3>' + product.name + '</h3>';
     if ((product.taxe != null) && this.page !== "shop" && product.taxe > 0) {
-      html += '<p class="overprice">+ ' + product.taxe + '</p>';
+      html += '<p class="overprice">+ ' + product.taxe + ' &euro;</p>';
     }
     if ((product.price != null) && (this.page === "shop" || this.page === "pack")) {
-      html += '<p class="price">' + product.price + '</p>';
+      html += '<p class="price">' + product.price + ' &euro;</p>';
     }
     html += '</a>';
     html += '</div>';
