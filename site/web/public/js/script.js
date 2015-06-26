@@ -2004,8 +2004,10 @@ Popin = (function(superClass) {
   Popin.prototype.isPackFull = function() {
     var pack;
     pack = this.getPackFromLocalstorage();
-    if (pack.length >= 4) {
-      return true;
+    if (pack !== null) {
+      if (pack.length >= 4) {
+        return true;
+      }
     }
     return false;
   };
@@ -2661,19 +2663,16 @@ YourPack = (function(superClass) {
         if (item.taxe > 0) {
           this.price += item.taxe;
         }
-        results.push(this.refreshPackBar(item.id, key));
+        results.push(this.refreshPackBar(item, key));
       }
       return results;
     }
   };
 
-  YourPack.prototype.refreshPackBar = function(id, key) {
-    $('#' + id).addClass('added');
-    this.productChoice[key].el.find('img').attr('src', Routing.generate('photo_url', {
-      filter: 'small',
-      id: id
-    }, true));
-    this.productChoice[key].el.addClass('added ' + id);
+  YourPack.prototype.refreshPackBar = function(item, key) {
+    $('#' + item.id).addClass('added');
+    this.productChoice[key].el.find('img').attr('src', item.img);
+    this.productChoice[key].el.addClass('added ' + item.id);
     return this.validateBtnCheck();
   };
 
